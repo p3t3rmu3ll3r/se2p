@@ -1,4 +1,4 @@
 se2p
 ====
 
-Software Engineering 2 Praktikum WS12/13
+se2p
