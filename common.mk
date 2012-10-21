@@ -22,6 +22,9 @@ VFLAG_g=-gstabs+
 #===== LIBS - a space-separated list of library items to be included in the link.
 LIBS+=ioaccess cpt_terminal ph fonts
 
+#===== EXTRA_SRCVPATH - a space-separated list of directories to search for source files.
+EXTRA_SRCVPATH+=$(PROJECT_ROOT)/HAL $(PROJECT_ROOT)/Mutex  \
+	$(PROJECT_ROOT)/Tests
 
 include $(MKFILES_ROOT)/qmacros.mk
 ifndef QNX_INTERNAL

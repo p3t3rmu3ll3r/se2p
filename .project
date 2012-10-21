@@ -3,7 +3,6 @@
 	<name>se2p</name>
 	<comment></comment>
 	<projects>
-		<project>192.168.100.100</project>
 		<project>192.168.56.101</project>
 	</projects>
 	<buildSpec>

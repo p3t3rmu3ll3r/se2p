@@ -1,6 +1,9 @@
 #include "MyThread.h"
 #include <iostream>
 #include <unistd.h>
+
+#include "HAL/HAL.h"
+
 using namespace std;
 
 
@@ -21,8 +24,12 @@ void MyThread::shutdown() {
 
 void MyThread::execute(void *arg) {
     while(!isStopped()) {
+    	HAL* hal = HAL::getInstance();
         cout << "Ich bin ein Thread." << endl;
-        usleep(500000);
+        sleep(1);
+        hal->lightGreen(true);
+        sleep(1);
+        hal->lightGreen(false);
     }
 }
 
