@@ -30,9 +30,9 @@ void HALTest::testHal()
 	hal->lightYellow(false);
 	sleep(1);
 
-	hal->lightRed(true);
+	hal->lightGreen(true);
 	sleep(1);
-	hal->lightRed(false);
+	hal->lightGreen(false);
 	sleep(1);
 
 	// Engine

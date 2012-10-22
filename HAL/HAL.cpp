@@ -132,8 +132,8 @@ void HAL::engineRight(bool isSlow)
 	}
 	else
 	{
-		out8(PORT_A, val | ENGINE_RIGHT);
-		out8(PORT_A, val & ~(ENGINE_SLOW_RIGHT));
+		out8(PORT_A, (val | ENGINE_RIGHT) & ~(ENGINE_SLOW));
+		//out8(PORT_A, val & ~(ENGINE_SLOW_RIGHT));
 	}
 
     halMutex->unlock();
@@ -151,8 +151,8 @@ void HAL::engineLeft(bool isSlow)
 	}
 	else
 	{
-		out8(PORT_A, (val | ENGINE_LEFT));
-		out8(PORT_A, val & ~(ENGINE_SLOW_LEFT));
+		out8(PORT_A, (val | ENGINE_LEFT) & ~(ENGINE_SLOW));
+		//out8(PORT_A, val & ~(ENGINE_SLOW_LEFT));
 	}
 
     halMutex->unlock();

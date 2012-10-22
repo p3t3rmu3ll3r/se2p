@@ -28,10 +28,10 @@ RS232::RS232()
 
 	if((fd = open(DEV_SER1, O_RDWR)) < 0)
 	{
-		perror("opening devfile failed");
+		perror("opening devfile failed\n");
 		exit(EXIT_FAILURE);
 	} else {
-		perror("opening devfile SUCCESSED");
+		perror("opening devfile SUCCESSED\n");
 	}
 }
 
@@ -58,29 +58,25 @@ RS232* RS232::getInstance()
 
 void RS232::execute(void* arg)
 {
-	printf("Hinrichten!!!");
 	while (!isStopped())
 	{
-		printf("Before READ!!!");
 		if ((read(fd, &recvbuf, sizeof(recvbuf))) < 0)
 		{
-			perror("recieving from devfile failed");
-		}else {
-			printf("InsideIF READ!!!");
+			perror("recieving from devfile failed\n");
 		}
-		printf("After READ!!!");
 
 		switch (recvbuf)
 		{
 		case MSG_TEST:
-			printf("Testmessage recved: %s", recvbuf);
+			printf("Testmessage recved: %c\n", recvbuf);
 			break;
 		default:
-			printf("Unknown msg recved: %s", recvbuf);
+			printf("Unknown msg recved: %c\n", recvbuf);
 		}
 
 		recvbuf = 0;
 	}
+	printf("keks\n");
 
 }
 
@@ -91,13 +87,9 @@ void RS232::shutdown()
 
 void RS232::sendMsg(char msg)
 {
-	int bytesSent = 0;
-
-	if((bytesSent = write(fd, &msg, sizeof(msg))) < 0)
+	if((write(fd, &msg, sizeof(msg))) < 0)
 	{
-		perror("writing on devfile failed");
-	} else {
-		printf("sent: %d bytes",bytesSent);
+		perror("writing on devfile failed\n");
 	}
 }
 

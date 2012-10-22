@@ -41,13 +41,29 @@ int main(int argc, char *argv[]) {
 
 
 	//HAL* hal = HAL::getInstance();
+	RS232* com = RS232::getInstance();
+	com->start(NULL);
+	sleep(10);
+	com->stop();
+	sleep(3);
+	com->sendMsg('a');
+	com->join();
 	//HALTest halTest;
 	//halTest.testHal();
 
-	RS232* com = RS232::getInstance();
-
-	sleep(10);
-
+	/*
+	hal->engineRight(false);
+	sleep(3);
+	hal->engineRight(true);
+	sleep(3);
+	hal->engineRight(false);
+	sleep(3);
+	hal->engineStop();
+	sleep(3);
+	hal->engineUnstop();
+	sleep(3);
+	hal->engineStop();
+    */
 
 
 	return EXIT_SUCCESS;
