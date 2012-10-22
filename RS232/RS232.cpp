@@ -16,6 +16,7 @@
 //http://code.google.com/p/sep2-ss2012/source/browse/FestoProg/branches/old_continue/FestoProg/src/Communicator.h
 //http://code.google.com/p/sep2-ss2012/source/browse/FestoProg/branches/old_continue/FestoProg/src/Communicator.cpp
 //http://code.google.com/p/se2p/source/browse/Convayor/RS232.cpp
+
 #include "RS232.h"
 
 RS232* RS232::instance = NULL;
@@ -29,6 +30,8 @@ RS232::RS232()
 	{
 		perror("opening devfile failed");
 		exit(EXIT_FAILURE);
+	} else {
+		perror("opening devfile SUCCESSED");
 	}
 }
 
@@ -45,7 +48,7 @@ RS232* RS232::getInstance()
 
 	if (instance == NULL)
 	{
-		instance = new RS232();
+		instance = new RS232;
 	}
 
 	RS232InstanceMutex->unlock();
@@ -55,20 +58,25 @@ RS232* RS232::getInstance()
 
 void RS232::execute(void* arg)
 {
+	printf("Hinrichten!!!");
 	while (!isStopped())
 	{
+		printf("Before READ!!!");
 		if ((read(fd, &recvbuf, sizeof(recvbuf))) < 0)
 		{
 			perror("recieving from devfile failed");
+		}else {
+			printf("InsideIF READ!!!");
 		}
+		printf("After READ!!!");
 
 		switch (recvbuf)
 		{
 		case MSG_TEST:
-			printf("Testmessage recved");
+			printf("Testmessage recved: %s", recvbuf);
 			break;
 		default:
-			printf("Unknown msg recved");
+			printf("Unknown msg recved: %s", recvbuf);
 		}
 
 		recvbuf = 0;
@@ -83,8 +91,13 @@ void RS232::shutdown()
 
 void RS232::sendMsg(char msg)
 {
-	if((write(fd, &msg, sizeof(msg))) < 0)
+	int bytesSent = 0;
+
+	if((bytesSent = write(fd, &msg, sizeof(msg))) < 0)
 	{
 		perror("writing on devfile failed");
+	} else {
+		printf("sent: %d bytes",bytesSent);
 	}
 }
+

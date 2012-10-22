@@ -23,6 +23,7 @@
 #include "HAL/HAL.h"
 #include "Tests/HALTest.h"
 #include "AmpelTest.h"
+#include "RS232.h"
 
 int main(int argc, char *argv[]) {
 
@@ -38,10 +39,16 @@ int main(int argc, char *argv[]) {
 	//thread::MyThread thread;
 	//thread.start(NULL);
 
-	//HAL* hal = HAL::getInstance();
 
-	HALTest halTest;
-	halTest.testHal();
+	//HAL* hal = HAL::getInstance();
+	//HALTest halTest;
+	//halTest.testHal();
+
+	RS232* com = RS232::getInstance();
+
+	sleep(10);
+
+
 
 	return EXIT_SUCCESS;
 }

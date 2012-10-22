@@ -26,7 +26,6 @@
 
 #define MSG_TEST 'a'
 
-
 class RS232: public thread::HAWThread {
 private:
 	static RS232* instance;
@@ -45,5 +44,4 @@ public:
 	virtual void execute(void* arg);
 	virtual void shutdown();
 };
-
 #endif /* RS232_H_ */
