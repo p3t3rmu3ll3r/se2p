@@ -1,19 +1,25 @@
-/*
- * HALTest.cpp
+/**
+ * SE2 WiSe 2012
+ * Test class for HAL actors
  *
- *  Created on: 21.10.2012
- *      Author: martin
+ *
+ * \file HALTest.cpp
+ * \author Chris Addo
+ *         Jens Eberwein
+ *         Tristan Rudat
+ *         Martin Slowikowski
+ * \date 2012-10-18
+ * \version 0.9
+ *
  */
 
 #include "HALTest.h"
 
 HALTest::HALTest() {
-	// TODO Auto-generated constructor stub
 
 }
 
 HALTest::~HALTest() {
-	// TODO Auto-generated destructor stub
 }
 
 void HALTest::testHal()
@@ -48,7 +54,7 @@ void HALTest::testHal()
 
 	// Weiche
 	hal->gate(true);
-	sleep(3);
+	sleep(1);
 	hal->gate(false);
 	sleep(1);
 

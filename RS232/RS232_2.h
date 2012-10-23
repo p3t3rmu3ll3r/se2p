@@ -14,34 +14,38 @@
  *
  */
 
-#ifndef RS232_H_
-#define RS232_H_
+#ifndef RS232_2_H_
+#define RS232_2_H_
 
 #include <fcntl.h>
+#include <termios.h>
+#include <errno.h>
 
 #include "HAWThread.h"
 #include "Mutex.h"
 
-#define DEV_SER1 "/dev/ser1"
+#define DEBUG_RS232
+#define DEV_SER2 "/dev/ser2"
 
-#define MSG_TEST 'a'
+#define MSG_TEST 	'a'
+#define MSG_TIMEOUT	0
 
-class RS232: public thread::HAWThread {
+class RS232_2: public thread::HAWThread {
 private:
-	static RS232* instance;
+	static RS232_2* instance;
 	static Mutex* RS232InstanceMutex;
 	int fd;
 	char recvbuf;
 
-	RS232();
+	RS232_2();
 
 public:
 
-	static RS232* getInstance();
+	static RS232_2* getInstance();
 
-	virtual ~RS232();
+	virtual ~RS232_2();
 	void sendMsg(char msg);
 	virtual void execute(void* arg);
 	virtual void shutdown();
 };
-#endif /* RS232_H_ */
+#endif /* RS232_2_H_ */
