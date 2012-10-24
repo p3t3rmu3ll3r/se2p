@@ -1,0 +1,37 @@
+Bekannte Fehler und Probleme:
+
+- Implementierung: HAL Simulation 
+
+	out8(PORT_A, (val | ENGINE_RIGHT));
+
+	out8(PORT_A, val & ~(ENGINE_SLOW));
+
+In der Simulation funktionieren zwei out Befehle hintereinander,
+am echten Laufband bekommen wir das Problem, dass bit1 und bit3 
+gesetzt sind, obwohl bit3 gelöscht sein sollte.
+
+-------
+
+Die Verwendung eines Terminos Struct, um die serielle Schnittstelle
+zu konfigurieren ist sinnvoll, damit wir eine garantierte Konfiguration haben,
+da wir nicht wissen, wie die Schnittstelle (z.B. nach einem laufenden Betrieb) 
+konfiguriert ist. Weiterhin könnten sich auch noch Daten im Lese- oder Schreibpuffer
+befinden. Diese werden ebenfalls über das Struct geflushed.
+
+-------
+
+read blockiert, und somit haben wir keine Möglichkeit einen Thread von außen geregelt
+zu beenden, ausser ihn zu killen. Alternativ sollte das readcont benutzt werden,
+welches einen zyklischen timeout generieren kann.
+
+
+
+Gedankenprotokoll:
+
+- Mitteilung über dieses tolle Dokument
+- Darstellung der Threads in Kommunikations- oder Sequenzdiagramm im weiteren Verlauf.
+- Unser ausgedachtes Protokoll mit einem Char reicht aus.
+- psp als pdf ablegen
+- artefakte
+
+
