@@ -91,21 +91,13 @@ void RS232_1::execute(void* arg)
 {
 	int lenRead = 0;
 	while (!isStopped()) {
-		if ((lenRead = readcond(fd, &recvbuf, sizeof(recvbuf), 1, 0, 10)) < 0) {
-			printf("recieving from devfile failed\n");
-		}
-
-		if(lenRead <= 0) {
-			if(errno == EAGAIN || lenRead == 0){
-#ifdef DEBUG_RS232
-			printf("Debug RS232_1: Timeout or EAGAIN\n");
-#endif
-			}
+		if ((lenRead = readMsg(&recvbuf)) < 0) {
+			printf("recieving from devfile1 failed\n");
 		}
 
 		switch (recvbuf) {
 		case MSG_TEST:
-			printf("Testmessage recved: %c\n", recvbuf);
+			printf("Testmessage recved on devfile1: %c\n", recvbuf);
 			break;
 		case MSG_TIMEOUT:
 #ifdef DEBUG_RS232
@@ -127,11 +119,33 @@ void RS232_1::shutdown()
 {
 }
 
-void RS232_1::sendMsg(char msg)
-{
-	if((write(fd, &msg, sizeof(msg))) < 0)
-	{
-		printf("writing on devfile failed\n");
+int RS232_1::sendMsg(char msg) {
+	int rc = write(fd, &msg, sizeof(msg));
+
+	if (rc < 0) {
+		printf("writing on devfile1 failed\n");
+		return -1;
 	}
+
+	return rc;
+}
+
+int RS232_1::readMsg(char* rbuf) {
+	int rc = readcond(fd, rbuf, sizeof(rbuf), 1, 0, 10);
+
+
+	if(rc <= 0) {
+		if(errno == EAGAIN || rc == 0){
+#ifdef DEBUG_RS232
+			printf("Debug RS232_1: Timeout or EAGAIN\n");
+#endif
+			return 0;
+		} else {
+			printf("recieving from devfile1 failed\n");
+			return -1;
+		}
+	}
+
+	return rc;
 }
 

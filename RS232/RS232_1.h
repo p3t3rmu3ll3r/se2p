@@ -81,8 +81,16 @@ public:
 	/**
 	 * send a message on serial1
 	 * \param msg control message, will be defined later
+	 * \return number of bytes send, or -1 if sending failed
 	 */
-	void sendMsg(char msg);
+	int sendMsg(char msg);
+
+	/**
+	 * read a message on serial1
+	 * \param rbuf receive buffer, msg will be stored to this buf
+	 * \return number of bytes read, or 0 if timeout occured, or -1 if error ocured
+	 */
+	int readMsg(char* rbuf);
 
 	/**
 	 * method needs to be implemented, this class is derived from HAWThread.
