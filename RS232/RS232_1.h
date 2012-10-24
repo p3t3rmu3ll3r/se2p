@@ -93,7 +93,7 @@ public:
 	int readMsg(char* rbuf);
 
 	/**
-	 * method needs to be implemented, this class is derived from HAWThread.
+	 * example implementation of a reading thread, this class is derived from HAWThread.
 	 * this function reads from serial1 and also interprets the recved messages
 	 * and executes the related commands.
 	 */

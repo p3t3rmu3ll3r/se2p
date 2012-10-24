@@ -44,7 +44,8 @@ public:
 	static RS232_2* getInstance();
 
 	virtual ~RS232_2();
-	void sendMsg(char msg);
+	int sendMsg(char msg);
+	int readMsg(char* rbuf);
 	virtual void execute(void* arg);
 	virtual void shutdown();
 };
