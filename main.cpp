@@ -31,9 +31,9 @@ int main(int argc, char *argv[]) {
 	//thread::MyThread thread;
 	//thread.start(NULL);
 
-	//Testing
-	HALTest halTest;
-	halTest.testHal();
+	//Testing Milestone 2
+	//HALTest halTest;
+	//halTest.testHal();
 
 	RS232Test rs232Test;
 	rs232Test.testRS232();

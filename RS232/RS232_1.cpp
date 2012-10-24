@@ -91,7 +91,7 @@ void RS232_1::execute(void* arg)
 {
 	int lenRead = 0;
 	while (!isStopped()) {
-		if ((lenRead = readMsg(&recvbuf, sizeof(recvbuf))) < 0) {
+		if ((lenRead = readMsg(&recvbuf)) < 0) {
 			printf("recieving from devfile1 failed\n");
 		}
 
