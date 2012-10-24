@@ -3,12 +3,12 @@ Bekannte Fehler und Probleme:
 - Implementierung: HAL Simulation 
 
 	out8(PORT_A, (val | ENGINE_RIGHT));
-
 	out8(PORT_A, val & ~(ENGINE_SLOW));
 
-In der Simulation funktionieren zwei out Befehle hintereinander,
+In der Simulation funktionieren zwei out8 Befehle direkt hintereinander,
 am echten Laufband bekommen wir das Problem, dass bit1 und bit3 
 gesetzt sind, obwohl bit3 gelöscht sein sollte.
+Abhilfe schafft die Kombination der beiden Befehle zu einem einzigen
 
 -------
 
