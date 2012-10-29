@@ -16,10 +16,11 @@
 #include <iostream>
 #include <unistd.h>
 
-#include "MyThread.h"
-
 #include "Tests/HALTest.h"
 #include "Tests/RS232Test.h"
+#include "Tests/LightControllerTest.h"
+#include "Sensor.h"
+
 
 
 int main(int argc, char *argv[]) {
@@ -35,8 +36,15 @@ int main(int argc, char *argv[]) {
 	//HALTest halTest;
 	//halTest.testHal();
 
-	RS232Test rs232Test;
-	rs232Test.testRS232();
+	//RS232Test rs232Test;
+	//rs232Test.testRS232();
+
+	// Testing Milestone 3
+	LightControllerTest lctest;
+	lctest.testLightController();
+
+	Sensor sensor;
+
 
 	return EXIT_SUCCESS;
 }

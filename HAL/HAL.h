@@ -116,6 +116,11 @@ public:
 	 */
 	void lightGreen(bool isOn);
 
+	/**
+	 * Switches all lights off.
+	 */
+	void lightsOff();
+
 	// Port C
 
 	/**

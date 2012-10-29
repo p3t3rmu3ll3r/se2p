@@ -126,6 +126,19 @@ void HAL::lightGreen(bool isOn) {
 	halMutex->unlock();
 }
 
+void HAL::lightsOff() {
+	uint8_t val = in8(PORT_A);
+
+	halMutex->lock();
+
+	out8(PORT_A, val & ~(LIGHT_GREEN + LIGHT_YELLOW + LIGHT_RED));
+#ifdef DEBUG_HAL
+	printf("Debug Hal: all lights off\n");
+#endif
+
+	halMutex->unlock();
+}
+
 void HAL::engineRight(bool isSlow) {
 	uint8_t val = in8(PORT_A);
 

@@ -41,6 +41,13 @@ void HALTest::testHal()
 	hal->lightGreen(false);
 	sleep(1);
 
+	hal->lightGreen(true);
+	hal->lightYellow(true);
+	hal->lightRed(true);
+	sleep(2);
+	hal->lightsOff();
+
+
 	// Engine
 	hal->engineRight(false);
 	sleep(5);

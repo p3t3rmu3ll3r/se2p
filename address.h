@@ -30,6 +30,8 @@
 #define PORT_C		(DIO_BASE + DIO_OFFS_C)
 #define PORT_CTRL	(DIO_BASE + DIO_OFFS_CTRL)
 
+#define DIO_INIT 0x82
+
 // Individual bits
 #define BIT0	0x01
 #define BIT1	0x02
@@ -50,14 +52,36 @@
 #define LIGHT_YELLOW	0x40
 #define LIGHT_RED		0x80
 
+// Port B
+#define SENS_BARRIER_START	0x01
+#define SENS_BARRIER_HEIGHT	0x02
+#define SENS_HEIGHT_CONTROL	0x04
+#define SENS_BARRIER_GATE	0x08
+#define SENS_METAL			0x10
+#define SENS_GATE_OPEN		0x20
+#define SENS_SLIDE_FULL		0x40
+#define SENS_BARRIER_END	0x80
+
 #define ENGINE_SLOW_LEFT	(ENGINE_SLOW + ENGINE_LEFT)
 #define ENGINE_SLOW_RIGHT	(ENGINE_SLOW + ENGINE_RIGHT)
 
 // Port C
-#define LED_START	0x01
-#define LED_RESET	0x02
-#define LED_Q1		0x04
-#define LED_Q2		0x08
+#define LED_START			0x01
+#define LED_RESET			0x02
+#define LED_Q1				0x04
+#define LED_Q2				0x08
+#define SENS_BUTON_START	0x10
+#define SENS_BUTTON_STOP	0x20
+#define SENS_BUTTON_RESET	0x40
+#define SENS_BUTTON_ESTOP	0x80
+
+// Interrupt
+#define DIO_INTERRUPT_ENABLE_REG	(DIO_BASE + 0x0B)
+#define DIO_INTERRUPT_READ_CLEAR 	(DIO_BASE + 0x18)
+#define DIO_INTERRUPT_CLEAR_REG		(DIO_BASE + 0x0F)
+#define DIO_INTERRUPT_ENABLE_BC		(0xF9) // ~(0000.0110) -> 1111.1001
+#define PORTB_INTERRUPT  			2
+#define PORTC_INTERRUPT  			8
 
 
 #endif /* ADDRESS_H_ */
