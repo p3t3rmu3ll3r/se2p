@@ -37,7 +37,7 @@ HAL::HAL() {
 
 	// Initialisierung der Digitalen IO Karte
 	//out8(DIO_BASE + DIO_CONTROL_BLA, 0x8A);
-	out8(PORT_CTRL, 0x82);
+	out8(PORT_CTRL, 0x8A);
 
 	//-->nicht nötig aber sicherer
 	out8(PORT_A, 0x00);
