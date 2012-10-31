@@ -84,4 +84,8 @@
 #define PORTC_INTERRUPT  			8	//DIO Page 18
 
 
+// AIO Card
+#define AIO_BASE 0x320
+#define A_PORT 0x02
+
 #endif /* ADDRESS_H_ */
