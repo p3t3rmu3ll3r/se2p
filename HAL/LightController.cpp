@@ -24,9 +24,10 @@ Mutex* LightController::lightInstanceMutex = new Mutex();
 
 LightController::LightController() {
 	hal = HAL::getInstance();
+
 	function = &LightController::lightsOff;
-	start(NULL);
-	hold();
+	//start(0);
+	//hold();
 }
 
 LightController::~LightController() {
@@ -39,7 +40,7 @@ LightController* LightController::getInstance() {
 	if (!instance) {
 		lightInstanceMutex->lock();
 		if (!instance) {
-			instance = new LightController;
+			instance = new LightController();
 #ifdef DEBUG_LIGHTCONTROLLER
 			printf("Debug LightController: New LC instance created\n");
 #endif
@@ -51,6 +52,7 @@ LightController* LightController::getInstance() {
 }
 
 void LightController::execute(void*) {
+		sleep(1);
 	while (!isStopped()) {
 		(this->*function)();
 	}
@@ -60,7 +62,6 @@ void LightController::shutdown() {
 }
 
 void LightController::operatingNormal() {
-	hold();
 	lightsOff();
 	hal->lightGreen(true);
 }

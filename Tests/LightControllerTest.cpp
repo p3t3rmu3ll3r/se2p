@@ -30,17 +30,16 @@ void LightControllerTest::testLightController() {
 
 	LightController* lc = LightController::getInstance();
 
-	lc->start(NULL);
-	sleep(3);
+	sleep(4);
 	lc->operatingNormal();
-	sleep(5);
+	sleep(4);
 	lc->upcomingNotReceipted();
-	sleep(5);
+	sleep(4);
 	lc->upcomingReceipted();
-	sleep(5);
+	sleep(4);
 	lc->goneUnreceipted();
-	sleep(5);
+	sleep(4);
 	lc->manualTurnover();
-	sleep(5);
+	sleep(4);
 	lc->lightsOff();
 }

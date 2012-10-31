@@ -18,6 +18,7 @@
 
 #include "Tests/HALTest.h"
 #include "Tests/RS232Test.h"
+#include "LightController.h"
 #include "Tests/LightControllerTest.h"
 #include "Sensor.h"
 
@@ -25,6 +26,9 @@
 
 int main(int argc, char *argv[]) {
 
+	LightController* lc = LightController::getInstance();
+	lc->start(0);
+	lc->hold();
 	//MyObject* myObject = new MyObject();
 	//myObject->myMethod();
 	//delete myObject;
@@ -43,7 +47,7 @@ int main(int argc, char *argv[]) {
 	LightControllerTest lctest;
 	lctest.testLightController();
 
-	Sensor sensor;
+	//Sensor sensor;
 
 
 	return EXIT_SUCCESS;
