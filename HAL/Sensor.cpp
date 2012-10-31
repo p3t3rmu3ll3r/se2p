@@ -77,6 +77,28 @@ void Sensor::initInterrupt() {
 	}
 }
 
+int HAL::getHeight() {
+	int hoehe = -1;
+	int i;
+	pthread_mutex_lock(&hw_lock);
+
+	usleep(25000); //Delay for correct hole position
+	out8(AIO_BASE + A_PORT, 0x10);
+	for (i = 0; true; i++) {
+		//Bit 7 goes HIGH when an A/D conversion completes
+		if ((in8(AIO_BASE) & (1 << 7))) { // == (1<<7)
+			hoehe = in16(AIO_BASE + A_PORT);
+			cout << "HAL: Gemessene Hoehe: " << hoehe << endl;
+			pthread_mutex_unlock(&hw_lock);
+			cout << "HAL: getHeight counter" << i << endl;
+			return hoehe;
+		}
+	}
+	pthread_mutex_unlock(&hw_lock);
+	cout << "HAL: Gemessene Hoehe: " << hoehe << endl;
+	return hoehe;
+}
+
 int Sensor::getChid(){
 	return chid;
 }
