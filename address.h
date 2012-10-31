@@ -82,10 +82,13 @@
 #define DIO_INTERRUPT_ENABLE_BC		(0xF9) // ~(0000.0110) -> 1111.1001, DIO Page 18
 #define PORTB_INTERRUPT  			2	//DIO Page 18
 #define PORTC_INTERRUPT  			8	//DIO Page 18
+#define DEFAULT_ISR_VAL				0xACB
 
 
 // AIO Card
-#define AIO_BASE 0x320
-#define A_PORT 0x02
+#define AIO_BASE 	0x320
+#define AIO_OFFS_A 	0x02
+#define AIO_GET_VAL	0x10
+#define AIO_PORT_A	(AIO_BASE + AIO_OFFS_A)
 
 #endif /* ADDRESS_H_ */

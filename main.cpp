@@ -26,9 +26,6 @@
 
 int main(int argc, char *argv[]) {
 
-	LightController* lc = LightController::getInstance();
-	lc->start(0);
-	lc->hold();
 	//MyObject* myObject = new MyObject();
 	//myObject->myMethod();
 	//delete myObject;
@@ -44,11 +41,26 @@ int main(int argc, char *argv[]) {
 	//rs232Test.testRS232();
 
 	// Testing Milestone 3
-	LightControllerTest lctest;
-	lctest.testLightController();
+	//LightController* lc = LightController::getInstance();
+	//lc->start(0);
+	//lc->hold();
+	//LightControllerTest lctest;
+	//lctest.testLightController();
 
-	//Sensor sensor;
+	Sensor sensor;
+	int i = sensor.getHeight();
+	printf("Krass hoch: %d\n", i);
+	//int coid = ConnectAttach(0, 0, sensor.getChid(), _NTO_SIDE_CHANNEL, 0);
+	struct _pulse pulse;
+	int rc = MsgReceivePulse(sensor.getChid(), &pulse, sizeof(pulse), NULL);
+	if(rc < 0) {
+		printf("Error in recv pulse\n");
+	}
 
+	if(pulse.code == 5) {
+		printf("Pulse from ISR rcved\n");
+	}
+	printf("ISR status: %x\n", pulse.value.sival_int);
 
 	return EXIT_SUCCESS;
 }

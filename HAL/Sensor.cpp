@@ -6,6 +6,9 @@
  */
 
 #include "Sensor.h"
+#include <stdint.h>
+#include <iostream>
+#include <unistd.h>
 
 Sensor::Sensor() {
 	initInterrupt();
@@ -18,9 +21,11 @@ Sensor::~Sensor() {
 const struct sigevent* ISR(void *arg, int id) {
 	struct sigevent *event = (struct sigevent *) arg;
 
-	volatile int portB = 0;
-	volatile int portC = 0;
-	volatile int iir = in8(DIO_INTERRUPT_READ_CLEAR); //Status auslesen und IRQ zurück setzen
+	int portB = 0;
+	int portC = 0;
+
+
+	int iir = in8(DIO_INTERRUPT_READ_CLEAR); //Status auslesen und IRQ zurück setzen
 
 	event->sigev_value.sival_int = 0;
 	event->sigev_notify = SIGEV_PULSE;
@@ -29,7 +34,7 @@ const struct sigevent* ISR(void *arg, int id) {
 		portB = in8(PORT_B);
 		portC = in8(PORT_C) & 0xF0;
 		portC = portC << 4;
-		event->sigev_value.sival_int = portB | portC;
+		event->sigev_value.sival_int = portC | portB;
 	} else {
 		return NULL;
 	}
@@ -53,7 +58,7 @@ void Sensor::initInterrupt() {
 	}
 
 	//Initialisiere ein sigevent als Pulse
-	SIGEV_PULSE_INIT( &event, coid, SIGEV_PULSE_PRIO_INHERIT,0 , 0 );
+	SIGEV_PULSE_INIT( &event, coid, SIGEV_PULSE_PRIO_INHERIT,5 , 0 );
 
 	//Get rights
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
@@ -62,7 +67,7 @@ void Sensor::initInterrupt() {
 	}
 
 	//Init Port A, B, C, if HAl doesnt already
-	out8(PORT_CTRL, 0x82);
+	out8(PORT_CTRL, 0x8A);
 
 	//Enable IRQs for PortB and PortC
     out8(DIO_INTERRUPT_ENABLE_REG, DIO_INTERRUPT_ENABLE_BC);
@@ -77,25 +82,25 @@ void Sensor::initInterrupt() {
 	}
 }
 
-int HAL::getHeight() {
+int Sensor::getHeight() {
+	/*
+		Bohrung oben	3506,3524,3528
+		Bohrung unten	2470,2478,2480
+		zu flach	2731,2737
+		Bohrung oben oM	3492
+	*/
 	int hoehe = -1;
 	int i;
-	pthread_mutex_lock(&hw_lock);
 
-	usleep(25000); //Delay for correct hole position
-	out8(AIO_BASE + A_PORT, 0x10);
-	for (i = 0; true; i++) {
+	out8(AIO_PORT_A, AIO_GET_VAL);
+
+	for (i = 0; i < 10000; i++) {
 		//Bit 7 goes HIGH when an A/D conversion completes
 		if ((in8(AIO_BASE) & (1 << 7))) { // == (1<<7)
-			hoehe = in16(AIO_BASE + A_PORT);
-			cout << "HAL: Gemessene Hoehe: " << hoehe << endl;
-			pthread_mutex_unlock(&hw_lock);
-			cout << "HAL: getHeight counter" << i << endl;
-			return hoehe;
+			hoehe = in16(AIO_PORT_A);
+			break;
 		}
 	}
-	pthread_mutex_unlock(&hw_lock);
-	cout << "HAL: Gemessene Hoehe: " << hoehe << endl;
 	return hoehe;
 }
 

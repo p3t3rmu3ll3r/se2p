@@ -22,6 +22,7 @@ public:
 
 	int getChid();
 	int getCoid();
+	int getHeight();
 
 private:
 	int chid;
