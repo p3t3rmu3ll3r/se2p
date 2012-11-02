@@ -22,7 +22,7 @@
 
 #define DEBUG_LIGHTCONTROLLER
 
-#include "HAL.h"
+#include "ActorHAL.h"
 #include "HAWThread.h"
 
 class LightController : public thread::HAWThread {
@@ -97,7 +97,7 @@ private:
 	/**
 	 * HAL instance to get access to actors.
 	 */
-	HAL* hal;
+	ActorHAL* hal;
 
 	/**
 	 * Mutex for creation of the LightController instance

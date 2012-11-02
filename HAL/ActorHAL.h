@@ -25,16 +25,16 @@
 
 #include "address.h"
 #include "HWaccess.h"
-#include "Mutex/Mutex.h"
+#include "Mutex.h"
 
 #define DEBUG_HAL
 
-class HAL {
+class ActorHAL {
 private:
 	/**
 	 * Instance for using the hal (Singleton)
 	 */
-	static HAL* instance;
+	static ActorHAL* instance;
 
 	/**
 	 * Mutex for securing access to hal instance
@@ -49,12 +49,12 @@ private:
 	/**
 	 * Private standard constructor for the singleton pattern
 	 */
-	HAL();
+	ActorHAL();
 public:
 	/**
 	 * Standard destructor, deletes used mutexes and the HAL-instance
 	 */
-	~HAL();
+	~ActorHAL();
 
 	/**
 	 * Function returns an instance of the Hal-class. Class is
@@ -62,7 +62,7 @@ public:
 	 * the HW exists.
 	 * \return instance of the hal
 	 */
-	static HAL* getInstance();
+	static ActorHAL* getInstance();
 
 	// Port A
 

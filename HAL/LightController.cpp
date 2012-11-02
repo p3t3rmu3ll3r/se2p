@@ -23,7 +23,7 @@ LightController* LightController::instance = NULL;
 Mutex* LightController::lightInstanceMutex = new Mutex();
 
 LightController::LightController() {
-	hal = HAL::getInstance();
+	hal = ActorHAL::getInstance();
 
 	function = &LightController::lightsOff;
 	//start(0);

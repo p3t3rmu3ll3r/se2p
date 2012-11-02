@@ -30,7 +30,7 @@
 #define PORT_C		(DIO_BASE + DIO_OFFS_C)
 #define PORT_CTRL	(DIO_BASE + DIO_OFFS_CTRL)
 
-#define DIO_INIT 0x82
+#define DIO_INIT 0x8A
 
 // Individual bits
 #define BIT0	0x01
@@ -83,6 +83,10 @@
 #define PORTB_INTERRUPT  			2	//DIO Page 18
 #define PORTC_INTERRUPT  			8	//DIO Page 18
 #define DEFAULT_ISR_VAL				0xACB
+#define DIO_IRQ						11
+
+// Pulse
+#define PULSE_FROM_ISR		0
 
 
 // AIO Card

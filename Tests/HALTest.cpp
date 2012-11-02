@@ -24,7 +24,7 @@ HALTest::~HALTest() {
 
 void HALTest::testHal()
 {
-	HAL* hal = HAL::getInstance();
+	ActorHAL* hal = ActorHAL::getInstance();
 	// Lights
 	hal->lightRed(true);
 	sleep(1);

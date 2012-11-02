@@ -5,17 +5,33 @@
  *      Author: martin
  */
 
-#include "Sensor.h"
-#include <stdint.h>
-#include <iostream>
-#include <unistd.h>
+#include "SensorHAL.h"
 
-Sensor::Sensor() {
+SensorHAL* SensorHAL::instance = NULL;
+Mutex* SensorHAL::sensorInstanceMutex = new Mutex();
+
+SensorHAL::SensorHAL() {
 	initInterrupt();
 }
 
-Sensor::~Sensor() {
-	// TODO Auto-generated destructor stub
+SensorHAL::~SensorHAL() {
+	delete instance;
+	instance = NULL;
+}
+
+SensorHAL* SensorHAL::getInstance() {
+	if (!instance) {
+		sensorInstanceMutex->lock();
+		if (!instance) {
+			instance = new SensorHAL;
+#ifdef DEBUG_SENSORHAL
+			printf("Debug SensorHAL: New SensorHAL instance created\n");
+#endif
+		}
+		sensorInstanceMutex->unlock();
+	}
+
+	return instance;
 }
 
 const struct sigevent* ISR(void *arg, int id) {
@@ -46,19 +62,19 @@ const struct sigevent* ISR(void *arg, int id) {
 
 
 //TODO singleton, mutex für in/out
-void Sensor::initInterrupt() {
+void SensorHAL::initInterrupt() {
 	//Create channel for pulse notification
 	if((chid = ChannelCreate(0)) == -1){
-		printf("Error in ChannelCreate\n");
+		printf("SensorHAL: Error in ChannelCreate\n");
 	}
 
 	//Connect to channel
 	if((coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
-		printf("Error in ConnectAttach\n");
+		printf("SensorHAL: Error in ConnectAttach\n");
 	}
 
 	//Initialisiere ein sigevent als Pulse
-	SIGEV_PULSE_INIT( &event, coid, SIGEV_PULSE_PRIO_INHERIT,5 , 0 );
+	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_ISR, 0);
 
 	//Get rights
 	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
@@ -67,7 +83,7 @@ void Sensor::initInterrupt() {
 	}
 
 	//Init Port A, B, C, if HAl doesnt already
-	out8(PORT_CTRL, 0x8A);
+	out8(PORT_CTRL, DIO_INIT);
 
 	//Enable IRQs for PortB and PortC
     out8(DIO_INTERRUPT_ENABLE_REG, DIO_INTERRUPT_ENABLE_BC);
@@ -77,12 +93,12 @@ void Sensor::initInterrupt() {
 
 
 	//Registriere die Interrupt Service Routine
-	if((interruptId = InterruptAttach(11, ISR, &event, sizeof(event), 0)) == -1){
-		printf("Error in InterruptAttach\n");
+	if((interruptId = InterruptAttach(DIO_IRQ, ISR, &event, sizeof(event), 0)) == -1){
+		printf("SensorHAL: Error in InterruptAttach\n");
 	}
 }
 
-int Sensor::getHeight() {
+int SensorHAL::getHeight() {
 	/*
 		Bohrung oben	3506,3524,3528
 		Bohrung unten	2470,2478,2480
@@ -94,7 +110,7 @@ int Sensor::getHeight() {
 
 	out8(AIO_PORT_A, AIO_GET_VAL);
 
-	for (i = 0; i < 10000; i++) {
+	for (i = 0; i < 50; i++) {
 		//Bit 7 goes HIGH when an A/D conversion completes
 		if ((in8(AIO_BASE) & (1 << 7))) { // == (1<<7)
 			hoehe = in16(AIO_PORT_A);
@@ -104,11 +120,30 @@ int Sensor::getHeight() {
 	return hoehe;
 }
 
-int Sensor::getChid(){
+int SensorHAL::getChid(){
 	return chid;
 }
 
-int Sensor::getCoid(){
+int SensorHAL::getCoid(){
 	return coid;
+}
+
+void SensorHAL::stopInterrupt(){
+	if (-1 == ThreadCtl(_NTO_TCTL_IO, 0)) {
+		printf("ThreadCtl access failed\n");
+		exit(EXIT_FAILURE);
+	}
+
+	if(InterruptDetach(interruptId) == -1) {
+		printf("SensorHAL: Error InterruptDetach\n");
+	}
+
+	if(ConnectDetach(coid) == -1){
+		printf("SensorHAL: Error in ConnectDetach\n");
+	}
+
+	if(ChannelDestroy(chid) == -1){
+		printf("SensorHAL: Error in ChannelDestroy\n");
+	}
 }
 

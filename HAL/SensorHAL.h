@@ -13,24 +13,32 @@
 #include "address.h"
 #include "HWaccess.h"
 #include "sys/siginfo.h"
+#include "Mutex.h"
+#include <iostream>
 
+#define DEBUG_SENSORHAL
 
-class Sensor {
+class SensorHAL {
 public:
-	Sensor();
-	virtual ~Sensor();
+	virtual ~SensorHAL();
 
+	static SensorHAL* getInstance();
 	int getChid();
 	int getCoid();
 	int getHeight();
+	void stopInterrupt();
 
 private:
+	SensorHAL();
+	void initInterrupt();
+
 	int chid;
 	int coid;
 	int interruptId;
 	struct sigevent event;
+	static SensorHAL* instance;
+	static Mutex* sensorInstanceMutex;
 
-	void initInterrupt();
 
 };
 
