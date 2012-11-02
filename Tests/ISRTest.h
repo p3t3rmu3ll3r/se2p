@@ -21,7 +21,8 @@ public:
 	virtual void execute(void* arg);
 	virtual void shutdown();
 	//TODO stop methode ueberschreiben, stop von hawthread ausfuehren,
-	//danach stopInterrupt aus SensorHAl aufrufen
+	//danach stopInterrupt aus SensorHAl aufrufen. Wichtig fuer unseren Dispatcher
+	//der wird spaeter im MsgReceivePulse blocken
 };
 
 #endif /* ISRTEST_H_ */

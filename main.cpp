@@ -48,7 +48,10 @@ int main(int argc, char *argv[]) {
 	//lc->hold();
 	//LightControllerTest lctest;
 	//lctest.testLightController();
+	//lc->stop();
+	//lc->join();
 
+	// ISR Test
 	ISRTest isrtest;
 	isrtest.start(0);
 
@@ -63,6 +66,7 @@ int main(int argc, char *argv[]) {
 
 	isrtest.stop();
 	SensorHAL::getInstance()->stopInterrupt();
+	isrtest.join();
 
 	return EXIT_SUCCESS;
 }

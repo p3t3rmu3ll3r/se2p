@@ -39,6 +39,8 @@ void ISRTest::execute(void*) {
 
 		for (i = 0; i < 12; i++) {
 			if (((newVal >> i) & 1) != ((oldVal >> i) & 1)) {
+				//TODO fuer die einzelnen Faelle DEFINEs oder enums machen, brauchen
+				//wir eh fuer die states spaeter
 				switch (i) {
 				case 0:
 					if ((newVal >> i) & 1) {
@@ -57,7 +59,7 @@ void ISRTest::execute(void*) {
 					}
 				break;
 				case 2:
-					//TODO diesen IRQ ignorieren, wenn WS in Hoehenmessung einfach getHeight()
+					//TODO diesen IRQ ignorieren, wenn IRQ WS in Hoehenmessung einfach getHeight()
 					//generiert sonst diverse IRQs, brauchen wir nicht ...
 					if ((newVal >> i) & 1) {
 						printf("Werkstueck im Toleranzbereich: %d\n", sHal->getHeight());
@@ -70,10 +72,12 @@ void ISRTest::execute(void*) {
 						printf("Kein Werkstueck in Weiche\n");
 					} else {
 						aHal->gate(true);
-						printf("Werkstueck in Weiche, Metall: %d\n", i);
+						printf("Werkstueck in Weiche\n", i);
 					}
 				break;
 				case 4:
+					//TODO Wenn metall, dann IRQ == 1, Werkstueck weg dann IRQ == 0
+					// kommt dann ein WS ohne metall, gibts KEIN irq, aufpassen!
 					if ((newVal >> i) & 1) {
 						printf("Werkstueck Metall\n");
 					} else {
