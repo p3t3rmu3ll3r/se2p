@@ -45,10 +45,12 @@ ActorHAL::ActorHAL() {
 }
 
 ActorHAL::~ActorHAL() {
-	delete instance;
-	instance = NULL;
-	halMutex->~Mutex();
-	halInstanceMutex->~Mutex();
+	if (instance != NULL) {
+		delete instance;
+		instance = NULL;
+		halMutex->~Mutex();
+		halInstanceMutex->~Mutex();
+	}
 }
 
 ActorHAL* ActorHAL::getInstance() {

@@ -64,8 +64,9 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	//TODO testen, ob das kombinierte stop() aus ISRTest geht!
 	isrtest.stop();
-	SensorHAL::getInstance()->stopInterrupt();
+	//SensorHAL::getInstance()->stopInterrupt();
 	isrtest.join();
 
 	return EXIT_SUCCESS;

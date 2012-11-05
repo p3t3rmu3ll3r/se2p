@@ -31,9 +31,11 @@ LightController::LightController() {
 }
 
 LightController::~LightController() {
-	delete instance;
-	instance = NULL;
-	lightInstanceMutex->~Mutex();
+	if(instance != NULL){
+		delete instance;
+		instance = NULL;
+		lightInstanceMutex->~Mutex();
+	}
 }
 
 LightController* LightController::getInstance() {
@@ -52,7 +54,6 @@ LightController* LightController::getInstance() {
 }
 
 void LightController::execute(void*) {
-		sleep(1);
 	while (!isStopped()) {
 		(this->*function)();
 	}
