@@ -23,7 +23,7 @@ LightController* LightController::instance = NULL;
 Mutex* LightController::lightInstanceMutex = new Mutex();
 
 LightController::LightController() {
-	hal = HAL::getInstance();
+	hal = ActorHAL::getInstance();
 
 	function = &LightController::lightsOff;
 	//start(0);
@@ -31,9 +31,11 @@ LightController::LightController() {
 }
 
 LightController::~LightController() {
-	delete instance;
-	instance = NULL;
-	lightInstanceMutex->~Mutex();
+	if(instance != NULL){
+		delete instance;
+		instance = NULL;
+		lightInstanceMutex->~Mutex();
+	}
 }
 
 LightController* LightController::getInstance() {
@@ -52,7 +54,6 @@ LightController* LightController::getInstance() {
 }
 
 void LightController::execute(void*) {
-		sleep(1);
 	while (!isStopped()) {
 		(this->*function)();
 	}

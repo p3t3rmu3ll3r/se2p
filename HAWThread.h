@@ -50,7 +50,7 @@ class HAWThread
 	  /**
 	  * Sets the internal flag LOCAL_EXIT to true.
 	  */ 
-      void stop();
+      virtual void stop();
 	  /**
 	  * Calls join on the thread.
 	  * @warning must be called from the same context as start.

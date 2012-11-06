@@ -16,7 +16,7 @@
 #ifndef HALTEST_H_
 #define HALTEST_H_
 
-#include "HAL/HAL.h"
+#include "ActorHAL.h"
 
 class HALTest {
 public:

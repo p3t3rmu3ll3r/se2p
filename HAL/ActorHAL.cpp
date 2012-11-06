@@ -16,13 +16,13 @@
  * 
  */
 
-#include "HAL.h"
+#include "ActorHAL.h"
 
-HAL* HAL::instance = NULL;
-Mutex* HAL::halMutex = new Mutex();
-Mutex* HAL::halInstanceMutex = new Mutex();
+ActorHAL* ActorHAL::instance = NULL;
+Mutex* ActorHAL::halMutex = new Mutex();
+Mutex* ActorHAL::halInstanceMutex = new Mutex();
 
-HAL::HAL() {
+ActorHAL::ActorHAL() {
 #ifdef SIMULATION
 	std::cout << "Simulation aktiv" << std::endl;
 	std::cout << "Zum Aufbau der Verbindung muss Die Festo Simulation schon laufen." << std::endl;
@@ -37,25 +37,27 @@ HAL::HAL() {
 
 	// Initialisierung der Digitalen IO Karte
 	//out8(DIO_BASE + DIO_CONTROL_BLA, 0x8A);
-	out8(PORT_CTRL, 0x8A);
+	out8(PORT_CTRL, DIO_INIT);
 
 	//-->nicht nötig aber sicherer
 	out8(PORT_A, 0x00);
 	out8(PORT_C, 0x00);
 }
 
-HAL::~HAL() {
-	delete instance;
-	instance = NULL;
-	halMutex->~Mutex();
-	halInstanceMutex->~Mutex();
+ActorHAL::~ActorHAL() {
+	if (instance != NULL) {
+		delete instance;
+		instance = NULL;
+		halMutex->~Mutex();
+		halInstanceMutex->~Mutex();
+	}
 }
 
-HAL* HAL::getInstance() {
+ActorHAL* ActorHAL::getInstance() {
 	if (!instance) {
 		halInstanceMutex->lock();
 		if (!instance) {
-			instance = new HAL;
+			instance = new ActorHAL;
 #ifdef DEBUG_HAL
 			printf("Debug Hal: New HAL instance created\n");
 #endif
@@ -66,7 +68,7 @@ HAL* HAL::getInstance() {
 	return instance;
 }
 
-void HAL::lightRed(bool isOn) {
+void ActorHAL::lightRed(bool isOn) {
 	uint8_t val = in8(PORT_A);
 
 	halMutex->lock();
@@ -86,7 +88,7 @@ void HAL::lightRed(bool isOn) {
 	halMutex->unlock();
 }
 
-void HAL::lightYellow(bool isOn) {
+void ActorHAL::lightYellow(bool isOn) {
 	uint8_t val = in8(PORT_A);
 
 	halMutex->lock();
@@ -106,7 +108,7 @@ void HAL::lightYellow(bool isOn) {
 	halMutex->unlock();
 }
 
-void HAL::lightGreen(bool isOn) {
+void ActorHAL::lightGreen(bool isOn) {
 	uint8_t val = in8(PORT_A);
 
 	halMutex->lock();
@@ -126,7 +128,7 @@ void HAL::lightGreen(bool isOn) {
 	halMutex->unlock();
 }
 
-void HAL::lightsOff() {
+void ActorHAL::lightsOff() {
 	uint8_t val = in8(PORT_A);
 
 	halMutex->lock();
@@ -139,7 +141,7 @@ void HAL::lightsOff() {
 	halMutex->unlock();
 }
 
-void HAL::engineRight(bool isSlow) {
+void ActorHAL::engineRight(bool isSlow) {
 	uint8_t val = in8(PORT_A);
 
 	halMutex->lock();
@@ -160,7 +162,7 @@ void HAL::engineRight(bool isSlow) {
 	halMutex->unlock();
 }
 
-void HAL::engineLeft(bool isSlow) {
+void ActorHAL::engineLeft(bool isSlow) {
 	uint8_t val = in8(PORT_A);
 
 	halMutex->lock();
@@ -181,7 +183,7 @@ void HAL::engineLeft(bool isSlow) {
 	halMutex->unlock();
 }
 
-void HAL::engineStop() {
+void ActorHAL::engineStop() {
 	uint8_t val = in8(PORT_A);
 
 	halMutex->lock();
@@ -192,7 +194,7 @@ void HAL::engineStop() {
 	halMutex->unlock();
 }
 
-void HAL::engineUnstop() {
+void ActorHAL::engineUnstop() {
 	uint8_t val = in8(PORT_A);
 
 	halMutex->lock();
@@ -203,7 +205,7 @@ void HAL::engineUnstop() {
 	halMutex->unlock();
 }
 
-void HAL::gate(bool isOpen) {
+void ActorHAL::gate(bool isOpen) {
 	uint8_t val = in8(PORT_A);
 
 	halMutex->lock();
@@ -223,7 +225,7 @@ void HAL::gate(bool isOpen) {
 	halMutex->unlock();
 }
 
-void HAL::ledStart(bool isOn) {
+void ActorHAL::ledStart(bool isOn) {
 	uint8_t val = in8(PORT_C);
 
 	halMutex->lock();
@@ -243,7 +245,7 @@ void HAL::ledStart(bool isOn) {
 	halMutex->unlock();
 }
 
-void HAL::ledReset(bool isOn) {
+void ActorHAL::ledReset(bool isOn) {
 	uint8_t val = in8(PORT_C);
 
 	halMutex->lock();
@@ -263,7 +265,7 @@ void HAL::ledReset(bool isOn) {
 	halMutex->unlock();
 }
 
-void HAL::ledQ1(bool isOn) {
+void ActorHAL::ledQ1(bool isOn) {
 	uint8_t val = in8(PORT_C);
 
 	halMutex->lock();
@@ -283,7 +285,7 @@ void HAL::ledQ1(bool isOn) {
 	halMutex->unlock();
 }
 
-void HAL::ledQ2(bool isOn) {
+void ActorHAL::ledQ2(bool isOn) {
 	uint8_t val = in8(PORT_C);
 
 	halMutex->lock();
