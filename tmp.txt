@@ -1,0 +1,226 @@
+ISRtest:
+- zu kleines WS
+- WsOk
+- WsOk falschherum
+- WS metall
+
+Debug SensorHAL: New SensorHAL instance created
+Debug Hal: New HAL instance created
+ISR status: aca
+Werkstueck im Einlauf
+Debug Hal: engine right with normal speed
+Debug Hal: engine revert stop
+ISR status: acb
+Kein Werkstueck im Einlauf
+ISR status: ac9
+Werkstueck in Hoehenmessung
+Werkstueck Hoehe: 2701
+Debug Hal: engine stopped
+Debug Hal: engine revert stop
+ISR status: acb
+Kein Werkstueck in Hoehenmessung
+ISR status: ac3
+Werkstueck in Weiche
+ISR status: acb
+Kein Werkstueck in Weiche
+ISR status: a8b
+Rutsche voll
+ISR status: acb
+Rutsche nicht voll
+Debug Hal: engine stopped
+ISR status: aca
+Werkstueck im Einlauf
+Debug Hal: engine right with normal speed
+Debug Hal: engine revert stop
+ISR status: acb
+Kein Werkstueck im Einlauf
+ISR status: acf
+Werkstueck im Toleranzbereich: 3798
+ISR status: acb
+Werkstueck zu klein/gross: 2708
+ISR status: ac9
+Werkstueck in Hoehenmessung
+Werkstueck Hoehe: 3518
+Debug Hal: engine stopped
+Debug Hal: engine revert stop
+ISR status: acd
+Werkstueck im Toleranzbereich: 3825
+ISR status: ac9
+Werkstueck zu klein/gross: 2726
+ISR status: acb
+Kein Werkstueck in Hoehenmessung
+ISR status: ac3
+Werkstueck in Weiche
+Debug Hal: gate open
+ISR status: ae3
+Weiche offen
+ISR status: aeb
+Kein Werkstueck in Weiche
+ISR status: a6b
+Debug Hal: gate closed
+Debug Hal: engine stopped
+Werkstueck im Auslauf
+ISR status: a4b
+Weiche geshlossen
+ISR status: acb
+kein Werkstueck im Auslauf
+Debug Hal: all lights off
+ISR status: aca
+Werkstueck im Einlauf
+Debug Hal: engine right with normal speed
+Debug Hal: engine revert stop
+ISR status: acb
+Kein Werkstueck im Einlauf
+ISR status: acf
+Werkstueck im Toleranzbereich: 3787
+ISR status: acd
+Werkstueck in Hoehenmessung
+Werkstueck Hoehe: 2464
+Debug Hal: engine stopped
+Debug Hal: engine revert stop
+ISR status: ac9
+Werkstueck zu klein/gross: 2735
+ISR status: acb
+Kein Werkstueck in Hoehenmessung
+ISR status: ac3
+Werkstueck in Weiche
+Debug Hal: gate open
+ISR status: ae3
+Weiche offen
+ISR status: aeb
+Kein Werkstueck in Weiche
+ISR status: a6b
+Debug Hal: gate closed
+Debug Hal: engine stopped
+manualTurnover: 1
+Debug Hal: all lights off
+Werkstueck im Auslauf
+Debug Hal: yellow light on
+ISR status: a4b
+Weiche geshlossen
+Debug Hal: yellow light off
+Debug Hal: yellow light on
+ISR status: acb
+kein Werkstueck im Auslauf
+Debug Hal: all lights off
+ISR status: aca
+Werkstueck im Einlauf
+Debug Hal: engine right with normal speed
+Debug Hal: engine revert stop
+ISR status: acb
+Kein Werkstueck im Einlauf
+ISR status: acf
+Werkstueck im Toleranzbereich: 2609
+ISR status: acd
+Werkstueck in Hoehenmessung
+Werkstueck Hoehe: 2437
+Debug Hal: engine stopped
+Debug Hal: engine revert stop
+ISR status: ac9
+Werkstueck zu klein/gross: 3128
+ISR status: acd
+Werkstueck im Toleranzbereich: 3595
+ISR status: ac9
+Werkstueck zu klein/gross: 2739
+ISR status: acb
+Kein Werkstueck in Hoehenmessung
+ISR status: adb
+Werkstueck Metall
+ISR status: ad3
+Werkstueck in Weiche
+ISR status: ac3
+Werkstueck kein Metall
+ISR status: acb
+Kein Werkstueck in Weiche
+ISR status: a8b
+Rutsche voll
+ISR status: acb
+Rutsche nicht voll
+Debug Hal: engine stopped
+
+
+
+HALTest:
+Debug Hal: New HAL instance created
+Debug Hal: red light on
+Debug Hal: red light off
+Debug Hal: yellow light on
+Debug Hal: yellow light off
+Debug Hal: green light on
+Debug Hal: green light off
+Debug Hal: green light on
+Debug Hal: yellow light on
+Debug Hal: red light on
+Debug Hal: all lights off
+Debug Hal: engine right with normal speed
+Debug Hal: engine right with slow speed
+Debug Hal: engine stopped
+Debug Hal: engine revert stop
+Debug Hal: engine stopped
+Debug Hal: gate open
+Debug Hal: gate closed
+Debug Hal: start led on
+Debug Hal: reset led on
+Debug Hal: Q1 led on
+Debug Hal: Q2 led on
+Debug Hal: start led off
+Debug Hal: reset led off
+Debug Hal: Q1 led off
+Debug Hal: Q2 led off
+
+
+RS232:
+Debug RS232_1: opening devfile1 SUCCESSED
+Debug RS232_1: New RS232_1 instance created
+Debug RS232_2: opening devfile2 SUCCESSED
+Debug RS232_2: New RS232_2 instance created
+Debug RS232_1: Unknown msg recved: b
+Debug RS232_1: Timeout or EAGAIN
+Debug RS232_1: Timeout recved
+Debug RS232_1: Timeout or EAGAIN
+Debug RS232_1: Timeout recved
+Testmessage recved on devfile1: a
+Debug RS232_1: Timeout or EAGAIN
+Debug RS232_1: Timeout recved
+Debug RS232_1: Timeout or EAGAIN
+Debug RS232_1: Timeout recved
+Debug RS232_2: Unknown msg recved: b
+Debug RS232_2: Timeout or EAGAIN
+Debug RS232_2: Timeout recved
+Debug RS232_2: Timeout or EAGAIN
+Debug RS232_2: Timeout recved
+Testmessage recved on devfile2: a
+Debug RS232_2: Timeout or EAGAIN
+Debug RS232_2: Timeout recved
+Debug RS232_2: Timeout or EAGAIN
+Debug RS232_2: Timeout recved
+
+
+LightController:
+Debug Hal: New HAL instance created
+Debug Hal: all lights off
+Debug Hal: green light on
+Debug Hal: all lights off
+Debug Hal: red light on
+Debug Hal: red light off
+Debug Hal: red light on
+Debug Hal: red light off
+Debug Hal: red light on
+Debug Hal: red light off
+Debug Hal: red light on
+Debug Hal: red light off
+Debug Hal: all lights off
+Debug Hal: red light on
+Debug Hal: all lights off
+Debug Hal: red light on
+Debug Hal: red light off
+Debug Hal: red light on
+Debug Hal: red light off
+Debug Hal: all lights off
+Debug Hal: yellow light on
+Debug Hal: yellow light off
+Debug Hal: yellow light on
+Debug Hal: yellow light off
+Debug Hal: all lights off
+
+

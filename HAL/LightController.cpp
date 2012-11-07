@@ -18,104 +18,96 @@
  */
 
 #include "LightController.h"
-
-LightController* LightController::instance = NULL;
-Mutex* LightController::lightInstanceMutex = new Mutex();
-
-LightController::LightController() {
-	hal = ActorHAL::getInstance();
-
-	function = &LightController::lightsOff;
-	//start(0);
-	//hold();
-}
-
-LightController::~LightController() {
-	if(instance != NULL){
-		delete instance;
-		instance = NULL;
-		lightInstanceMutex->~Mutex();
+LightController *LightController::instance = 0;
+LightController *LightController::getInstance() {
+	if (instance == 0) {
+		instance = new LightController();
 	}
-}
-
-LightController* LightController::getInstance() {
-	if (!instance) {
-		lightInstanceMutex->lock();
-		if (!instance) {
-			instance = new LightController();
-#ifdef DEBUG_LIGHTCONTROLLER
-			printf("Debug LightController: New LC instance created\n");
-#endif
-		}
-		lightInstanceMutex->unlock();
-	}
-
 	return instance;
 }
-
+LightController::LightController() {
+	aHal = ActorHAL::getInstance();
+	function = &LightController::off;
+	start(0);
+	hold();
+}
+LightController::~LightController() {
+}
 void LightController::execute(void*) {
 	while (!isStopped()) {
 		(this->*function)();
 	}
 }
-
 void LightController::shutdown() {
 }
-
+void LightController::changeState(State state) {
+	switch (state) {
+	case MANUAL_TURNOVER:
+		function = &LightController::blinkYellow;
+		break;
+	case UPCOMING_NOT_RECEIPTED:
+		function = &LightController::blinkRedSlow;
+		break;
+	case GONE_UNRECEIPTED:
+		function = &LightController::blinkRedFast;
+		break;
+	default:
+		stop();
+	}
+}
+void LightController::stopBlinker() {
+	hold();
+}
 void LightController::operatingNormal() {
-	lightsOff();
-	hal->lightGreen(true);
+	stopBlinker();
+	aHal->lightsOff();
+	aHal->lightGreen(true);
 }
-
 void LightController::manualTurnover() {
-	hold();
-	lightsOff();
-	function = &LightController::blinkYellow;
+	stopBlinker();
+	aHal->lightsOff();
+	changeState(MANUAL_TURNOVER);
 	cont();
 }
-
 void LightController::upcomingNotReceipted() {
-	hold();
-	lightsOff();
-	function = &LightController::blinkRedSlow;
+	stopBlinker();
+	aHal->lightsOff();
+	changeState(UPCOMING_NOT_RECEIPTED);
 	cont();
 }
-
-void LightController::upcomingReceipted() {
-	hold();
-	lightsOff();
-	hal->lightRed(true);
+void LightController::upcomingReceipted(){
+	stopBlinker();
+	aHal->lightsOff();
+	aHal->lightRed(true);
 }
-
-void LightController::goneUnreceipted() {
-	hold();
-	lightsOff();
-	function = &LightController::blinkRedFast;
+void LightController::goneUnreceipted(){
+	stopBlinker();
+	aHal->lightsOff();
+	changeState(GONE_UNRECEIPTED);
 	cont();
 }
-
-void LightController::blinkYellow() {
-	hal->lightYellow(true);
-	sleep(1);
-	hal->lightYellow(false);
-	sleep(1);
-}
-
-void LightController::blinkRedFast() {
-	hal->lightRed(true);
-	sleep(1);
-	hal->lightRed(false);
-	sleep(1);
-}
-
-void LightController::blinkRedSlow() {
-	hal->lightRed(true);
-	usleep(500000);
-	hal->lightRed(false);
-	usleep(500000);
-}
-
 void LightController::lightsOff() {
-	hal->lightsOff();
+	aHal->lightsOff();
+	off();
+}
+void LightController::off() {
 	hold();
+}
+void LightController::blinkYellow() {
+	aHal->lightYellow(true);
+	sleep(1);
+	aHal->lightYellow(false);
+	sleep(1);
+}
+void LightController::blinkRedFast() {
+	aHal->lightRed(true);
+	sleep(1);
+	aHal->lightRed(false);
+	sleep(1);
+}
+void LightController::blinkRedSlow() {
+	aHal->lightRed(true);
+	usleep(500000);
+	aHal->lightRed(false);
+	usleep(500000);
 }

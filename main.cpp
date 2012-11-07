@@ -43,14 +43,13 @@ int main(int argc, char *argv[]) {
 	//rs232Test.testRS232();
 
 	// Testing Milestone 3
-	//LightController* lc = LightController::getInstance();
-	//lc->start(0);
-	//lc->hold();
-	//LightControllerTest lctest;
-	//lctest.testLightController();
+	LightControllerTest lctest;
+	lctest.testLightController();
+
 	//lc->stop();
 	//lc->join();
 
+	/*
 	// ISR Test
 	ISRTest isrtest;
 	isrtest.start(0);
@@ -68,6 +67,6 @@ int main(int argc, char *argv[]) {
 	isrtest.stop();
 	//SensorHAL::getInstance()->stopInterrupt();
 	isrtest.join();
-
+	*/
 	return EXIT_SUCCESS;
 }

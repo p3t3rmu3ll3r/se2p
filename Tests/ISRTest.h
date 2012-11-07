@@ -20,6 +20,7 @@
 #include "address.h"
 #include "SensorHAL.h"
 #include "ActorHAL.h"
+#include "LightController.h"
 
 class ISRTest: public thread::HAWThread {
 public:

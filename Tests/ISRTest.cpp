@@ -26,10 +26,16 @@ ISRTest::~ISRTest() {
 
 void ISRTest::execute(void*) {
 
+	// TODO Feld
+	LightController* lc = LightController::getInstance();
+
 	struct _pulse pulse;
 	int oldVal = DEFAULT_ISR_VAL;
 	int newVal = 0;
 	int rc;
+	bool manualTurnover = false;
+	bool hasMetal = false;
+	bool wsOk =  false;
 
 	while (!isStopped()) {
 		rc = MsgReceivePulse(sHal->getChid(), &pulse, sizeof(pulse), NULL);
@@ -67,6 +73,18 @@ void ISRTest::execute(void*) {
 						printf("Kein Werkstueck in Hoehenmessung\n");
 					} else {
 						printf("Werkstueck in Hoehenmessung\n");
+						printf("Werkstueck Hoehe: %d\n", sHal->getHeight());
+						aHal->engineStop();
+						if((sHal->getHeight() < 2900) && (sHal->getHeight() > 2600)){
+							aHal->engineUnstop();
+						} else if((sHal->getHeight() < 2600)){
+							manualTurnover = true;
+							wsOk = true;
+							aHal->engineUnstop();
+						} else {
+							aHal->engineUnstop();
+							wsOk = true;
+						}
 					}
 				break;
 				case 2:
@@ -82,8 +100,11 @@ void ISRTest::execute(void*) {
 					if (hasChanged) {
 						printf("Kein Werkstueck in Weiche\n");
 					} else {
-						aHal->gate(true);
+						//aHal->gate(true);
 						printf("Werkstueck in Weiche\n", i);
+						if(!hasMetal && wsOk){
+							aHal->gate(true);
+						}
 					}
 				break;
 				case 4:
@@ -94,6 +115,7 @@ void ISRTest::execute(void*) {
 					//irq ignorieren. Alternative, messen wie bei der hoehe.
 					if (hasChanged) {
 						printf("Werkstueck Metall\n");
+						hasMetal = true;
 					} else {
 						printf("Werkstueck kein Metall\n");
 					}
@@ -108,6 +130,7 @@ void ISRTest::execute(void*) {
 				case 6:
 					if (hasChanged) {
 						printf("Rutsche nicht voll\n");
+						aHal->engineStop();
 					} else {
 						printf("Rutsche voll\n");
 					}
@@ -115,9 +138,17 @@ void ISRTest::execute(void*) {
 				case 7:
 					if (hasChanged) {
 						printf("kein Werkstueck im Auslauf\n");
+						lc->lightsOff();
+						manualTurnover = false;
+						hasMetal = false;
+						wsOk = false;
 					} else {
 						aHal->gate(false);
 						aHal->engineStop();
+						if(manualTurnover){
+							printf("manualTurnover: %i\n", manualTurnover);
+							lc->manualTurnover();
+						}
 						printf("Werkstueck im Auslauf\n");
 					}
 				break;
