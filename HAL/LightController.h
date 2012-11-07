@@ -6,12 +6,6 @@
 #include "HAWThread.h"
 #include "ActorHAL.h"
 
-enum State {
-	MANUAL_TURNOVER,
-	UPCOMING_NOT_RECEIPTED,
-	GONE_UNRECEIPTED
-};
-
 class LightController: public thread::HAWThread {
 public:
 	static LightController* getInstance();
@@ -26,8 +20,6 @@ public:
 	void goneUnreceipted();
 	void lightsOff();
 private:
-	void stopBlinker();
-	void changeState(State state);
 	void off();
 	LightController();
 	static LightController *instance;
