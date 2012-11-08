@@ -6,137 +6,129 @@ ISRtest:
 
 Debug SensorHAL: New SensorHAL instance created
 Debug Hal: New HAL instance created
-ISR status: aca
+Debug LightController: New LC instance created
 Werkstueck im Einlauf
 Debug Hal: engine right with normal speed
 Debug Hal: engine revert stop
-ISR status: acb
 Kein Werkstueck im Einlauf
-ISR status: ac9
 Werkstueck in Hoehenmessung
-Werkstueck Hoehe: 2701
+Werkstueck Hoehe: 2712
 Debug Hal: engine stopped
 Debug Hal: engine revert stop
-ISR status: acb
 Kein Werkstueck in Hoehenmessung
-ISR status: ac3
 Werkstueck in Weiche
-ISR status: acb
 Kein Werkstueck in Weiche
-ISR status: a8b
 Rutsche voll
-ISR status: acb
 Rutsche nicht voll
 Debug Hal: engine stopped
-ISR status: aca
 Werkstueck im Einlauf
 Debug Hal: engine right with normal speed
 Debug Hal: engine revert stop
-ISR status: acb
 Kein Werkstueck im Einlauf
-ISR status: acf
-Werkstueck im Toleranzbereich: 3798
-ISR status: acb
-Werkstueck zu klein/gross: 2708
-ISR status: ac9
+Werkstueck im Toleranzbereich: 4040
+Werkstueck zu klein/gross: 2525
 Werkstueck in Hoehenmessung
-Werkstueck Hoehe: 3518
+Werkstueck Hoehe: 3526
 Debug Hal: engine stopped
 Debug Hal: engine revert stop
-ISR status: acd
-Werkstueck im Toleranzbereich: 3825
-ISR status: ac9
-Werkstueck zu klein/gross: 2726
-ISR status: acb
+Werkstueck im Toleranzbereich: 4025
+Werkstueck zu klein/gross: 2548
 Kein Werkstueck in Hoehenmessung
-ISR status: ac3
 Werkstueck in Weiche
 Debug Hal: gate open
-ISR status: ae3
 Weiche offen
-ISR status: aeb
 Kein Werkstueck in Weiche
-ISR status: a6b
+Werkstueck im Auslauf
 Debug Hal: gate closed
 Debug Hal: engine stopped
-Werkstueck im Auslauf
-ISR status: a4b
 Weiche geshlossen
-ISR status: acb
 kein Werkstueck im Auslauf
 Debug Hal: all lights off
-ISR status: aca
 Werkstueck im Einlauf
 Debug Hal: engine right with normal speed
 Debug Hal: engine revert stop
-ISR status: acb
 Kein Werkstueck im Einlauf
-ISR status: acf
-Werkstueck im Toleranzbereich: 3787
-ISR status: acd
+Werkstueck im Toleranzbereich: 4023
 Werkstueck in Hoehenmessung
-Werkstueck Hoehe: 2464
+Werkstueck Hoehe: 2471
 Debug Hal: engine stopped
 Debug Hal: engine revert stop
-ISR status: ac9
-Werkstueck zu klein/gross: 2735
-ISR status: acb
+Werkstueck zu klein/gross: 2551
 Kein Werkstueck in Hoehenmessung
-ISR status: ac3
 Werkstueck in Weiche
 Debug Hal: gate open
-ISR status: ae3
 Weiche offen
-ISR status: aeb
 Kein Werkstueck in Weiche
-ISR status: a6b
+Werkstueck im Auslauf
 Debug Hal: gate closed
 Debug Hal: engine stopped
 manualTurnover: 1
 Debug Hal: all lights off
-Werkstueck im Auslauf
 Debug Hal: yellow light on
-ISR status: a4b
 Weiche geshlossen
 Debug Hal: yellow light off
 Debug Hal: yellow light on
-ISR status: acb
 kein Werkstueck im Auslauf
 Debug Hal: all lights off
-ISR status: aca
 Werkstueck im Einlauf
 Debug Hal: engine right with normal speed
 Debug Hal: engine revert stop
-ISR status: acb
 Kein Werkstueck im Einlauf
-ISR status: acf
-Werkstueck im Toleranzbereich: 2609
-ISR status: acd
+Werkstueck im Toleranzbereich: 2663
+Werkstueck zu klein/gross: 2510
 Werkstueck in Hoehenmessung
-Werkstueck Hoehe: 2437
+Werkstueck Hoehe: 3465
 Debug Hal: engine stopped
 Debug Hal: engine revert stop
-ISR status: ac9
-Werkstueck zu klein/gross: 3128
-ISR status: acd
-Werkstueck im Toleranzbereich: 3595
-ISR status: ac9
-Werkstueck zu klein/gross: 2739
-ISR status: acb
+Werkstueck im Toleranzbereich: 3800
+Werkstueck zu klein/gross: 2553
 Kein Werkstueck in Hoehenmessung
-ISR status: adb
 Werkstueck Metall
-ISR status: ad3
 Werkstueck in Weiche
-ISR status: ac3
 Werkstueck kein Metall
-ISR status: acb
 Kein Werkstueck in Weiche
-ISR status: a8b
 Rutsche voll
-ISR status: acb
 Rutsche nicht voll
 Debug Hal: engine stopped
+
+Debug SensorHAL: New SensorHAL instance created
+Debug Hal: New HAL instance created
+Debug LightController: New LC instance created
+Resettaste gedrueckt
+Resettaste losgelassen
+Stoptaste gedrueckt
+Stoptaste losgelassen
+E-Stoptaste gedrueckt
+System angehalten mittels EStop
+Debug Hal: red light on
+Starttste gedrueck
+Starttste losgelassen
+Starttste gedrueck
+Starttste losgelassen
+E-Stoptaste geloest
+E-Stoptaste gedrueckt
+System angehalten mittels EStop
+Debug Hal: red light on
+E-Stoptaste geloest
+E-Stoptaste gedrueckt
+System angehalten mittels EStop
+Debug Hal: red light on
+E-Stoptaste geloest
+E-Stoptaste gedrueckt
+System angehalten mittels EStop
+Debug Hal: red light on
+E-Stoptaste geloest
+E-Stoptaste gedrueckt
+System angehalten mittels EStop
+Debug Hal: red light on
+E-Stoptaste geloest
+Starttste gedrueck
+System rennt weiter, EStop geloest udn start
+Debug Hal: red light off
+Debug Hal: green light on
+Starttste losgelassen
+
+
 
 
 

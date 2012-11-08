@@ -9,32 +9,48 @@
  *
  * \file LightController.cpp
  * \author Chris Addo
- *         Jens Eberwein
- *         Tristan Rudat
- *         Martin Slowikowski
+ * Jens Eberwein
+ * Tristan Rudat
+ * Martin Slowikowski
  * \date 2012-10-29
  * \version 0.4
  *
  */
 
 #include "LightController.h"
-LightController *LightController::instance = 0;
 
-LightController *LightController::getInstance() {
-	if (instance == 0) {
-		instance = new LightController();
-	}
-	return instance;
-}
+LightController* LightController::instance = NULL;
+Mutex* LightController::lightInstanceMutex = new Mutex();
 
 LightController::LightController() {
 	aHal = ActorHAL::getInstance();
+
 	function = &LightController::off;
 	start(0);
 	hold();
 }
 
 LightController::~LightController() {
+	if (instance != NULL) {
+		delete instance;
+		instance = NULL;
+		lightInstanceMutex->~Mutex();
+	}
+}
+
+LightController* LightController::getInstance() {
+	if (!instance) {
+		lightInstanceMutex->lock();
+		if (!instance) {
+			instance = new LightController();
+#ifdef DEBUG_LIGHTCONTROLLER
+			printf("Debug LightController: New LC instance created\n");
+#endif
+		}
+		lightInstanceMutex->unlock();
+	}
+
+	return instance;
 }
 
 void LightController::execute(void*) {
@@ -53,34 +69,25 @@ void LightController::operatingNormal() {
 
 void LightController::manualTurnover() {
 	lightsOff();
-	changeState(MANUAL_TURNOVER);
+	function = &LightController::blinkYellow;
 	cont();
 }
 
 void LightController::upcomingNotReceipted() {
 	lightsOff();
-	changeState(UPCOMING_NOT_RECEIPTED);
+	function = &LightController::blinkRedSlow;
 	cont();
 }
 
-void LightController::upcomingReceipted(){
+void LightController::upcomingReceipted() {
 	lightsOff();
 	aHal->lightRed(true);
 }
 
-void LightController::goneUnreceipted(){
+void LightController::goneUnreceipted() {
 	lightsOff();
-	changeState(GONE_UNRECEIPTED);
+	function = &LightController::blinkRedFast;
 	cont();
-}
-
-void LightController::lightsOff() {
-	aHal->lightsOff();
-	off();
-}
-
-void LightController::off() {
-	hold();
 }
 
 void LightController::blinkYellow() {
@@ -102,4 +109,13 @@ void LightController::blinkRedSlow() {
 	usleep(500000);
 	aHal->lightRed(false);
 	usleep(500000);
+}
+
+void LightController::lightsOff() {
+	aHal->lightsOff();
+	off();
+}
+
+void LightController::off() {
+	hold();
 }

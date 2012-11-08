@@ -13,12 +13,12 @@
  *
  */
 
-
 #include "ISRTest.h"
 
 ISRTest::ISRTest() {
 	sHal = SensorHAL::getInstance();
 	aHal = ActorHAL::getInstance();
+	lc = LightController::getInstance();
 }
 
 ISRTest::~ISRTest() {
@@ -26,16 +26,15 @@ ISRTest::~ISRTest() {
 
 void ISRTest::execute(void*) {
 
-	// TODO Feld
-	LightController* lc = LightController::getInstance();
-
 	struct _pulse pulse;
 	int oldVal = DEFAULT_ISR_VAL;
 	int newVal = 0;
 	int rc;
 	bool manualTurnover = false;
 	bool hasMetal = false;
-	bool wsOk =  false;
+	bool wsOk = false;
+	bool eStopBtn = false;
+	bool running = true;
 
 	while (!isStopped()) {
 		rc = MsgReceivePulse(sHal->getChid(), &pulse, sizeof(pulse), NULL);
@@ -46,11 +45,11 @@ void ISRTest::execute(void*) {
 			}
 		}
 
-		printf("ISR status: %x\n", pulse.value.sival_int);
+		//printf("ISR status: %x\n", pulse.value.sival_int);
 
 		newVal = pulse.value.sival_int;
 		int i;
-		//TODO has changed testen
+
 		bool hasChanged;
 
 		for (i = 0; i < 12; i++) {
@@ -67,7 +66,7 @@ void ISRTest::execute(void*) {
 						aHal->engineRight(false);
 						aHal->engineUnstop();
 					}
-				break;
+					break;
 				case 1:
 					if (hasChanged) {
 						printf("Kein Werkstueck in Hoehenmessung\n");
@@ -75,9 +74,10 @@ void ISRTest::execute(void*) {
 						printf("Werkstueck in Hoehenmessung\n");
 						printf("Werkstueck Hoehe: %d\n", sHal->getHeight());
 						aHal->engineStop();
-						if((sHal->getHeight() < 2900) && (sHal->getHeight() > 2600)){
+						if ((sHal->getHeight() < 2900) && (sHal->getHeight()
+								> 2600)) {
 							aHal->engineUnstop();
-						} else if((sHal->getHeight() < 2600)){
+						} else if ((sHal->getHeight() < 2600)) {
 							manualTurnover = true;
 							wsOk = true;
 							aHal->engineUnstop();
@@ -86,27 +86,28 @@ void ISRTest::execute(void*) {
 							wsOk = true;
 						}
 					}
-				break;
+					break;
 				case 2:
 					//TODO diesen IRQ ignorieren, wenn IRQ WS in Hoehenmessung einfach getHeight()
 					//generiert sonst diverse IRQs, brauchen wir nicht ...
 					if (hasChanged) {
-						printf("Werkstueck im Toleranzbereich: %d\n", sHal->getHeight());
+						printf("Werkstueck im Toleranzbereich: %d\n",
+								sHal->getHeight());
 					} else {
-						printf("Werkstueck zu klein/gross: %d\n", sHal->getHeight());
+						printf("Werkstueck zu klein/gross: %d\n",
+								sHal->getHeight());
 					}
-				break;
+					break;
 				case 3:
 					if (hasChanged) {
 						printf("Kein Werkstueck in Weiche\n");
 					} else {
-						//aHal->gate(true);
 						printf("Werkstueck in Weiche\n", i);
-						if(!hasMetal && wsOk){
+						if (!hasMetal && wsOk) {
 							aHal->gate(true);
 						}
 					}
-				break;
+					break;
 				case 4:
 					//TODO Wenn metall, dann IRQ == 1, Werkstueck weg dann IRQ == 0
 					// kommt dann ein WS ohne metall, gibts KEIN irq, aufpassen!
@@ -119,14 +120,14 @@ void ISRTest::execute(void*) {
 					} else {
 						printf("Werkstueck kein Metall\n");
 					}
-				break;
+					break;
 				case 5:
 					if (hasChanged) {
 						printf("Weiche offen\n");
 					} else {
 						printf("Weiche geshlossen\n");
 					}
-				break;
+					break;
 				case 6:
 					if (hasChanged) {
 						printf("Rutsche nicht voll\n");
@@ -134,7 +135,7 @@ void ISRTest::execute(void*) {
 					} else {
 						printf("Rutsche voll\n");
 					}
-				break;
+					break;
 				case 7:
 					if (hasChanged) {
 						printf("kein Werkstueck im Auslauf\n");
@@ -143,36 +144,42 @@ void ISRTest::execute(void*) {
 						hasMetal = false;
 						wsOk = false;
 					} else {
+						printf("Werkstueck im Auslauf\n");
 						aHal->gate(false);
 						aHal->engineStop();
-						if(manualTurnover){
+						if (manualTurnover) {
 							printf("manualTurnover: %i\n", manualTurnover);
 							lc->manualTurnover();
 						}
-						printf("Werkstueck im Auslauf\n");
 					}
-				break;
+					break;
 				case 8:
 					if (hasChanged) {
 						printf("Starttste gedrueck\n");
+						if(!eStopBtn){
+							running = true;
+							printf("System rennt weiter, EStop geloest udn start\n");
+							aHal->lightRed(false);
+							aHal->lightGreen(true);
+						}
 					} else {
 						printf("Starttste losgelassen\n");
 					}
-				break;
+					break;
 				case 9:
 					if (hasChanged) {
 						printf("Stoptaste losgelassen\n");
 					} else {
 						printf("Stoptaste gedrueckt\n");
 					}
-				break;
+					break;
 				case 10:
 					if (hasChanged) {
 						printf("Resettaste gedrueckt\n");
 					} else {
 						printf("Resettaste losgelassen\n");
 					}
-				break;
+					break;
 				case 11:
 					//TODO schalter prellt beim rausziehen ... loest zig mal IRQs aus, entprellen
 					//z.B.wenn not aus ISR ausgeloest, not aus ignorieren, beim ersten mal einfach
@@ -180,10 +187,15 @@ void ISRTest::execute(void*) {
 					//start prueft dann, ob not aus freigegeben ist und startet erst DANN wieder.
 					if (hasChanged) {
 						printf("E-Stoptaste geloest\n");
+						eStopBtn = false;
 					} else {
 						printf("E-Stoptaste gedrueckt\n");
+						eStopBtn = true;
+						running = false;
+						printf("System angehalten mittels EStop\n");
+						aHal->lightRed(true);
 					}
-				break;
+					break;
 				default:
 					printf("ISRTest switch def value\n");
 				}
@@ -192,7 +204,7 @@ void ISRTest::execute(void*) {
 		oldVal = newVal;
 	}
 }
-void ISRTest::stop(){
+void ISRTest::stop() {
 	HAWThread::stop();
 	sHal->stopInterrupt();
 }

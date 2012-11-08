@@ -66,6 +66,7 @@ private:
 	 * Sensor hal instance to work with
 	 */
 	SensorHAL* sHal;
+	LightController* lc;
 };
 
 #endif /* ISRTEST_H_ */

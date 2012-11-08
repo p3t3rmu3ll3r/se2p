@@ -42,4 +42,7 @@ void LightControllerTest::testLightController() {
 	lc->manualTurnover();
 	sleep(4);
 	lc->lightsOff();
+	lc->stop();
+	lc->cont();
+	lc->join();
 }
