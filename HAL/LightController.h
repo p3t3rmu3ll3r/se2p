@@ -85,6 +85,7 @@ void manualTurnover();
 * Switches all lights of and suspends the thread.
 */
 void lightsOff();
+void off();
 
 
 private:
