@@ -63,6 +63,9 @@ void ISRTest::execute(void*) {
 						printf("Kein Werkstueck im Einlauf\n");
 					} else {
 						printf("Werkstueck im Einlauf\n");
+						manualTurnover = false;
+						hasMetal = false;
+						wsOk = false;
 						aHal->engineRight(false);
 						aHal->engineUnstop();
 					}
