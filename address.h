@@ -86,8 +86,8 @@
 #define DIO_IRQ						11
 
 // Pulse
-#define PULSE_FROM_ISR		0
-
+#define PULSE_FROM_ISR			0
+#define PULSE_FROM_ISRHANDLER	1
 
 // AIO Card
 #define AIO_BASE 	0x320
