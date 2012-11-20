@@ -51,6 +51,10 @@ void Dispatcher::execute(void*) {
 	struct _pulse pulse;
 
 	while(!isStopped()){
+		//TODO wenn man auf einem channel mit 2 threads lauscht und thread1 bekommt den pulse zuerst, erhält thread2 ihn trotzdem oder nur einer von beiden?
+		//TODO beide automaten mit gleichen funktionen auf das callinterface?!
+		//TODO sollen die knoepfe schon ins ms4 funzen?
+		//TODO soll die COM schon mit band2 funzen und auf beiden gefahren werden?
 		rc = MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
 		if (rc < 0) {
 			printf("Dispatcher: Error in recv pulse\n");
