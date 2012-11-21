@@ -24,6 +24,9 @@
 #include "SensorHAL.h"
 #include "ISRTest.h"
 
+#include "ISRHandler.h"
+#include "Dispatcher.h"
+
 
 
 int main(int argc, char *argv[]) {
@@ -46,8 +49,12 @@ int main(int argc, char *argv[]) {
 	//LightControllerTest lctest;
 	//lctest.testLightController();
 
-	ISRTest isrtest;
-	isrtest.start(0);
+	//ISRTest isrtest;
+	//isrtest.start(0);
+
+	Dispatcher::getInstance()->start(0);
+	ISRHandler::getInstance()->start(0);
+
 
 	char breakWhile = 0;
 	while(1){
@@ -59,9 +66,9 @@ int main(int argc, char *argv[]) {
 	}
 
 	//TODO testen, ob das kombinierte stop() aus ISRTest geht!
-	isrtest.stop();
+	//isrtest.stop();
 	//SensorHAL::getInstance()->stopInterrupt();
-	isrtest.join();
+	//isrtest.join();
 
 	return EXIT_SUCCESS;
 }

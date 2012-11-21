@@ -81,19 +81,27 @@ void ISRHandler::execute(void*) {
 				switch (i) {
 				case 0:
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("Kein Werkstueck im Einlauf\n");
+#endif
 						action = SB_START_CLOSED;
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("Werkstueck im Einlauf\n");
+#endif
 						action = SB_START_OPEN;
 					}
 					break;
 				case 1:
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("Kein Werkstueck in Hoehenmessung\n");
+#endif
 						action = SB_HEIGHTCONTROL_OPEN;
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("Werkstueck in Hoehenmessung\n");
+#endif
 						action = SB_HEIGHTCONTROL_CLOSED;
 					}
 					break;
@@ -101,17 +109,25 @@ void ISRHandler::execute(void*) {
 					//TODO diesen IRQ ignorieren, wenn IRQ WS in Hoehenmessung einfach getHeight()
 					//generiert sonst diverse IRQs, brauchen wir nicht ...
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("no pulse! Werkstueck im Toleranzbereich\n");
+#endif
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("no pulse! Werkstueck zu klein/gross\n");
+#endif
 					}
 					break;
 				case 3:
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("Kein Werkstueck in Weiche\n");
+#endif
 						action = SB_GATE_CLOSED;
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("Werkstueck in Weiche\n", i);
+#endif
 						action = SB_GATE_OPEN;
 					}
 					break;
@@ -123,62 +139,90 @@ void ISRHandler::execute(void*) {
 					//irq ignorieren. Alternative, messen wie bei der hoehe.
 					//TODO Metalsensor pollen, statt irq auswerten
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("Werkstueck Metall\n");
+#endif
 						action = MS_METAL_TRUE;
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("no pulse! Werkstueck kein Metall\n");
+#endif
 					}
 					break;
 				case 5:
 					//TODO eigentlich auch not needed
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("no pulse! Weiche offen\n");
+#endif
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("no pulse! Weiche geshlossen\n");
+#endif
 					}
 					break;
 				case 6:
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("Rutsche nicht voll\n");
+#endif
 						action = SB_SLIDE_CLOSED;
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("Rutsche voll\n");
+#endif
 						action = SB_SLIDE_OPEN;
 					}
 					break;
 				case 7:
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("kein Werkstueck im Auslauf\n");
+#endif
 						action = SB_END_CLOSED;
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("Werkstueck im Auslauf\n");
+#endif
 						action = SB_END_OPEN;
 					}
 					break;
 				case 8:
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("Starttste gedrueck\n");
+#endif
 						action = BTN_START_PRESSED;
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("Starttste losgelassen\n");
+#endif
 						action = BTN_START_RELEASED;
 					}
 					break;
 				case 9:
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("Stoptaste losgelassen\n");
+#endif
 						action = BTN_STOP_RELEASED;
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("Stoptaste gedrueckt\n");
+#endif
 						action = BTN_STOP_PRESSED;
 					}
 					break;
 				case 10:
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("Resettaste gedrueckt\n");
+#endif
 						action = BTN_RESET_PRESSED;
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("Resettaste losgelassen\n");
+#endif
 						action = BTN_RESET_RELEASED;
 					}
 					break;
@@ -188,10 +232,14 @@ void ISRHandler::execute(void*) {
 					//n bool setzen, den erst wieder ruecksetzen, wenn start gedrueckt wird.
 					//start prueft dann, ob not aus freigegeben ist und startet erst DANN wieder.
 					if (newVal) {
+#ifdef DEBUG_ISRHandler
 						printf("E-Stoptaste geloest\n");
+#endif
 						action = BTN_ESTOP_RELEASED;
 					} else {
+#ifdef DEBUG_ISRHandler
 						printf("E-Stoptaste gedrueckt\n");
+#endif
 						action = BTN_ESTOP_PRESSED;
 					}
 					break;

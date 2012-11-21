@@ -10,6 +10,17 @@
 Dispatcher* Dispatcher::instance = NULL;
 Mutex* Dispatcher::dispatcherInstanceMutex = new Mutex();
 
+
+
+typedef void (CallInterface::*callFuncs)();
+
+callFuncs* funcArr;
+
+
+
+
+
+
 Dispatcher::Dispatcher() {
 	//Create channel for pulse notification
 	if ((chid = ChannelCreate(0)) == -1) {
@@ -20,10 +31,35 @@ Dispatcher::Dispatcher() {
 	if ((coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
 		printf("Dispatcher: Error in ConnectAttach\n");
 	}
+
+	funcArr = new callFuncs[30];
+	int i = 0;
+
+	funcArr[i++] = &CallInterface::sbStartOpen;
+	funcArr[i++] = &CallInterface::sbStartClosed;
+	funcArr[i++] = &CallInterface::sbHeightcontrolOpen;
+	funcArr[i++] = &CallInterface::sbHeightcontrolClosed;
+	funcArr[i++] = &CallInterface::sbGateOpen;
+	funcArr[i++] = &CallInterface::sbGateClosed;
+	funcArr[i++] = &CallInterface::msMetalTrue;
+	funcArr[i++] = &CallInterface::sbSlideOpen;
+	funcArr[i++] = &CallInterface::sbSlideClosed;
+	funcArr[i++] = &CallInterface::sbEndOpen;
+	funcArr[i++] = &CallInterface::sbEndClosed;
+	funcArr[i++] = &CallInterface::btnStartPressed;
+	funcArr[i++] = &CallInterface::btnStartReleased;
+	funcArr[i++] = &CallInterface::btnStopPressed;
+	funcArr[i++] = &CallInterface::btnStopReleased;
+	funcArr[i++] = &CallInterface::btnResetPressed;
+	funcArr[i++] = &CallInterface::btnResetReleased;
+	funcArr[i++] = &CallInterface::btnEstopPressed;
+	funcArr[i++] = &CallInterface::btnEstopReleased;
+
 }
 
 Dispatcher::~Dispatcher() {
 	if (instance != NULL) {
+		delete[] funcArr;
 		delete instance;
 		instance = NULL;
 		dispatcherInstanceMutex->~Mutex();
@@ -67,6 +103,8 @@ void Dispatcher::execute(void*) {
 		if(pulse.code == PULSE_FROM_ISRHANDLER){
 			//werte pulseval aus
 			//TODO forward all regged puks the msg (set *fp actually)
+
+			printf("Dispatcher recvieved pulse: %d\n",pulse.value);
 		}
 	}
 }

@@ -13,6 +13,7 @@
 #include "messages.h"
 #include "address.h"
 #include "Mutex.h"
+#include "CallInterface.h"
 
 #define DEBUG_DISPATCHER
 
