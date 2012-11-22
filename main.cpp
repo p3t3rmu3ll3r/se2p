@@ -52,7 +52,8 @@ int main(int argc, char *argv[]) {
 	//ISRTest isrtest;
 	//isrtest.start(0);
 
-	Dispatcher::getInstance()->start(0);
+	Dispatcher* disp = Dispatcher::getInstance();
+	disp->start(0);
 	ISRHandler::getInstance()->start(0);
 
 

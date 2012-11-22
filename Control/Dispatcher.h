@@ -14,8 +14,13 @@
 #include "address.h"
 #include "Mutex.h"
 #include "CallInterface.h"
+#include <vector>
+#include <stdint.h>
+
 
 #define DEBUG_DISPATCHER
+
+typedef void (CallInterface::*callFuncs)();
 
 class Dispatcher: public thread::HAWThread {
 public:
@@ -27,6 +32,9 @@ public:
 	void stop();
 	virtual ~Dispatcher();
 
+	void registerContextForFunc(int funcIdx, CallInterface* context);
+	void registerContextForAllFuncs(CallInterface* context);
+
 private:
 	Dispatcher();
 
@@ -34,6 +42,9 @@ private:
 	static Mutex* dispatcherInstanceMutex;
 	int chid;
 	int coid;
+
+	callFuncs* funcArr;
+	vector<CallInterface*> controllersForFunc[MESSAGES_SIZE];
 };
 
 #endif /* DISPATCHER_H_ */

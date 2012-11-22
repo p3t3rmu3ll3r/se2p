@@ -10,17 +10,6 @@
 Dispatcher* Dispatcher::instance = NULL;
 Mutex* Dispatcher::dispatcherInstanceMutex = new Mutex();
 
-
-
-typedef void (CallInterface::*callFuncs)();
-
-callFuncs* funcArr;
-
-
-
-
-
-
 Dispatcher::Dispatcher() {
 	//Create channel for pulse notification
 	if ((chid = ChannelCreate(0)) == -1) {
@@ -32,7 +21,7 @@ Dispatcher::Dispatcher() {
 		printf("Dispatcher: Error in ConnectAttach\n");
 	}
 
-	funcArr = new callFuncs[30];
+	funcArr = new callFuncs[MESSAGES_SIZE];
 	int i = 0;
 
 	funcArr[i++] = &CallInterface::sbStartOpen;
@@ -103,9 +92,24 @@ void Dispatcher::execute(void*) {
 		if(pulse.code == PULSE_FROM_ISRHANDLER){
 			//werte pulseval aus
 			//TODO forward all regged puks the msg (set *fp actually)
-
 			printf("Dispatcher recvieved pulse: %d\n",pulse.value);
+
+			int funcIdx = pulse.value.sival_int;
+
+			for(uint32_t i = 0 ; i < controllersForFunc[funcIdx].size(); i++){
+				(controllersForFunc[funcIdx].at(i)->*funcArr[funcIdx])();
+			}
 		}
+	}
+}
+
+void Dispatcher::registerContextForFunc(int funcIdx, CallInterface* callInterface) {
+	controllersForFunc[funcIdx].push_back(callInterface);
+}
+
+void Dispatcher::registerContextForAllFuncs(CallInterface* callInterface) {
+	for(int i = 0; i < MESSAGES_SIZE; i++){
+		controllersForFunc[i].push_back(callInterface);
 	}
 }
 

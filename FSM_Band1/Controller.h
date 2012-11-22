@@ -1,14 +1,16 @@
 /*
- * FSM_Band1.h
+ * Controller.h
  *
  *  Created on: 21.11.2012
  *      Author: aay973
  */
 
-#ifndef FSM_BAND1_H_
-#define FSM_BAND1_H_
+#ifndef CONTROLLER_H_
+#define CONTROLLER_H_
 
 #include "CallInterface.h"
+#include "BaseState.h"
+#include <stdio.h>
 
 class Controller: public CallInterface {
 public:
@@ -40,4 +42,4 @@ private:
 	BaseState state;
 };
 
-#endif /* FSM_BAND1_H_ */
+#endif /* CONTROLLER_H_ */

@@ -8,6 +8,7 @@
 #ifndef BASESTATE_H_
 #define BASESTATE_H_
 
+#include <stdio.h>
 #include "CallInterface.h"
 
 class BaseState: public CallInterface {

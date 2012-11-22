@@ -8,6 +8,9 @@
 #ifndef MESSAGES_H_
 #define MESSAGES_H_
 
+#define MESSAGES_SIZE 19
+
+
 // ISR Handler pulse messages
 
 enum sensorMessages{
