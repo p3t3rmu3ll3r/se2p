@@ -9,8 +9,9 @@
 #define CONTROLLER_H_
 
 #include "CallInterface.h"
-#include "BaseState.h"
+class BaseState;
 #include <stdio.h>
+
 
 class Controller: public CallInterface {
 public:
@@ -36,10 +37,14 @@ public:
 	void btnEstopPressed();
 	void btnEstopReleased();
 
+	void setFirstElementInSegment(bool isFirst);
+	bool isFirstElementInSegment();
+
 	virtual ~Controller();
 
 private:
-	BaseState state;
+	BaseState* state;
+	bool firstElementInSegment;
 };
 
 #endif /* CONTROLLER_H_ */

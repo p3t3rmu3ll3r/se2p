@@ -8,8 +8,8 @@
 #include "BaseState.h"
 
 BaseState::BaseState() {
-	// TODO Auto-generated constructor stub
-
+	actorHAL = ActorHAL::getInstance();
+	puckHandler = PuckHandler::getInstance();
 }
 
 BaseState::~BaseState() {

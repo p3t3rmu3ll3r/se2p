@@ -27,7 +27,7 @@
 #include "ISRHandler.h"
 #include "Dispatcher.h"
 
-
+#include "Controller.h"
 
 int main(int argc, char *argv[]) {
 
@@ -52,10 +52,16 @@ int main(int argc, char *argv[]) {
 	//ISRTest isrtest;
 	//isrtest.start(0);
 
+	//weil wichtig fuer sim ioacces_open
+	ActorHAL::getInstance();
+
 	Dispatcher* disp = Dispatcher::getInstance();
 	disp->start(0);
+
 	ISRHandler::getInstance()->start(0);
 
+	Controller* contr = new Controller();
+	disp->registerContextForAllFuncs(contr);
 
 	char breakWhile = 0;
 	while(1){

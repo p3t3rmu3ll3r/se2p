@@ -70,7 +70,6 @@ Dispatcher* Dispatcher::getInstance() {
 	return instance;
 }
 
-//TODO register4IRQ und unregister4IRQ implementen, call interface aus enum in messages bauen
 void Dispatcher::execute(void*) {
 	int rc;
 	struct _pulse pulse;
@@ -79,7 +78,6 @@ void Dispatcher::execute(void*) {
 		//TODO wenn man auf einem channel mit 2 threads lauscht und thread1 bekommt den pulse zuerst, erhält thread2 ihn trotzdem oder nur einer von beiden?
 		//TODO beide automaten mit gleichen funktionen auf das callinterface?!
 		//TODO sollen die knoepfe schon ins ms4 funzen?
-		//TODO soll die COM schon mit band2 funzen und auf beiden gefahren werden?
 		rc = MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
 		if (rc < 0) {
 			printf("Dispatcher: Error in recv pulse\n");
@@ -87,11 +85,9 @@ void Dispatcher::execute(void*) {
 				break;
 			}
 		}
-		//TODO do time consuming stuff...
 
 		if(pulse.code == PULSE_FROM_ISRHANDLER){
 			//werte pulseval aus
-			//TODO forward all regged puks the msg (set *fp actually)
 			printf("Dispatcher recvieved pulse: %d\n",pulse.value);
 
 			int funcIdx = pulse.value.sival_int;

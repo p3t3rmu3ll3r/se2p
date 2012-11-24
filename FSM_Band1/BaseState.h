@@ -10,6 +10,8 @@
 
 #include <stdio.h>
 #include "CallInterface.h"
+#include "PuckHandler.h"
+#include "ActorHAL.h"
 
 class BaseState: public CallInterface {
 public:
@@ -36,6 +38,11 @@ public:
 	virtual void btnEstopReleased();
 
 	virtual ~BaseState();
+
+protected:
+	ActorHAL* actorHAL;
+	PuckHandler* puckHandler;
+	Controller* controller;
 };
 
 #endif /* BASESTATE_H_ */

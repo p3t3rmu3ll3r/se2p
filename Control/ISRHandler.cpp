@@ -44,7 +44,7 @@ ISRHandler* ISRHandler::getInstance() {
 		if (!instance) {
 			instance = new ISRHandler;
 #ifdef DEBUG_ISRHandler
-			printf("Debug Dispatcher: New Dispatcher instance created\n");
+			printf("Debug ISRHandler: New ISRHandler instance created\n");
 #endif
 		}
 		isrhandlerInstanceMutex->unlock();
