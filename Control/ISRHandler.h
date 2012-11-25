@@ -23,7 +23,7 @@
 #include "Mutex.h"
 #include "Dispatcher.h"
 
-#define DEBUG_ISRHandler
+//#define DEBUG_ISRHandler
 
 class ISRHandler: public thread::HAWThread {
 public:

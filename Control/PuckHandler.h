@@ -9,11 +9,15 @@
 #define PUCKHANDLER_H_
 
 #include <queue>
+#include <vector>
 #include <iostream.h>
 #include "Controller.h"
+#include "Dispatcher.h"
 #include "Mutex.h"
 
 #define MAX_PUCKS_BAND1 12
+
+#define DEBUG_PuckHandler
 
 class PuckHandler {
 public:
@@ -25,15 +29,19 @@ public:
 	void addPuckToSeg2(Controller* contr);
 	void addPuckToSeg3(Controller* contr);
 
-	void removePuckFromBand1();
+	void removePuckFromBand1(Controller* contr);
 	void removePuckFromSeg1();
 	void removePuckFromSeg2();
 	void removePuckFromSeg3();
 
 	bool isBand1Empty();
+	bool isOnlyOneElemeOnBand1();
 	bool checkIfFirstElemInSeg1(Controller* contr);
 	bool checkIfFirstElemInSeg2(Controller* contr);
 	bool checkIfFirstElemInSeg3(Controller* contr);
+
+	void initializePucks(Dispatcher* disp);
+	void activatePuck();
 
 	virtual ~PuckHandler();
 
@@ -44,10 +52,12 @@ private:
 	static PuckHandler* instance;
 	static Mutex* puckHandlerInstanceMutex;
 
-	queue<Controller*> elemsOnBand1;
-	queue<Controller*> elemsInSeg1;
-	queue<Controller*> elemsInSeg2;
-	queue<Controller*> elemsInSeg3;
+	vector<Controller*> pucks;
+	vector<Controller*> pucksOnBand1;
+
+	queue<Controller*> pucksInSeg1;
+	queue<Controller*> pucksInSeg2;
+	queue<Controller*> pucksInSeg3;
 };
 
 #endif /* PUCKHANDLER_H_ */

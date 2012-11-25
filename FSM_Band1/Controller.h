@@ -11,11 +11,11 @@
 #include "CallInterface.h"
 class BaseState;
 #include <stdio.h>
-
+#include "puckTypes.h"
 
 class Controller: public CallInterface {
 public:
-	Controller();
+	Controller(int id);
 
 	void sbStartOpen();
 	void sbStartClosed();
@@ -40,11 +40,22 @@ public:
 	void setFirstElementInSegment(bool isFirst);
 	bool isFirstElementInSegment();
 
+	int getID();
+	bool isActive();
+	void activate();
+	void resetController();
+
 	virtual ~Controller();
+	int puckType;
+
 
 private:
+	int id;
 	BaseState* state;
 	bool firstElementInSegment;
+
+	bool active;
+	bool inUse;
 };
 
 #endif /* CONTROLLER_H_ */

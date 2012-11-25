@@ -14,29 +14,6 @@ Mutex* PuckHandler::puckHandlerInstanceMutex = new Mutex();
 
 PuckHandler::PuckHandler() {
 
-	/* whyyyy??? so serious?!?!?
-
-	while (!this->elemsOnBand1.empty())
-	{
-		this->elemsOnBand1.pop();
-	}
-
-	while (!this->elemsInSeg1.empty())
-	{
-		this->elemsInSeg1.pop();
-	}
-
-	while (!this->elemsInSeg2.empty())
-	{
-		this->elemsInSeg2.pop();
-	}
-
-	while (!this->elemsInSeg3.empty())
-	{
-		this->elemsInSeg3.pop();
-	}
-
-	*/
 }
 
 PuckHandler::~PuckHandler() {
@@ -63,60 +40,108 @@ PuckHandler* PuckHandler::getInstance() {
 }
 
 
-void PuckHandler::addPuckToBand1(Controller* contr) {
-	if (elemsOnBand1.size() < MAX_PUCKS_BAND1) {
-		elemsOnBand1.push(contr);
-	} else {
-		printf("Error PuckHandler: No moar space on Band1!\n");
+void PuckHandler::initializePucks(Dispatcher* disp) {
+
+	for(int i = 0 ; i < MAX_PUCKS_BAND1 ; i++) {
+		pucks.push_back(new Controller(i+1));
+		disp->registerContextForAllFuncs(pucks.at(i));
+
+		if(pucks.at(i) != NULL){
+			printf("Debug PuckHandler: created Puck%d \n", pucks.at(i)->getID());
+		}
 	}
 }
 
+void PuckHandler::activatePuck() {
+
+	if(!pucks.empty()){
+		for(int i = 0 ; i < MAX_PUCKS_BAND1 ; i++) {
+			if(!pucks.at(i)->isActive()) {
+				pucks.at(i)->activate();
+				printf("Debug PuckHandler: activated Puck%d \n", pucks.at(i)->getID());
+				break;
+			}
+		}
+	}
+}
+
+
+void PuckHandler::addPuckToBand1(Controller* contr) {
+	printf("i is adding ...size(): %d\n", pucksOnBand1.size());
+	if (pucksOnBand1.size() < MAX_PUCKS_BAND1) {
+		pucksOnBand1.push_back(contr);
+	} else {
+		printf("Error PuckHandler: No moar space on Band1!\n");
+	}
+	printf("i added ...\n");
+}
+
 void PuckHandler::addPuckToSeg1(Controller* contr){
-	elemsInSeg1.push(contr);
+	pucksInSeg1.push(contr);
 }
 
 void PuckHandler::addPuckToSeg2(Controller* contr){
-	elemsInSeg2.push(contr);
+	pucksInSeg2.push(contr);
 }
 
 void PuckHandler::addPuckToSeg3(Controller* contr){
-	elemsInSeg3.push(contr);
+	pucksInSeg3.push(contr);
 }
 
 
-void PuckHandler::removePuckFromBand1(){
-	if(elemsOnBand1.size() != 0){
-		elemsOnBand1.pop();
+void PuckHandler::removePuckFromBand1(Controller* contr){
+	if(!pucksOnBand1.empty()){
+		for(uint32_t i = 0; i < pucksOnBand1.size() ; i++){
+			if(pucksOnBand1.at(i) == contr){
+				pucksOnBand1.erase(pucksOnBand1.begin()+i);
+				break;
+			}
+		}
 	} else {
-		printf("Error PuckHandler: Band1 already empty!\n");
+		printf("Error PuckHandler removePuckFromBand1(): Band1 already empty!\n");
 	}
 }
 
 void PuckHandler::removePuckFromSeg1(){
-	elemsInSeg1.pop();
+	if(!pucksInSeg1.empty()){
+		pucksInSeg1.pop();
+	} else {
+		printf("Error PuckHandler: Seg1 already empty!\n");
+	}
 }
 
 void PuckHandler::removePuckFromSeg2(){
-	elemsInSeg2.pop();
+	if(!pucksInSeg2.empty()){
+		pucksInSeg2.pop();
+	} else {
+		printf("Error PuckHandler: Seg2 already empty!\n");
+	}
 }
 
 void PuckHandler::removePuckFromSeg3(){
-	elemsInSeg3.pop();
+	if(!pucksInSeg3.empty()){
+		pucksInSeg3.pop();
+	} else {
+		printf("Error PuckHandler: Seg3 already empty!\n");
+	}
 }
 
-
 bool PuckHandler::isBand1Empty(){
-	return (elemsOnBand1.empty());
+	return pucksOnBand1.empty();
+}
+
+bool PuckHandler::isOnlyOneElemeOnBand1(){
+	return pucksOnBand1.size() == 1 ? true : false;
 }
 
 bool PuckHandler::checkIfFirstElemInSeg1(Controller* contr){
-	return (elemsInSeg1.front() == contr); //TODO: todo... -.-
+	return (!pucksInSeg1.empty()) ? (pucksInSeg1.front() == contr) : false;
 }
 
 bool PuckHandler::checkIfFirstElemInSeg2(Controller* contr){
-	return (elemsInSeg2.front() == contr);
+	return (!pucksInSeg2.empty()) ?  (pucksInSeg2.front() == contr) : false;
 }
 
 bool PuckHandler::checkIfFirstElemInSeg3(Controller* contr){
-	return (elemsInSeg3.front() == contr);
+	return (!pucksInSeg3.empty()) ?  (pucksInSeg3.front() == contr) : false;
 }

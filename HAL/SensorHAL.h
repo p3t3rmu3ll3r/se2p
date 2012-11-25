@@ -21,14 +21,15 @@
 #define SENSOR_H_
 
 #include <stdlib.h>
+#include <iostream>
+#include "sys/siginfo.h"
 
 #include "address.h"
 #include "HWaccess.h"
-#include "sys/siginfo.h"
 #include "Mutex.h"
-#include <iostream>
+#include "puckTypes.h"
 
-#define DEBUG_SENSORHAL
+//#define DEBUG_SENSORHAL
 
 class SensorHAL {
 public:
@@ -57,6 +58,11 @@ public:
 	int getCoid();
 
 	/**
+	 * TODO
+	 */
+	int getHeightPuckType();
+
+	/**
 	 * Returns an integer value representing measured height
 	 * from the height sensor.
 	 * \return height
@@ -82,6 +88,7 @@ private:
 	 * Initializes the IRQs and ISR, called by constructor
 	 */
 	void initInterrupt();
+
 
 	/**
 	 * Channel ID for channel used by kernel for pulse messages

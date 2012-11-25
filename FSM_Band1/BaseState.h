@@ -12,6 +12,7 @@
 #include "CallInterface.h"
 #include "PuckHandler.h"
 #include "ActorHAL.h"
+#include "SensorHAL.h"
 
 class BaseState: public CallInterface {
 public:
@@ -41,6 +42,7 @@ public:
 
 protected:
 	ActorHAL* actorHAL;
+	SensorHAL* sensorHAL;
 	PuckHandler* puckHandler;
 	Controller* controller;
 };

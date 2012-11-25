@@ -25,7 +25,7 @@
 #include "ISRTest.h"
 
 #include "ISRHandler.h"
-#include "Dispatcher.h"
+#include "PuckHandler.h"
 
 #include "Controller.h"
 
@@ -58,10 +58,10 @@ int main(int argc, char *argv[]) {
 	Dispatcher* disp = Dispatcher::getInstance();
 	disp->start(0);
 
+	PuckHandler::getInstance()->initializePucks(disp);
+
 	ISRHandler::getInstance()->start(0);
 
-	Controller* contr = new Controller();
-	disp->registerContextForAllFuncs(contr);
 
 	char breakWhile = 0;
 	while(1){
@@ -76,6 +76,8 @@ int main(int argc, char *argv[]) {
 	//isrtest.stop();
 	//SensorHAL::getInstance()->stopInterrupt();
 	//isrtest.join();
+
+	printf("EXIT_SUCCESS \n");
 
 	return EXIT_SUCCESS;
 }

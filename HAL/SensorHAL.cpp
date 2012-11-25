@@ -135,6 +135,23 @@ int SensorHAL::getHeight() {
 	return hoehe;
 }
 
+int SensorHAL::getHeightPuckType() {
+	int height = getHeight();
+	//TODO
+	printf("height: %d\n", height);
+	int type = -1;
+
+	if ((height < 2900) && (height > 2600)) {
+		type = PUCK_TOO_LOW;
+	} else if ((height < 2600)) {
+		type = PUCK_TURNOVER;
+	} else {
+		type = PUCK_ACCEPTED;
+	}
+	printf("getType: %d\n", type);
+	return type;
+}
+
 int SensorHAL::getChid() {
 	return chid;
 }

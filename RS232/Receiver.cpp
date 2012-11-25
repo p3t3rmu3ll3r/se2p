@@ -11,6 +11,8 @@ Receiver* Receiver::instance = NULL;
 Mutex* Receiver::receiverInstanceMutex = new Mutex();
 
 Receiver::Receiver() {
+	rs232_1 = RS232_1::getInstance();
+	
 	disp = Dispatcher::getInstance();
 	dispatcherChid = disp->getChid();
 
@@ -45,6 +47,47 @@ Receiver* Receiver::getInstance() {
 }
 
 void Receiver::execute(void*) {
+	char buffer = '0';
+	int readBytes; 
+	int rc;
+	int pulseval = -1;
+	
+	while (!isStopped()) {
+		readBytes = rs232_1->readMsg(&buffer);
+
+		if (readBytes < 0) {
+			printf("Error Receiver: Error in readMsg\n");
+		}
+
+		if (readBytes > 0) {
+
+			switch (buffer) {
+			case '0':
+				pulseval = B2_MSG0;
+#ifdef DEBUG_Receiver
+				printf("Received random shit to be defined\n");
+#endif
+				break;
+			case '1':
+				pulseval = B2_MSG1;
+#ifdef DEBUG_Receiver
+				printf("Received random shit to be defined\n");
+#endif
+				break;
+			default:
+#ifdef DEBUG_Receiver
+				printf("Received random shit to be defined\n");
+#endif
+			}
+			rc = MsgSendPulse(coid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_RS232, pulseval);
+			if (rc < 0) {
+				printf("Error Receiver: MsgSendPulse failed\n");
+			}
+
+		}
+		
+		fflush(stdout);
+	};
 }
 
 void Receiver::shutdown() {

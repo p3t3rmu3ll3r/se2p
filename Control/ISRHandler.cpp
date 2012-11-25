@@ -97,12 +97,12 @@ void ISRHandler::execute(void*) {
 #ifdef DEBUG_ISRHandler
 						printf("Kein Werkstueck in Hoehenmessung\n");
 #endif
-						action = SB_HEIGHTCONTROL_OPEN;
+						action = SB_HEIGHTCONTROL_CLOSED;
 					} else {
 #ifdef DEBUG_ISRHandler
 						printf("Werkstueck in Hoehenmessung\n");
 #endif
-						action = SB_HEIGHTCONTROL_CLOSED;
+						action = SB_HEIGHTCONTROL_OPEN;
 					}
 					break;
 				case 2:

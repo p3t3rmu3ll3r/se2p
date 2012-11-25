@@ -27,7 +27,7 @@
 #include "HWaccess.h"
 #include "Mutex.h"
 
-#define DEBUG_HAL
+//#define DEBUG_HAL
 
 class ActorHAL {
 private:

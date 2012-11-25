@@ -5,7 +5,7 @@
  *      Author: martin
  */
 
-#include "Dispatcher.h"
+#include "PuckHandler.h"
 
 Dispatcher* Dispatcher::instance = NULL;
 Mutex* Dispatcher::dispatcherInstanceMutex = new Mutex();
@@ -88,13 +88,19 @@ void Dispatcher::execute(void*) {
 
 		if(pulse.code == PULSE_FROM_ISRHANDLER){
 			//werte pulseval aus
-			printf("Dispatcher recvieved pulse: %d\n",pulse.value);
+			printf("--------------------------------------------\nDispatcher recvieved pulse: %d\n",pulse.value);
 
 			int funcIdx = pulse.value.sival_int;
+
+			if(funcIdx == SB_START_OPEN) {
+				PuckHandler::getInstance()->activatePuck();
+				printf("Dispatcher called activatePuck \n");
+			}
 
 			for(uint32_t i = 0 ; i < controllersForFunc[funcIdx].size(); i++){
 				(controllersForFunc[funcIdx].at(i)->*funcArr[funcIdx])();
 			}
+			printf("Dispatcher called func%d \n",funcIdx);
 		}
 	}
 }

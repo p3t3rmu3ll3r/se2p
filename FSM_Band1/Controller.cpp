@@ -6,39 +6,153 @@
  */
 
 #include "Controller.h"
-#include "State1.h"
+#include "B1S01_Entry.h"
 
-Controller::Controller() {
-	firstElementInSegment = false;
+Controller::Controller(int id) {
+	resetController();
+	this->id = id;
 }
 
 Controller::~Controller() {
 
 }
 
-void Controller::sbStartOpen(){
-	state = new State1(this);
-	state->sbStartOpen();
+int Controller::getID(){
+	return id;
 }
 
-void Controller::sbStartClosed(){state->sbStartClosed();}
-void Controller::sbHeightcontrolOpen(){state->sbHeightcontrolOpen();}
-void Controller::sbHeightcontrolClosed(){state->sbHeightcontrolOpen();}
-void Controller::sbGateOpen(){state->sbGateOpen();}
-void Controller::sbGateClosed(){state->sbGateClosed();}
-void Controller::msMetalTrue(){state->sbGateClosed();}
-void Controller::sbSlideOpen(){state->sbSlideOpen();}
-void Controller::sbSlideClosed(){state->sbSlideClosed();}
-void Controller::sbEndOpen(){state->sbEndOpen();}
-void Controller::sbEndClosed(){state->sbEndClosed();}
-void Controller::btnStartPressed(){state->btnStartPressed();}
-void Controller::btnStartReleased(){state->btnStartReleased();}
-void Controller::btnStopPressed(){state->btnStopPressed();}
-void Controller::btnStopReleased(){state->btnStopReleased();}
-void Controller::btnResetPressed(){state->btnResetPressed();}
-void Controller::btnResetReleased(){state->btnResetReleased();}
-void Controller::btnEstopPressed(){state->btnEstopPressed();}
-void Controller::btnEstopReleased(){state->btnEstopReleased();}
+bool Controller::isActive() {
+	return active;
+}
+
+void Controller::activate() {
+	active = true;
+}
+
+void Controller::resetController() {
+	active = false;
+	inUse = false;
+	puckType = -1;
+	firstElementInSegment = false;
+	//state = new BaseState();
+}
+
+void Controller::sbStartOpen() {
+	if(active && !inUse){
+		inUse = true;
+		state = new B1S01_Entry(this);
+
+		state->sbStartOpen();
+	}
+}
+
+void Controller::sbStartClosed() {
+	if(active && inUse){
+		state->sbStartClosed();
+	}
+}
+
+void Controller::sbHeightcontrolOpen() {
+	if(active && inUse){
+		state->sbHeightcontrolOpen();
+	}
+}
+
+void Controller::sbHeightcontrolClosed() {
+	if(active && inUse){
+		state->sbHeightcontrolClosed();
+	}
+}
+
+void Controller::sbGateOpen() {
+	if(active && inUse){
+		state->sbGateOpen();
+	}
+}
+
+void Controller::sbGateClosed() {
+	if(active && inUse){
+		state->sbGateClosed();
+	}
+}
+
+void Controller::msMetalTrue() {
+	if(active && inUse){
+		state->msMetalTrue();
+	}
+}
+
+void Controller::sbSlideOpen() {
+	if(active && inUse){
+		state->sbSlideOpen();
+	}
+}
+
+void Controller::sbSlideClosed() {
+	if(active && inUse){
+	state->sbSlideClosed();
+	}
+}
+
+void Controller::sbEndOpen() {
+	if(active && inUse){
+		state->sbEndOpen();
+	}
+}
+
+void Controller::sbEndClosed() {
+	if(active && inUse){
+		state->sbEndClosed();
+	}
+}
+
+void Controller::btnStartPressed() {
+	if(active && inUse){
+		state->btnStartPressed();
+	}
+}
+
+void Controller::btnStartReleased() {
+	if(active && inUse){
+		state->btnStartReleased();
+	}
+}
+
+void Controller::btnStopPressed() {
+	if(active && inUse){
+		state->btnStopPressed();
+	}
+}
+
+void Controller::btnStopReleased() {
+	if(active && inUse){
+		state->btnStopReleased();
+	}
+}
+
+void Controller::btnResetPressed() {
+	if(active && inUse){
+		state->btnResetPressed();
+	}
+}
+
+void Controller::btnResetReleased() {
+	if(active && inUse){
+		state->btnResetReleased();
+	}
+}
+
+void Controller::btnEstopPressed() {
+	if(active && inUse){
+		state->btnEstopPressed();
+	}
+}
+
+void Controller::btnEstopReleased() {
+	if(active && inUse){
+		state->btnEstopReleased();
+	}
+}
 
 void Controller::setFirstElementInSegment(bool isFirst) {
 	firstElementInSegment = isFirst;
