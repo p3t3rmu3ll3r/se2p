@@ -43,6 +43,8 @@ public:
 	void initializePucks(Dispatcher* disp);
 	void activatePuck();
 
+	int getReplyChid();
+
 	virtual ~PuckHandler();
 
 private:
@@ -58,6 +60,8 @@ private:
 	queue<Controller*> pucksInSeg1;
 	queue<Controller*> pucksInSeg2;
 	queue<Controller*> pucksInSeg3;
+
+	int replyChid;
 };
 
 #endif /* PUCKHANDLER_H_ */

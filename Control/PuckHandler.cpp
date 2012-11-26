@@ -13,7 +13,9 @@ Mutex* PuckHandler::puckHandlerInstanceMutex = new Mutex();
 
 
 PuckHandler::PuckHandler() {
-
+	if ((replyChid = ChannelCreate(0)) == -1) {
+		printf("PuckHandler: Error in ChannelCreate\n");
+	}
 }
 
 PuckHandler::~PuckHandler() {
@@ -21,6 +23,9 @@ PuckHandler::~PuckHandler() {
 		delete instance;
 		instance = NULL;
 		puckHandlerInstanceMutex->~Mutex();
+		if (ChannelDestroy(replyChid) == -1) {
+			printf("PuckHandler: Error in ChannelDestroy\n");
+		}
 	}
 }
 
@@ -162,4 +167,9 @@ bool PuckHandler::checkIfFirstElemInSeg2(Controller* contr){
 
 bool PuckHandler::checkIfFirstElemInSeg3(Controller* contr){
 	return (!pucksInSeg3.empty()) ?  (pucksInSeg3.front() == contr) : false;
+}
+
+
+int PuckHandler::getReplyChid() {
+	return replyChid;
 }

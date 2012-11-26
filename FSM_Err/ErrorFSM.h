@@ -15,6 +15,7 @@
 #include "errorStates.h"
 #include "ActorHAL.h"
 #include "LightController.h"
+#include "PuckHandler.h"
 
 class ErrorFSM: public thread::HAWThread {
 public:
@@ -24,15 +25,15 @@ public:
 	virtual void shutdown();
 	void stop();
 	int getErrorFSMChid();
-	int getReplyChid();
 
 private:
 	int ownChid;
-	int replyChid;
 	int replyCoid;
+
 	int state;
 	ActorHAL* aHal;
 	LightController* lc;
+	PuckHandler* ph;
 
 	void sendPuckReply();
 };

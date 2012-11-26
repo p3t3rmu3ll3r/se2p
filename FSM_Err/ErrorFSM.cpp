@@ -8,22 +8,19 @@
 #include "ErrorFSM.h"
 
 ErrorFSM::ErrorFSM() {
+	state = ERR_STATE_IDLE;
+	aHal = ActorHAL::getInstance();
+	lc = LightController::getInstance();
+	ph = PuckHandler::getInstance();
+
 	//Create channel for pulse notification
 	if ((ownChid = ChannelCreate(0)) == -1) {
 		printf("ErrorFSM: Error in ChannelCreate\n");
 	}
 
-	if ((replyChid = ChannelCreate(0)) == -1) {
-		printf("ErrorFSM: Error in ChannelCreate\n");
-	}
-
-	if ((replyCoid = ConnectAttach(0, 0, replyChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+	if ((replyCoid = ConnectAttach(0, 0, ph->getReplyChid(), _NTO_SIDE_CHANNEL, 0)) == -1) {
 		printf("ErrorFSM: Error in ConnectAttach\n");
 	}
-
-	state = ERR_STATE_IDLE;
-	aHal = ActorHAL::getInstance();
-	lc = LightController::getInstance();
 }
 
 ErrorFSM::~ErrorFSM() {
@@ -135,15 +132,11 @@ void ErrorFSM::execute(void*) {
 void ErrorFSM::stop() {
 	HAWThread::stop();
 
-	if (ConnectDetach(replyChid) == -1) {
+	if (ConnectDetach(replyCoid) == -1) {
 		printf("ErrorFSM: Error in ConnectDetach\n");
 	}
 
 	if (ChannelDestroy(ownChid) == -1) {
-		printf("ErrorFSM: Error in ChannelDestroy\n");
-	}
-
-	if (ChannelDestroy(replyChid) == -1) {
 		printf("ErrorFSM: Error in ChannelDestroy\n");
 	}
 }
@@ -155,13 +148,9 @@ int ErrorFSM::getErrorFSMChid() {
 	return ownChid;
 }
 
-int ErrorFSM::getReplyChid() {
-	return replyChid;
-}
-
 void ErrorFSM::sendPuckReply(){
 	int rc = MsgSendPulse(replyCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_ERR_FSM, 0/*ERROR_SOLVED*/);
 	if (rc < 0) {
-		printf("ErrorFSM: Error in MsgSendPulse");
+		printf("ErrorFSM: Error in MsgSendPulse\n");
 	}
 }
