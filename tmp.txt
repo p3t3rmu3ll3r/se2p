@@ -1,3 +1,9 @@
+Patterns:
+Singleton
+Facade
+State
+
+
 ISRtest:
 - zu kleines WS
 - WsOk

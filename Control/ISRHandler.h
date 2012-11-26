@@ -22,6 +22,7 @@
 #include "messages.h"
 #include "Mutex.h"
 #include "Dispatcher.h"
+#include "ErrorFSM.h"
 
 //#define DEBUG_ISRHandler
 
@@ -46,8 +47,11 @@ private:
 	static Mutex* isrhandlerInstanceMutex;
 	SensorHAL* sHal;
 	Dispatcher* disp;
+	ErrorFSM* errfsm;
 	int dispatcherChid;
-	int coid;
+	int errfsmChid;
+	int dispatcherCoid;
+	int errfsmCoid;
 };
 
 #endif /* ISRHANDLER_H_ */

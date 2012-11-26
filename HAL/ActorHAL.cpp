@@ -42,6 +42,8 @@ ActorHAL::ActorHAL() {
 	//-->nicht nötig aber sicherer
 	out8(PORT_A, 0x00);
 	out8(PORT_C, 0x00);
+
+	fullStop = false;
 }
 
 ActorHAL::~ActorHAL() {
@@ -184,23 +186,51 @@ void ActorHAL::engineLeft(bool isSlow) {
 }
 
 void ActorHAL::engineStop() {
-	uint8_t val = in8(PORT_A);
-
 	halMutex->lock();
-	out8(PORT_A, val | ENGINE_STOP);
+	if (!fullStop) {
+		uint8_t val = in8(PORT_A);
+
+		out8(PORT_A, val | ENGINE_STOP);
 #ifdef DEBUG_HAL
 		printf("Debug Hal: engine stopped\n");
 #endif
+	}
 	halMutex->unlock();
 }
 
 void ActorHAL::engineUnstop() {
-	uint8_t val = in8(PORT_A);
-
 	halMutex->lock();
-	out8(PORT_A, val & ~(ENGINE_STOP));
+	if (!fullStop) {
+		uint8_t val = in8(PORT_A);
+
+		out8(PORT_A, val & ~(ENGINE_STOP));
 #ifdef DEBUG_HAL
 		printf("Debug Hal: engine revert stop\n");
+#endif
+	}
+	halMutex->unlock();
+}
+
+void ActorHAL::engineFullStop() {
+	halMutex->lock();
+	fullStop = true;
+	uint8_t val = in8(PORT_A);
+
+	out8(PORT_A, val | ENGINE_STOP);
+#ifdef DEBUG_HAL
+		printf("Debug Hal: engine fullstopped\n");
+#endif
+	halMutex->unlock();
+}
+
+void ActorHAL::engineFullUnstop() {
+	halMutex->lock();
+	fullStop = false;
+	uint8_t val = in8(PORT_A);
+
+	out8(PORT_A, val & ~(ENGINE_STOP));
+#ifdef DEBUG_HAL
+		printf("Debug Hal: engine revert fullstop\n");
 #endif
 	halMutex->unlock();
 }

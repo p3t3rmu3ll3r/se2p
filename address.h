@@ -89,6 +89,8 @@
 #define PULSE_FROM_ISR			0
 #define PULSE_FROM_ISRHANDLER	1
 #define PULSE_FROM_RS232		2
+#define PULSE_FROM_ERR_FSM		3
+#define PULSE_FROM_PUCK			4
 
 // AIO Card
 #define AIO_BASE 	0x320

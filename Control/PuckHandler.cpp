@@ -130,6 +130,24 @@ bool PuckHandler::isBand1Empty(){
 	return pucksOnBand1.empty();
 }
 
+//TODO methode EStop button(bool pressed)
+/*
+void PuckHandler::eStop(bool pressed){
+	if(pressed){
+		estop = true;
+		ActorHAL::getInstance()->globalStop();
+		ActorHAL::getInstance()->setSomeCoolLight();
+		ActorHAL::getInstance()->gate(false);
+		pauseAllTimer();
+	} else {
+		// estop bereits rausgezogen und reset gedrueckt
+		estop = false;
+		ActorHAL::getInstance()->globalUnstop();
+		//ggf band leeren und alles auf anfang zurueck ...?! oder einfach weiterfahren
+	}
+}
+*/
+
 bool PuckHandler::isOnlyOneElemeOnBand1(){
 	return pucksOnBand1.size() == 1 ? true : false;
 }

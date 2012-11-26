@@ -47,6 +47,11 @@ private:
 	static Mutex* halMutex;
 
 	/**
+	 * Bool to control that no other puck can start convayor if not allowd
+	 */
+	bool fullStop;
+
+	/**
 	 * Private standard constructor for the singleton pattern
 	 */
 	ActorHAL();
@@ -91,6 +96,18 @@ public:
 	 * and speed.
 	 */
 	void engineUnstop();
+
+	/**
+	 * Stops belt conveyor engine. Old direction and speed bits
+	 * are still set. Sets bool fullStop
+	 */
+	void engineFullStop();
+
+	/**
+	 * Resets stop bit, belt conveyor engine moves with old direction
+	 * and speed. Resets bool fullStop
+	 */
+	void engineFullUnstop();
 
 	/**
 	 * Opens or closes the gate.

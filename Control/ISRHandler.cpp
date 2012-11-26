@@ -22,10 +22,14 @@ ISRHandler::ISRHandler() {
 	sHal = SensorHAL::getInstance();
 	disp = Dispatcher::getInstance();
 	dispatcherChid = disp->getChid();
+	errfsmChid = errfsm->getErrorFSMChid();
 
-	//Connect to channel
-	if ((coid = ConnectAttach(0, 0, dispatcherChid, _NTO_SIDE_CHANNEL, 0))
-			== -1) {
+	//Connect to channels
+	if ((dispatcherCoid= ConnectAttach(0, 0, dispatcherChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+		printf("ISRHandler: Error in ConnectAttach\n");
+	}
+
+	if ((errfsmCoid = ConnectAttach(0, 0, errfsmChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
 		printf("ISRHandler: Error in ConnectAttach\n");
 	}
 }
@@ -227,10 +231,6 @@ void ISRHandler::execute(void*) {
 					}
 					break;
 				case 11:
-					//TODO schalter prellt beim rausziehen ... loest zig mal IRQs aus, entprellen
-					//z.B.wenn not aus ISR ausgeloest, not aus ignorieren, beim ersten mal einfach
-					//n bool setzen, den erst wieder ruecksetzen, wenn start gedrueckt wird.
-					//start prueft dann, ob not aus freigegeben ist und startet erst DANN wieder.
 					if (newVal) {
 #ifdef DEBUG_ISRHandler
 						printf("E-Stoptaste geloest\n");
@@ -247,7 +247,14 @@ void ISRHandler::execute(void*) {
 					printf("no pulse! ISRTest switch def value\n");
 				}
 
-				rc = MsgSendPulse(coid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_ISRHANDLER, action);
+				//TODO pulse werden mom einfach an errorfsm und dispatcher geschickt.
+				//TODO wenn error fsm arbeitet, soll dispatcher nix mehr tun ... hierrueber regeln oder im disp selber?!
+				rc = MsgSendPulse(dispatcherCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_ISRHANDLER, action);
+				if (rc < 0) {
+					printf("ISRHandler: Error in MsgSendPulse");
+				}
+
+				rc = MsgSendPulse(errfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_ISRHANDLER, action);
 				if (rc < 0) {
 					printf("ISRHandler: Error in MsgSendPulse");
 				}
@@ -261,7 +268,11 @@ void ISRHandler::stop() {
 	HAWThread::stop();
 	sHal->stopInterrupt();
 
-	if (ConnectDetach(coid) == -1) {
+	if (ConnectDetach(dispatcherCoid) == -1) {
+		printf("ISRHandler: Error in ConnectDetach\n");
+	}
+
+	if (ConnectDetach(errfsmCoid) == -1) {
 		printf("ISRHandler: Error in ConnectDetach\n");
 	}
 }

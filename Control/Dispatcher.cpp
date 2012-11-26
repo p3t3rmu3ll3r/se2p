@@ -17,6 +17,7 @@ Dispatcher::Dispatcher() {
 	}
 
 	//Connect to channel
+	//TODO eigentlich unnötig, genauso wie detach, da wir nur receiven, aber nicht senden
 	if ((coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
 		printf("Dispatcher: Error in ConnectAttach\n");
 	}
@@ -75,9 +76,6 @@ void Dispatcher::execute(void*) {
 	struct _pulse pulse;
 
 	while(!isStopped()){
-		//TODO wenn man auf einem channel mit 2 threads lauscht und thread1 bekommt den pulse zuerst, erhält thread2 ihn trotzdem oder nur einer von beiden?
-		//TODO beide automaten mit gleichen funktionen auf das callinterface?!
-		//TODO sollen die knoepfe schon ins ms4 funzen?
 		rc = MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
 		if (rc < 0) {
 			printf("Dispatcher: Error in recv pulse\n");
@@ -86,21 +84,38 @@ void Dispatcher::execute(void*) {
 			}
 		}
 
-		if(pulse.code == PULSE_FROM_ISRHANDLER){
+		if (pulse.code == PULSE_FROM_ISRHANDLER) {
 			//werte pulseval aus
-			printf("--------------------------------------------\nDispatcher recvieved pulse: %d\n",pulse.value);
+			printf("--------------------------------------------\n"
+				   "Dispatcher received ISR pulse: %d\n",	pulse.value);
 
 			int funcIdx = pulse.value.sival_int;
-
-			if(funcIdx == SB_START_OPEN) {
+			//TODO ggf siwtch um alles bauen, um tasten abzufragen -> EStop und Ein/Aus, prog starten und beenden
+			// solange EIN nicht pressed, nix dispatchen und nix tun ... if pressed, bool setzen ... gleiches bei stop,
+			// natuerlich alles resetten ;)
+			// if(funcIdx == ESTOP_BTNPRESSED) nix an die pucks weiterleiten und puckhandler estop(true) callen
+			// if (funcIdx == ESTOP_BTNRELEASED) setze bool step1 auf true
+			// if(funcIdx == RESET_BTNPRESSED) setze bool step2 auf true und alles rennt weiter, call puckhandler estop(false)
+			// oder den button in die error fsm verlegen, wenn estop pushed wird, dispatcht dispatcher nix mehr, bis error
+			// fsm sagt -> alles cool
+			if (funcIdx == SB_START_OPEN) {
 				PuckHandler::getInstance()->activatePuck();
 				printf("Dispatcher called activatePuck \n");
 			}
 
-			for(uint32_t i = 0 ; i < controllersForFunc[funcIdx].size(); i++){
+			for (uint32_t i = 0; i < controllersForFunc[funcIdx].size(); i++) {
 				(controllersForFunc[funcIdx].at(i)->*funcArr[funcIdx])();
 			}
-			printf("Dispatcher called func%d \n",funcIdx);
+			printf("Dispatcher called func%d \n", funcIdx);
+		} else if(pulse.code == PULSE_FROM_RS232){
+			//TODO eigentlich unguenstig, dass hier xtra zu behandeln, eigentlich dispatcht
+			//er ja auch nur n funktionsaufruf, is hier mom nur fuer debug, koennte doch oben mit rein oder?
+			//also if (pulse.code == PULSE_FROM_ISRHANDLER || pulse.code == PULSE_FROM_RS232)
+			int codeSer = pulse.value.sival_int;
+			printf("Dispatcher received RS232 pulse: %d\n", codeSer);
+		} else if(pulse.code == PULSE_FROM_ERR_FSM) {
+			// wenn PULSE_FROM_ISRHANDLER ein estop bemerkt, running auf false setzen, kein dispatchen mehr
+			// setze hier running bool zurueck auf true
 		}
 	}
 }
