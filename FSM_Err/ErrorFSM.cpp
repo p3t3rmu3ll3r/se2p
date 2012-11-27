@@ -7,23 +7,49 @@
 
 #include "ErrorFSM.h"
 
+ErrorFSM* ErrorFSM::instance = NULL;
+Mutex* ErrorFSM::errfsmInstanceMutex = new Mutex();
+
 ErrorFSM::ErrorFSM() {
 	state = ERR_STATE_IDLE;
 	aHal = ActorHAL::getInstance();
 	lc = LightController::getInstance();
-	ph = PuckHandler::getInstance();
 
 	//Create channel for pulse notification
 	if ((ownChid = ChannelCreate(0)) == -1) {
 		printf("ErrorFSM: Error in ChannelCreate\n");
 	}
 
-	if ((replyCoid = ConnectAttach(0, 0, ph->getReplyChid(), _NTO_SIDE_CHANNEL, 0)) == -1) {
+	if ((replyChid = ChannelCreate(0)) == -1) {
+		printf("ErrorFSM: Error in ChannelCreate\n");
+	}
+
+	if ((replyCoid = ConnectAttach(0, 0, replyChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
 		printf("ErrorFSM: Error in ConnectAttach\n");
 	}
 }
 
 ErrorFSM::~ErrorFSM() {
+	if (instance != NULL) {
+		delete instance;
+		instance = NULL;
+		errfsmInstanceMutex->~Mutex();
+	}
+}
+
+ErrorFSM* ErrorFSM::getInstance() {
+	if (!instance) {
+		errfsmInstanceMutex->lock();
+		if (!instance) {
+			instance = new ErrorFSM;
+#ifdef DEBUG_ErrorFSM
+			printf("Debug ErrorFSM: New ErrorFSM instance created\n");
+#endif
+		}
+		errfsmInstanceMutex->unlock();
+	}
+
+	return instance;
 }
 
 void ErrorFSM::execute(void*) {
@@ -31,10 +57,14 @@ void ErrorFSM::execute(void*) {
 	struct _pulse pulse;
 	int pulseVal;
 	int pulseCode;
+	bool isSbStartOpen = false;
 
 	lc->operatingNormal();
 
 	while (!isStopped()) {
+#ifdef DEBUG_ErrorFSM
+		printf("errorfsm before recv\n");
+#endif
 		rc = MsgReceivePulse(ownChid, &pulse, sizeof(pulse), NULL);
 		if (rc < 0) {
 			printf("ErrorFSM: Error in recv pulse\n");
@@ -44,6 +74,9 @@ void ErrorFSM::execute(void*) {
 		}
 		pulseCode = pulse.code;
 		pulseVal = pulse.value.sival_int;
+#ifdef DEBUG_ErrorFSM
+		printf("errorfsm after recv; code: %d, value: %d\n", pulseCode, pulseVal);
+#endif
 
 		switch (state) {
 		//Bei idle nur auf Pucks hoeren, IRQs interessieren uns nicht ...
@@ -60,6 +93,10 @@ void ErrorFSM::execute(void*) {
 					lc->manualTurnover();
 					break;
 				case ERR_STATE_ERROR:
+					aHal->engineFullStop();
+					lc->upcomingNotReceipted();
+					break;
+				case ERR_STATE_TURNOVER_BAND2:
 					aHal->engineFullStop();
 					lc->upcomingNotReceipted();
 					break;
@@ -123,6 +160,28 @@ void ErrorFSM::execute(void*) {
 				}
 			}
 			break;
+		case ERR_STATE_TURNOVER_BAND2:
+			if(pulseCode == PULSE_FROM_ISRHANDLER){
+				if(pulseVal == BTN_RESET_PRESSED){
+					lc->upcomingReceipted();
+					state = ERR_STATE_TURNOVER_BAND2_RECEIPTED;
+				}
+			}
+			break;
+		case ERR_STATE_TURNOVER_BAND2_RECEIPTED:
+			if(pulseCode == PULSE_FROM_ISRHANDLER){
+				if(pulseVal == SB_START_OPEN){
+					isSbStartOpen = true;
+				} else if(pulseVal == BTN_START_PRESSED && isSbStartOpen){
+					isSbStartOpen = false;
+					lc->operatingNormal();
+					//msg puck error solved, reihenfolge unstop und msg puck?!
+					sendPuckReply();
+					aHal->engineFullUnstop();
+					state = ERR_STATE_IDLE;
+				}
+			}
+			break;
 		default:
 			printf("nop\n");
 		}
@@ -136,6 +195,10 @@ void ErrorFSM::stop() {
 		printf("ErrorFSM: Error in ConnectDetach\n");
 	}
 
+	if (ChannelDestroy(replyChid) == -1) {
+		printf("ErrorFSM: Error in ChannelDestroy\n");
+	}
+
 	if (ChannelDestroy(ownChid) == -1) {
 		printf("ErrorFSM: Error in ChannelDestroy\n");
 	}
@@ -146,6 +209,11 @@ void ErrorFSM::shutdown() {
 
 int ErrorFSM::getErrorFSMChid() {
 	return ownChid;
+}
+
+
+int ErrorFSM::getReplyChid() {
+	return replyChid;
 }
 
 void ErrorFSM::sendPuckReply(){

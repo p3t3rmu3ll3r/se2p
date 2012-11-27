@@ -9,6 +9,7 @@
 #define B1S06_SLIDE_H_
 
 #include "BaseState.h"
+#include "B1S10_ERR_SlideFull.h"
 
 class B1S06_Slide: public BaseState {
 public:

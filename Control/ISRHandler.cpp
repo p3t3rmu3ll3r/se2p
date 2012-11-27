@@ -21,6 +21,7 @@ Mutex* ISRHandler::isrhandlerInstanceMutex = new Mutex();
 ISRHandler::ISRHandler() {
 	sHal = SensorHAL::getInstance();
 	disp = Dispatcher::getInstance();
+	errfsm = ErrorFSM::getInstance();
 	dispatcherChid = disp->getChid();
 	errfsmChid = errfsm->getErrorFSMChid();
 
@@ -247,16 +248,19 @@ void ISRHandler::execute(void*) {
 					printf("no pulse! ISRTest switch def value\n");
 				}
 
-				//TODO pulse werden mom einfach an errorfsm und dispatcher geschickt.
-				//TODO wenn error fsm arbeitet, soll dispatcher nix mehr tun ... hierrueber regeln oder im disp selber?!
-				rc = MsgSendPulse(dispatcherCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_ISRHANDLER, action);
-				if (rc < 0) {
-					printf("ISRHandler: Error in MsgSendPulse");
-				}
+				if(action != -1){
+					//TODO pulse werden mom einfach an errorfsm und dispatcher geschickt.
+					//TODO wenn error fsm arbeitet, soll dispatcher nix mehr tun ... hierrueber regeln oder im disp selber?!
+					rc = MsgSendPulse(dispatcherCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_ISRHANDLER, action);
+					if (rc < 0) {
+						printf("ISRHandler: Error in MsgSendPulse");
+					}
 
-				rc = MsgSendPulse(errfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_ISRHANDLER, action);
-				if (rc < 0) {
-					printf("ISRHandler: Error in MsgSendPulse");
+					rc = MsgSendPulse(errfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_ISRHANDLER, action);
+					if (rc < 0) {
+						printf("ISRHandler: Error in MsgSendPulse");
+					}
+					action = -1;
 				}
 			}
 		}

@@ -10,16 +10,19 @@
 B1S06_Slide::B1S06_Slide(Controller* controller) {
 	this->controller = controller;
 
-	printf("DEBUG STATE: Puck%d -> B1S06_Slide \n", this->controller->getID());
+	//printf("DEBUG STATE: Puck%d -> B1S06_Slide \n", this->controller->getID());
+
+	//do timer magic for slidefull error
 }
 
 B1S06_Slide::~B1S06_Slide() {
 }
 
 void B1S06_Slide::sbSlideClosed(){
-	puckHandler->removePuckFromBand1(controller);
+	puckHandler->removePuckFromBand(controller);
 	if(puckHandler->isBand1Empty()){
 		actorHAL->engineStop();
 	}
 	controller->resetController();
 }
+

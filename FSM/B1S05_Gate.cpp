@@ -10,7 +10,7 @@
 B1S05_Gate::B1S05_Gate(Controller* controller) {
 	this->controller = controller;
 
-	printf("DEBUG STATE: Puck%d -> B1S05_Gate \n", this->controller->getID());
+	//printf("DEBUG STATE: Puck%d -> B1S05_Gate \n", this->controller->getID());
 
 	if(this->controller->puckType == PUCK_ACCEPTED || this->controller->puckType == PUCK_TURNOVER){
 		actorHAL->gate(true);

@@ -14,8 +14,14 @@
 #include "Controller.h"
 #include "Dispatcher.h"
 #include "Mutex.h"
+#include "bandselection.h"
 
-#define MAX_PUCKS_BAND1 12
+
+#ifdef BAND_1
+	#define MAX_PUCKS_BAND1 12
+#else
+	#define MAX_PUCKS_BAND1 1
+#endif
 
 #define DEBUG_PuckHandler
 
@@ -24,12 +30,12 @@ public:
 
 	static PuckHandler* getInstance();
 
-	void addPuckToBand1(Controller* contr);
+	void addPuckToBand(Controller* contr);
 	void addPuckToSeg1(Controller* contr);
 	void addPuckToSeg2(Controller* contr);
 	void addPuckToSeg3(Controller* contr);
 
-	void removePuckFromBand1(Controller* contr);
+	void removePuckFromBand(Controller* contr);
 	void removePuckFromSeg1();
 	void removePuckFromSeg2();
 	void removePuckFromSeg3();
@@ -43,8 +49,6 @@ public:
 	void initializePucks(Dispatcher* disp);
 	void activatePuck();
 
-	int getReplyChid();
-
 	virtual ~PuckHandler();
 
 private:
@@ -54,6 +58,11 @@ private:
 	static PuckHandler* instance;
 	static Mutex* puckHandlerInstanceMutex;
 
+	Mutex* seg1Mutex;
+	Mutex* seg2Mutex;
+	Mutex* seg3Mutex;
+	Mutex* pucksBandMutex;
+
 	vector<Controller*> pucks;
 	vector<Controller*> pucksOnBand1;
 
@@ -61,7 +70,6 @@ private:
 	queue<Controller*> pucksInSeg2;
 	queue<Controller*> pucksInSeg3;
 
-	int replyChid;
 };
 
 #endif /* PUCKHANDLER_H_ */

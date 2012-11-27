@@ -13,9 +13,10 @@ Mutex* PuckHandler::puckHandlerInstanceMutex = new Mutex();
 
 
 PuckHandler::PuckHandler() {
-	if ((replyChid = ChannelCreate(0)) == -1) {
-		printf("PuckHandler: Error in ChannelCreate\n");
-	}
+	seg1Mutex = new Mutex;
+	seg2Mutex = new Mutex;
+	seg3Mutex = new Mutex;
+	pucksBandMutex = new Mutex;
 }
 
 PuckHandler::~PuckHandler() {
@@ -23,9 +24,11 @@ PuckHandler::~PuckHandler() {
 		delete instance;
 		instance = NULL;
 		puckHandlerInstanceMutex->~Mutex();
-		if (ChannelDestroy(replyChid) == -1) {
-			printf("PuckHandler: Error in ChannelDestroy\n");
-		}
+
+		seg1Mutex->~Mutex();
+		seg2Mutex->~Mutex();
+		seg3Mutex->~Mutex();
+		pucksBandMutex->~Mutex();
 	}
 }
 
@@ -71,30 +74,38 @@ void PuckHandler::activatePuck() {
 }
 
 
-void PuckHandler::addPuckToBand1(Controller* contr) {
-	printf("i is adding ...size(): %d\n", pucksOnBand1.size());
+void PuckHandler::addPuckToBand(Controller* contr) {
+	pucksBandMutex->lock();
 	if (pucksOnBand1.size() < MAX_PUCKS_BAND1) {
 		pucksOnBand1.push_back(contr);
+		pucksBandMutex->unlock();
 	} else {
+		pucksBandMutex->unlock();
 		printf("Error PuckHandler: No moar space on Band1!\n");
 	}
-	printf("i added ...\n");
 }
 
 void PuckHandler::addPuckToSeg1(Controller* contr){
+	seg1Mutex->lock();
 	pucksInSeg1.push(contr);
+	seg1Mutex->unlock();
 }
 
 void PuckHandler::addPuckToSeg2(Controller* contr){
+	seg2Mutex->lock();
 	pucksInSeg2.push(contr);
+	seg2Mutex->unlock();
 }
 
 void PuckHandler::addPuckToSeg3(Controller* contr){
+	seg3Mutex->lock();
 	pucksInSeg3.push(contr);
+	seg3Mutex->unlock();
 }
 
 
-void PuckHandler::removePuckFromBand1(Controller* contr){
+void PuckHandler::removePuckFromBand(Controller* contr){
+	pucksBandMutex->lock();
 	if(!pucksOnBand1.empty()){
 		for(uint32_t i = 0; i < pucksOnBand1.size() ; i++){
 			if(pucksOnBand1.at(i) == contr){
@@ -102,37 +113,50 @@ void PuckHandler::removePuckFromBand1(Controller* contr){
 				break;
 			}
 		}
+		pucksBandMutex->unlock();
 	} else {
+		pucksBandMutex->unlock();
 		printf("Error PuckHandler removePuckFromBand1(): Band1 already empty!\n");
 	}
 }
 
 void PuckHandler::removePuckFromSeg1(){
+	seg1Mutex->lock();
 	if(!pucksInSeg1.empty()){
 		pucksInSeg1.pop();
+		seg1Mutex->unlock();
 	} else {
+		seg1Mutex->unlock();
 		printf("Error PuckHandler: Seg1 already empty!\n");
 	}
 }
 
 void PuckHandler::removePuckFromSeg2(){
+	seg2Mutex->lock();
 	if(!pucksInSeg2.empty()){
 		pucksInSeg2.pop();
+		seg2Mutex->unlock();
 	} else {
+		seg2Mutex->unlock();
 		printf("Error PuckHandler: Seg2 already empty!\n");
 	}
 }
 
 void PuckHandler::removePuckFromSeg3(){
+	seg3Mutex->lock();
 	if(!pucksInSeg3.empty()){
 		pucksInSeg3.pop();
+		seg3Mutex->unlock();
 	} else {
+		seg3Mutex->unlock();
 		printf("Error PuckHandler: Seg3 already empty!\n");
 	}
 }
 
 bool PuckHandler::isBand1Empty(){
+	pucksBandMutex->lock();
 	return pucksOnBand1.empty();
+	pucksBandMutex->unlock();
 }
 
 //TODO methode EStop button(bool pressed)
@@ -154,22 +178,26 @@ void PuckHandler::eStop(bool pressed){
 */
 
 bool PuckHandler::isOnlyOneElemeOnBand1(){
+	pucksBandMutex->lock();
 	return pucksOnBand1.size() == 1 ? true : false;
+	pucksBandMutex->unlock();
 }
 
 bool PuckHandler::checkIfFirstElemInSeg1(Controller* contr){
+	seg1Mutex->lock();
 	return (!pucksInSeg1.empty()) ? (pucksInSeg1.front() == contr) : false;
+	seg1Mutex->unlock();
 }
 
 bool PuckHandler::checkIfFirstElemInSeg2(Controller* contr){
+	seg2Mutex->lock();
 	return (!pucksInSeg2.empty()) ?  (pucksInSeg2.front() == contr) : false;
+	seg2Mutex->unlock();
 }
 
 bool PuckHandler::checkIfFirstElemInSeg3(Controller* contr){
+	seg3Mutex->lock();
 	return (!pucksInSeg3.empty()) ?  (pucksInSeg3.front() == contr) : false;
+	seg3Mutex->unlock();
 }
 
-
-int PuckHandler::getReplyChid() {
-	return replyChid;
-}

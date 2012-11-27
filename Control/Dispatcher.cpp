@@ -86,8 +86,8 @@ void Dispatcher::execute(void*) {
 
 		if (pulse.code == PULSE_FROM_ISRHANDLER) {
 			//werte pulseval aus
-			printf("--------------------------------------------\n"
-				   "Dispatcher received ISR pulse: %d\n",	pulse.value);
+			//printf("--------------------------------------------\n"
+			//	   "Dispatcher received ISR pulse: %d\n",	pulse.value);
 
 			int funcIdx = pulse.value.sival_int;
 			//TODO ggf siwtch um alles bauen, um tasten abzufragen -> EStop und Ein/Aus, prog starten und beenden
@@ -106,7 +106,7 @@ void Dispatcher::execute(void*) {
 			for (uint32_t i = 0; i < controllersForFunc[funcIdx].size(); i++) {
 				(controllersForFunc[funcIdx].at(i)->*funcArr[funcIdx])();
 			}
-			printf("Dispatcher called func%d \n", funcIdx);
+			//printf("Dispatcher called func%d \n", funcIdx);
 		} else if(pulse.code == PULSE_FROM_RS232){
 			//TODO eigentlich unguenstig, dass hier xtra zu behandeln, eigentlich dispatcht
 			//er ja auch nur n funktionsaufruf, is hier mom nur fuer debug, koennte doch oben mit rein oder?

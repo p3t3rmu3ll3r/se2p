@@ -26,8 +26,10 @@
 
 #include "ISRHandler.h"
 #include "PuckHandler.h"
-
 #include "Controller.h"
+#include "ErrorFSM.h"
+
+#define BAND_1
 
 int main(int argc, char *argv[]) {
 
@@ -54,13 +56,18 @@ int main(int argc, char *argv[]) {
 
 	//weil wichtig fuer sim ioacces_open
 	ActorHAL::getInstance();
+	SensorHAL::getInstance();
+
+	ErrorFSM* errfsm = ErrorFSM::getInstance();
+	errfsm->start(0);
 
 	Dispatcher* disp = Dispatcher::getInstance();
 	disp->start(0);
 
-	PuckHandler::getInstance()->initializePucks(disp);
+
 
 	ISRHandler::getInstance()->start(0);
+	PuckHandler::getInstance()->initializePucks(disp);
 
 
 	char breakWhile = 0;

@@ -9,6 +9,7 @@
 #define B1S08_END_H_
 
 #include "BaseState.h"
+#include "B1S09_ERR_TurnOver.h"
 
 class B1S08_End: public BaseState {
 public:

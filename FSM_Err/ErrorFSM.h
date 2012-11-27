@@ -15,25 +15,31 @@
 #include "errorStates.h"
 #include "ActorHAL.h"
 #include "LightController.h"
-#include "PuckHandler.h"
+#include "Mutex.h"
 
+//#define DEBUG_ErrorFSM
 class ErrorFSM: public thread::HAWThread {
 public:
-	ErrorFSM();
 	virtual ~ErrorFSM();
+	static ErrorFSM* getInstance();
 	virtual void execute(void* arg);
 	virtual void shutdown();
 	void stop();
 	int getErrorFSMChid();
+	int getReplyChid();
 
 private:
+	ErrorFSM();
 	int ownChid;
+	int replyChid;
 	int replyCoid;
+
+	static ErrorFSM* instance;
+	static Mutex* errfsmInstanceMutex;
 
 	int state;
 	ActorHAL* aHal;
 	LightController* lc;
-	PuckHandler* ph;
 
 	void sendPuckReply();
 };

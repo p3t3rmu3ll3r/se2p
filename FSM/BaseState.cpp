@@ -11,6 +11,7 @@ BaseState::BaseState() {
 	actorHAL = ActorHAL::getInstance();
 	sensorHAL = SensorHAL::getInstance();
 	puckHandler = PuckHandler::getInstance();
+	errfsm = ErrorFSM::getInstance();
 }
 
 BaseState::~BaseState() {

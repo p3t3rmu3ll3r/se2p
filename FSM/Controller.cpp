@@ -7,6 +7,7 @@
 
 #include "Controller.h"
 #include "B1S01_Entry.h"
+#include "B2S01_Entry.h"
 
 Controller::Controller(int id) {
 	resetController();
@@ -40,11 +41,15 @@ void Controller::resetController() {
 void Controller::sbStartOpen() {
 	if(active && !inUse){
 		inUse = true;
+#ifdef BAND_1
 		state = new B1S01_Entry(this);
-
+#else
+		state = new B2S01_Entry(this);
+#endif
 		state->sbStartOpen();
 	}
 }
+
 
 void Controller::sbStartClosed() {
 	if(active && inUse){

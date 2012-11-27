@@ -10,7 +10,7 @@
 B1S03_Height::B1S03_Height(Controller* controller) {
 	this->controller = controller;
 
-	printf("DEBUG STATE: Puck%d -> B1S03_Height \n", this->controller->getID());
+	//printf("DEBUG STATE: Puck%d -> B1S03_Height \n", this->controller->getID());
 	controller->puckType = sensorHAL->getHeightPuckType();
 }
 
