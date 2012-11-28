@@ -22,6 +22,7 @@ ISRHandler::ISRHandler() {
 	sHal = SensorHAL::getInstance();
 	disp = Dispatcher::getInstance();
 	errfsm = ErrorFSM::getInstance();
+	lc = LightController::getInstance();
 	dispatcherChid = disp->getChid();
 	errfsmChid = errfsm->getErrorFSMChid();
 
@@ -197,11 +198,13 @@ void ISRHandler::execute(void*) {
 #ifdef DEBUG_ISRHandler
 						printf("Starttste gedrueck\n");
 #endif
+						lc->ledStart(true);
 						action = BTN_START_PRESSED;
 					} else {
 #ifdef DEBUG_ISRHandler
 						printf("Starttste losgelassen\n");
 #endif
+						lc->ledStart(false);
 						action = BTN_START_RELEASED;
 					}
 					break;
@@ -223,11 +226,13 @@ void ISRHandler::execute(void*) {
 #ifdef DEBUG_ISRHandler
 						printf("Resettaste gedrueckt\n");
 #endif
+						lc->ledReset(true);
 						action = BTN_RESET_PRESSED;
 					} else {
 #ifdef DEBUG_ISRHandler
 						printf("Resettaste losgelassen\n");
 #endif
+						lc->ledReset(false);
 						action = BTN_RESET_RELEASED;
 					}
 					break;

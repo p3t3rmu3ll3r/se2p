@@ -198,6 +198,18 @@ void ActorHAL::engineStop() {
 	halMutex->unlock();
 }
 
+bool ActorHAL::isEngineStopped() {
+	halMutex->lock();
+	uint8_t val = in8(PORT_A);
+
+#ifdef DEBUG_HAL
+		printf("Debug Hal: is engine stopped\n");
+#endif
+	halMutex->unlock();
+	val = (val >> 3) & 1;
+	return val;
+}
+
 void ActorHAL::engineUnstop() {
 	halMutex->lock();
 	if (!fullStop) {

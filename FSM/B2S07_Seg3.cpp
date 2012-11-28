@@ -9,7 +9,6 @@
 
 B2S07_Seg3::B2S07_Seg3(Controller* controller) {
 	this->controller = controller;
-	puckHandler->addPuckToSeg3(controller);
 
 	printf("DEBUG STATE: Puck%d -> B2S07_Seg3\n", this->controller->getID());
 
@@ -23,6 +22,5 @@ B2S07_Seg3::~B2S07_Seg3() {
 
 void B2S07_Seg3::sbEndOpen() {
 	actorHAL->engineStop();
-	puckHandler->removePuckFromSeg3();
 	new (this) B2S08_End(controller);
 }

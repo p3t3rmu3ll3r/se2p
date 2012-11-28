@@ -8,25 +8,24 @@
 #ifndef DISPATCHER_H_
 #define DISPATCHER_H_
 
+#include <vector>
+#include <stdint.h>
 #include "HAWThread.h"
 #include "HWaccess.h"
 #include "messages.h"
 #include "address.h"
 #include "Mutex.h"
 #include "CallInterface.h"
-#include <vector>
-#include <stdint.h>
+#include "LightController.h"
 
 
-//#define DEBUG_DISPATCHER
+#define DEBUG_DISPATCHER
 
 typedef void (CallInterface::*callFuncs)();
 
 class Dispatcher: public thread::HAWThread {
 public:
-	int getChid();
 	static Dispatcher* getInstance();
-
 	virtual void execute(void* arg);
 	virtual void shutdown();
 	void stop();
@@ -35,6 +34,10 @@ public:
 	void registerContextForFunc(int funcIdx, CallInterface* context);
 	void registerContextForAllFuncs(CallInterface* context);
 
+	int getChid();
+	int getStopChid();
+	void setEstop(bool eStop);
+
 private:
 	Dispatcher();
 
@@ -42,8 +45,12 @@ private:
 	static Mutex* dispatcherInstanceMutex;
 	int chid;
 	int coid;
+	int stopChid;
+	int stopCoid;
+	bool eStop;
 
 	callFuncs* funcArr;
+	LightController* lc;
 	vector<CallInterface*> controllersForFunc[MESSAGES_SIZE];
 };
 

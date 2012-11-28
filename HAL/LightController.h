@@ -81,6 +81,9 @@ void operatingNormal();
 */
 void manualTurnover();
 
+void ledReset(bool isOn);
+void ledStart(bool isOn);
+
 /**
 * Switches all lights of and suspends the thread.
 */

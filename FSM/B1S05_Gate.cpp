@@ -22,6 +22,7 @@ B1S05_Gate::~B1S05_Gate() {
 
 void B1S05_Gate::sbGateClosed(){
 	if(this->controller->puckType == PUCK_ACCEPTED || this->controller->puckType == PUCK_TURNOVER){
+		puckHandler->addPuckToSeg3(controller);
 		new (this) B1S07_Seg3(controller);
 	}
 }

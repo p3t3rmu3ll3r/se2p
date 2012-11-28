@@ -8,6 +8,6 @@
 #ifndef BANDSELECTION_H_
 #define BANDSELECTION_H_
 
-#define BAND_1
+#define BAND_2
 
 #endif /* BANDSELECTION_H_ */

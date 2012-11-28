@@ -12,8 +12,10 @@ Mutex* ErrorFSM::errfsmInstanceMutex = new Mutex();
 
 ErrorFSM::ErrorFSM() {
 	state = ERR_STATE_IDLE;
+	oldState = -1;
 	aHal = ActorHAL::getInstance();
 	lc = LightController::getInstance();
+	disp = Dispatcher::getInstance();
 
 	//Create channel for pulse notification
 	if ((ownChid = ChannelCreate(0)) == -1) {
@@ -58,8 +60,8 @@ void ErrorFSM::execute(void*) {
 	int pulseVal;
 	int pulseCode;
 	bool isSbStartOpen = false;
-
-	lc->operatingNormal();
+	bool isEstopPressed = false;
+	bool isEngineStopped = false;
 
 	while (!isStopped()) {
 #ifdef DEBUG_ErrorFSM
@@ -77,6 +79,14 @@ void ErrorFSM::execute(void*) {
 #ifdef DEBUG_ErrorFSM
 		printf("errorfsm after recv; code: %d, value: %d\n", pulseCode, pulseVal);
 #endif
+
+		if(pulseVal == BTN_ESTOP_PRESSED && !isEstopPressed){
+			isEstopPressed = true;
+			disp->setEstop(true);
+			oldState = state;
+			isEngineStopped = aHal->isEngineStopped();
+			state = ERR_STATE_ESTOP;
+		}
 
 		switch (state) {
 		//Bei idle nur auf Pucks hoeren, IRQs interessieren uns nicht ...
@@ -107,8 +117,9 @@ void ErrorFSM::execute(void*) {
 				state = pulseVal;
 			}
 			break;
-
 		case ERR_STATE_SLIDE_FULL:
+			aHal->engineFullStop();
+			lc->upcomingNotReceipted();
 			if (pulseCode == PULSE_FROM_ISRHANDLER) {
 				if (pulseVal == SB_SLIDE_CLOSED) {
 					lc->goneUnreceipted();
@@ -130,6 +141,8 @@ void ErrorFSM::execute(void*) {
 			}
 			break;
 		case ERR_STATE_TURNOVER:
+			aHal->engineFullStop();
+			lc->manualTurnover();
 			//TODO spaeter auch SB_END_CLOSED abfangen mit if und timer starten fuer wartezeit, bis gedreht wird
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == SB_END_OPEN){
@@ -142,6 +155,8 @@ void ErrorFSM::execute(void*) {
 			}
 			break;
 		case ERR_STATE_ERROR:
+			aHal->engineFullStop();
+			lc->upcomingNotReceipted();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_RESET_PRESSED){
 					lc->upcomingReceipted();
@@ -161,6 +176,8 @@ void ErrorFSM::execute(void*) {
 			}
 			break;
 		case ERR_STATE_TURNOVER_BAND2:
+			aHal->engineFullStop();
+			lc->upcomingNotReceipted();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_RESET_PRESSED){
 					lc->upcomingReceipted();
@@ -179,6 +196,30 @@ void ErrorFSM::execute(void*) {
 					sendPuckReply();
 					aHal->engineFullUnstop();
 					state = ERR_STATE_IDLE;
+				}
+			}
+			break;
+		case ERR_STATE_ESTOP:
+			aHal->engineFullStop();
+			lc->upcomingNotReceipted(); //TODO Big fatsch
+			if(pulseCode == PULSE_FROM_ISRHANDLER){
+				if(pulseVal == BTN_ESTOP_RELEASED && isEstopPressed){
+					lc->upcomingReceipted();
+					state = ERR_STATE_ESTOP_RECEIPTED;
+				}
+			}
+			break;
+		case ERR_STATE_ESTOP_RECEIPTED:
+			if(pulseCode == PULSE_FROM_ISRHANDLER){
+				if(pulseVal == BTN_RESET_PRESSED){
+					isEstopPressed = false;
+					lc->operatingNormal();
+					aHal->engineFullUnstop();
+					if(isEngineStopped){
+						aHal->engineStop();
+					}
+					disp->setEstop(false);
+					state = oldState;
 				}
 			}
 			break;

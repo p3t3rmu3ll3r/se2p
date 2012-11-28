@@ -54,9 +54,12 @@ int main(int argc, char *argv[]) {
 	//ISRTest isrtest;
 	//isrtest.start(0);
 
+	// Testing Milestone 4
 	//weil wichtig fuer sim ioacces_open
-	ActorHAL::getInstance();
+	ActorHAL* ahal = ActorHAL::getInstance();
 	SensorHAL::getInstance();
+
+	LightController* lc = LightController::getInstance();
 
 	ErrorFSM* errfsm = ErrorFSM::getInstance();
 	errfsm->start(0);
@@ -64,12 +67,39 @@ int main(int argc, char *argv[]) {
 	Dispatcher* disp = Dispatcher::getInstance();
 	disp->start(0);
 
+	ISRHandler* isrhandler = ISRHandler::getInstance();
+	isrhandler->start(0);
 
-
-	ISRHandler::getInstance()->start(0);
 	PuckHandler::getInstance()->initializePucks(disp);
 
 
+	struct _pulse pulse;
+	int stopChid = disp->getStopChid();
+
+	int rc = MsgReceivePulse(stopChid, &pulse, sizeof(pulse), NULL);
+	if (rc < 0) {
+		printf("Main: Error in recv pulse\n");
+	}
+	printf("main was stopped, cleaning up ....\n");
+
+	/*START CLEANUP*/
+	disp->stop();
+	isrhandler->stop();
+	ahal->engineStop();
+	ahal->gate(false);
+	errfsm->stop();
+	lc->lightsOff();
+	lc->cont();
+	lc->stop();
+
+
+	disp->join();
+	isrhandler->join();
+	lc->join();
+	errfsm->join();
+	/*END CLEANUP*/
+
+	/* Bitte so lassen
 	char breakWhile = 0;
 	while(1){
 		//tastatureiongabe lesen, dann thread stoppen, irqs stoppen, join, profit
@@ -78,8 +108,9 @@ int main(int argc, char *argv[]) {
 			break;
 		}
 	}
+	Bitte so lassen */
 
-	//TODO testen, ob das kombinierte stop() aus ISRTest geht!
+	//TODO stops in richtiger reihenfologe aufrufen, gate closen
 	//isrtest.stop();
 	//SensorHAL::getInstance()->stopInterrupt();
 	//isrtest.join();

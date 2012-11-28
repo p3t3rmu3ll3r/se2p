@@ -110,6 +110,11 @@ public:
 	void engineFullUnstop();
 
 	/**
+	 *
+	 */
+	bool isEngineStopped();
+
+	/**
 	 * Opens or closes the gate.
 	 * \param isopen [true for open, false for close]
 	 */

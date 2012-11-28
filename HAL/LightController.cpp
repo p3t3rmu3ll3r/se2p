@@ -67,6 +67,22 @@ void LightController::operatingNormal() {
 	aHal->lightGreen(true);
 }
 
+void LightController::ledStart(bool isOn) {
+	if(isOn){
+		aHal->ledStart(true);
+	} else {
+		aHal->ledStart(false);
+	}
+}
+
+void LightController::ledReset(bool isOn) {
+	if(isOn){
+		aHal->ledReset(true);
+	} else {
+		aHal->ledReset(false);
+	}
+}
+
 void LightController::manualTurnover() {
 	lightsOff();
 	function = &LightController::blinkYellow;

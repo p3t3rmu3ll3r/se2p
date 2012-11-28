@@ -25,6 +25,7 @@ void B1S01_Entry::sbStartOpen() {
 }
 
 void B1S01_Entry::sbStartClosed() {
+	puckHandler->addPuckToSeg1(controller);
 	new (this) B1S02_Seg1(controller);
 }
 

@@ -9,7 +9,6 @@
 
 B1S04_Seg2::B1S04_Seg2(Controller* controller) {
 	this->controller = controller;
-	puckHandler->addPuckToSeg2(controller);
 
 	//printf("DEBUG STATE: Puck%d -> B1S04_Seg2\n", this->controller->getID());
 

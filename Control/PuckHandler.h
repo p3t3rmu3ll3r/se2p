@@ -50,6 +50,7 @@ public:
 	void activatePuck();
 
 	virtual ~PuckHandler();
+	void getQueues();
 
 private:
 

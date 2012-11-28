@@ -9,7 +9,6 @@
 
 B1S07_Seg3::B1S07_Seg3(Controller* controller) {
 	this->controller = controller;
-	puckHandler->addPuckToSeg3(controller);
 
 	//printf("DEBUG STATE: Puck%d -> B1S07_Seg3\n", this->controller->getID());
 

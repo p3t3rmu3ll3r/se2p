@@ -91,6 +91,7 @@
 #define PULSE_FROM_RS232		2
 #define PULSE_FROM_ERR_FSM		3
 #define PULSE_FROM_PUCK			4
+#define PULSE_FROM_DISPATCHER 	5
 
 // AIO Card
 #define AIO_BASE 	0x320

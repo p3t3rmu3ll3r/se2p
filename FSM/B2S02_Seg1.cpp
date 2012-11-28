@@ -9,7 +9,6 @@
 
 B2S02_Seg1::B2S02_Seg1(Controller* controller) {
 	this->controller = controller;
-	puckHandler->addPuckToSeg1(controller);
 
 	printf("DEBUG STATE: Puck%d -> B2S02_Seg1 \n", this->controller->getID());
 }
@@ -19,6 +18,5 @@ B2S02_Seg1::~B2S02_Seg1() {
 }
 
 void B2S02_Seg1::sbHeightcontrolOpen() {
-	puckHandler->removePuckFromSeg1();
 	new (this) B2S03_Height(controller);
 }

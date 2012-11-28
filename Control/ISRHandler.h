@@ -24,7 +24,7 @@
 #include "Dispatcher.h"
 #include "ErrorFSM.h"
 
-//#define DEBUG_ISRHandler
+#define DEBUG_ISRHandler
 
 class ISRHandler: public thread::HAWThread {
 public:
@@ -48,6 +48,7 @@ private:
 	SensorHAL* sHal;
 	Dispatcher* disp;
 	ErrorFSM* errfsm;
+	LightController* lc;
 	int dispatcherChid;
 	int errfsmChid;
 	int dispatcherCoid;

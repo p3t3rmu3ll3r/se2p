@@ -16,8 +16,9 @@
 #include "ActorHAL.h"
 #include "LightController.h"
 #include "Mutex.h"
+#include "Dispatcher.h"
 
-//#define DEBUG_ErrorFSM
+#define DEBUG_ErrorFSM
 class ErrorFSM: public thread::HAWThread {
 public:
 	virtual ~ErrorFSM();
@@ -38,7 +39,9 @@ private:
 	static Mutex* errfsmInstanceMutex;
 
 	int state;
+	int oldState;
 	ActorHAL* aHal;
+	Dispatcher* disp;
 	LightController* lc;
 
 	void sendPuckReply();
