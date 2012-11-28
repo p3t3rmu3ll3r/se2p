@@ -16,15 +16,6 @@ Dispatcher::Dispatcher() {
 		printf("Dispatcher: Error in ChannelCreate\n");
 	}
 
-	if ((stopChid = ChannelCreate(0)) == -1) {
-		printf("Dispatcher: Error in ChannelCreate\n");
-	}
-
-	//Connect to channel
-	if ((stopCoid = ConnectAttach(0, 0, stopChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
-		printf("Dispatcher: Error in ConnectAttach\n");
-	}
-
 	funcArr = new callFuncs[MESSAGES_SIZE];
 	int i = 0;
 
@@ -102,11 +93,6 @@ void Dispatcher::execute(void*) {
 			} else if(funcIdx == BTN_STOP_PRESSED && isRunning && !eStop){
 				//printf("BTN_STOP_PRESED && isRunning && !eStop\n");
 				isRunning = false;
-
-				rc = MsgSendPulse(stopCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_DISPATCHER, 0/*cleanup*/);
-				if (rc < 0) {
-					printf("Dispatcher: Error in MsgSendPulse");
-				}
 			}
 
 			if(isRunning && !eStop){
@@ -159,14 +145,6 @@ void Dispatcher::registerContextForAllFuncs(CallInterface* callInterface) {
 void Dispatcher::stop() {
 	HAWThread::stop();
 
-	if (ConnectDetach(stopCoid) == -1) {
-		printf("Dispatcher: Error in ConnectDetach\n");
-	}
-
-	if (ChannelDestroy(stopChid) == -1) {
-		printf("Dispatcher: Error in ChannelDestroy\n");
-	}
-
 	if (ChannelDestroy(chid) == -1) {
 		printf("Dispatcher: Error in ChannelDestroy\n");
 	}
@@ -177,10 +155,6 @@ void Dispatcher::shutdown() {
 
 int Dispatcher::getChid() {
 	return chid;
-}
-
-int Dispatcher::getStopChid() {
-	return stopChid;
 }
 
 void Dispatcher::setEstop(bool eStop){

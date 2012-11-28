@@ -73,16 +73,16 @@ int main(int argc, char *argv[]) {
 	PuckHandler::getInstance()->initializePucks(disp);
 
 
-	struct _pulse pulse;
-	int stopChid = disp->getStopChid();
-
-	int rc = MsgReceivePulse(stopChid, &pulse, sizeof(pulse), NULL);
-	if (rc < 0) {
-		printf("Main: Error in recv pulse\n");
+	/*START CLEANUP*/
+	char breakWhile = 0;
+	while(1){
+		//tastatureiongabe lesen, dann thread stoppen, irqs stoppen, join, profit
+		std::cin >> breakWhile;
+		if(breakWhile == 'q'){
+			break;
+		}
 	}
 	printf("main was stopped, cleaning up ....\n");
-
-	/*START CLEANUP*/
 	disp->stop();
 	isrhandler->stop();
 	ahal->engineStop();
@@ -99,21 +99,6 @@ int main(int argc, char *argv[]) {
 	errfsm->join();
 	/*END CLEANUP*/
 
-	/* Bitte so lassen
-	char breakWhile = 0;
-	while(1){
-		//tastatureiongabe lesen, dann thread stoppen, irqs stoppen, join, profit
-		std::cin >> breakWhile;
-		if(breakWhile == 'q'){
-			break;
-		}
-	}
-	Bitte so lassen */
-
-	//TODO stops in richtiger reihenfologe aufrufen, gate closen
-	//isrtest.stop();
-	//SensorHAL::getInstance()->stopInterrupt();
-	//isrtest.join();
 
 	printf("EXIT_SUCCESS \n");
 

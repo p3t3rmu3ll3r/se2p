@@ -8,6 +8,7 @@
 #include "Controller.h"
 #include "B1S01_Entry.h"
 #include "B2S01_Entry.h"
+#include "State_Test01_Entry.h"
 
 Controller::Controller(int id) {
 	resetController();
@@ -43,8 +44,12 @@ void Controller::sbStartOpen() {
 		inUse = true;
 #ifdef BAND_1
 		state = new B1S01_Entry(this);
-#else
+#endif
+#ifdef BAND_2
 		state = new B2S01_Entry(this);
+#endif
+#ifdef BAND_TEST
+		state = new State_Test01_Entry(this);
 #endif
 		state->sbStartOpen();
 	}

@@ -81,6 +81,7 @@ void operatingNormal();
 */
 void manualTurnover();
 
+void bandHalted();
 void ledReset(bool isOn);
 void ledStart(bool isOn);
 
@@ -133,6 +134,11 @@ void blinkRedFast();
 * Blink red slow
 */
 void blinkRedSlow();
+
+/**
+ *
+ */
+void blinkGreenFast();
 
 };
 

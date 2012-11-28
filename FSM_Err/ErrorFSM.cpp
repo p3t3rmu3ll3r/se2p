@@ -61,6 +61,7 @@ void ErrorFSM::execute(void*) {
 	int pulseCode;
 	bool isSbStartOpen = false;
 	bool isEstopPressed = false;
+	bool isStopPressed = false;
 	bool isEngineStopped = false;
 
 	while (!isStopped()) {
@@ -86,6 +87,11 @@ void ErrorFSM::execute(void*) {
 			oldState = state;
 			isEngineStopped = aHal->isEngineStopped();
 			state = ERR_STATE_ESTOP;
+		} else if(pulseVal == BTN_STOP_PRESSED && !isStopPressed){
+			isStopPressed = true;
+			isEngineStopped = aHal->isEngineStopped();
+			oldState = state;
+			state = ERR_STATE_STOP;
 		}
 
 		switch (state) {
@@ -201,7 +207,7 @@ void ErrorFSM::execute(void*) {
 			break;
 		case ERR_STATE_ESTOP:
 			aHal->engineFullStop();
-			lc->upcomingNotReceipted(); //TODO Big fatsch
+			lc->upcomingNotReceipted();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_ESTOP_RELEASED && isEstopPressed){
 					lc->upcomingReceipted();
@@ -219,6 +225,21 @@ void ErrorFSM::execute(void*) {
 						aHal->engineStop();
 					}
 					disp->setEstop(false);
+					state = oldState;
+				}
+			}
+			break;
+		case ERR_STATE_STOP:
+			aHal->engineFullStop();
+			lc->bandHalted();
+			if(pulseCode == PULSE_FROM_ISRHANDLER){
+				if(pulseVal == BTN_START_PRESSED){
+					isStopPressed = false;
+					lc->operatingNormal();
+					aHal->engineFullUnstop();
+					if(isEngineStopped){
+						aHal->engineStop();
+					}
 					state = oldState;
 				}
 			}

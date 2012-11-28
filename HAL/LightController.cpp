@@ -106,6 +106,12 @@ void LightController::goneUnreceipted() {
 	cont();
 }
 
+void LightController::bandHalted() {
+	lightsOff();
+	function = &LightController::blinkGreenFast;
+	cont();
+}
+
 void LightController::blinkYellow() {
 	aHal->lightYellow(true);
 	sleep(1);
@@ -118,6 +124,13 @@ void LightController::blinkRedFast() {
 	sleep(1);
 	aHal->lightRed(false);
 	sleep(1);
+}
+
+void LightController::blinkGreenFast() {
+	aHal->lightGreen(true);
+	usleep(500000);
+	aHal->lightGreen(false);
+	usleep(500000);
 }
 
 void LightController::blinkRedSlow() {

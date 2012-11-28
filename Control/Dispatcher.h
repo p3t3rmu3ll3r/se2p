@@ -35,7 +35,6 @@ public:
 	void registerContextForAllFuncs(CallInterface* context);
 
 	int getChid();
-	int getStopChid();
 	void setEstop(bool eStop);
 
 private:
@@ -45,8 +44,6 @@ private:
 	static Mutex* dispatcherInstanceMutex;
 	int chid;
 	int coid;
-	int stopChid;
-	int stopCoid;
 	bool eStop;
 
 	callFuncs* funcArr;
