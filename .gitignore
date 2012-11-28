@@ -1,2 +1,6 @@
 *.o
 *.d
+x86/o/se2p
+x86/o-g/se2p_g
+.cproject
+common.mk
