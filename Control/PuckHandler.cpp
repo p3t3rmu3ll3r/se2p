@@ -210,3 +210,33 @@ void PuckHandler::getQueues(){
 	printf("Queue Band size(): %d\n", pucksOnBand1.size());
 }
 
+void PuckHandler::reset(){
+
+	seg1Mutex->~Mutex();
+	seg2Mutex->~Mutex();
+	seg3Mutex->~Mutex();
+	pucksBandMutex->~Mutex();
+
+	seg1Mutex = new Mutex;
+	seg2Mutex = new Mutex;
+	seg3Mutex = new Mutex;
+	pucksBandMutex = new Mutex;
+
+	pucks.clear();
+	pucksOnBand1.clear();
+
+	while(!pucksInSeg1.empty()) {
+		pucksInSeg1.pop();
+	}
+
+	while(!pucksInSeg2.empty()) {
+		pucksInSeg2.pop();
+	}
+
+	while(!pucksInSeg3.empty()) {
+		pucksInSeg3.pop();
+	}
+
+	initializePucks(Dispatcher::getInstance());
+}
+

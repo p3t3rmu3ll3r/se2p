@@ -219,11 +219,9 @@ void ErrorFSM::execute(void*) {
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_RESET_PRESSED){
 					isEstopPressed = false;
+					PuckHandler::getInstance()->reset();
 					lc->operatingNormal();
 					aHal->engineFullUnstop();
-					if(isEngineStopped){
-						aHal->engineStop();
-					}
 					disp->setEstop(false);
 					state = oldState;
 				}

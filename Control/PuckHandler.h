@@ -52,6 +52,8 @@ public:
 	virtual ~PuckHandler();
 	void getQueues();
 
+	void reset();
+
 private:
 
 	PuckHandler();

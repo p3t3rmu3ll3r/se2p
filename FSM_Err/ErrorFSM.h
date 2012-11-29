@@ -17,6 +17,7 @@
 #include "LightController.h"
 #include "Mutex.h"
 #include "Dispatcher.h"
+#include "PuckHandler.h"
 
 #define DEBUG_ErrorFSM
 class ErrorFSM: public thread::HAWThread {
