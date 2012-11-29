@@ -25,7 +25,6 @@ BaseState::BaseState() {
 }
 
 BaseState::~BaseState() {
-	// TODO Auto-generated destructor stub
 }
 
 void BaseState::sbStartOpen(){}

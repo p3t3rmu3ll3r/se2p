@@ -1,8 +1,17 @@
-/*
- * Controller.cpp
+/**
+ * SE2 WiSe 2012
+ * Controller
  *
- *  Created on: 21.11.2012
- *      Author: aay973
+ * Each puck on the band conveyor is an object of this class.
+ *
+ * @file Controller.h
+ * @author Chris Addo
+ *         Jens Eberwein
+ *         Tristan Rudat
+ *         Martin Slowikowski
+ * @date 2012-11-28
+ * @version 0.4
+ *
  */
 
 #include "Controller.h"
