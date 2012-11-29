@@ -1,14 +1,21 @@
-/*
- * messages.h
+/**
+ * SE2 WiSe 2012
+ * CallInterface (abstract class)
  *
- *  Created on: 17.11.2012
- *      Author: martin
+ * Contains all functions that can be dispatched (from Dispatcher, RS232, ...)
+ *
+ * @file CallInterface.h
+ * @author Chris Addo
+ *         Jens Eberwein
+ *         Tristan Rudat
+ *         Martin Slowikowski
+ * @date 2012-11-22
+ * @version 0.1
+ *
  */
 
 #ifndef CALLINTERFACE_H_
 #define CALLINTERFACE_H_
-
-// ISR Handler pulse messages
 
 class CallInterface {
 public:

@@ -7,13 +7,13 @@
  * function the main-thread is not blocking within the thread's join() function.
  * Sending messages works without a thread.
  *
- * \file RS232_1.h
- * \author Chris Addo
+ * @file RS232_1.h
+ * @author Chris Addo
  *         Jens Eberwein
  *         Tristan Rudat
  *         Martin Slowikowski
- * \date 2012-10-23
- * \version 0.9
+ * @date 2012-10-23
+ * @version 0.9
  *
  */
 
@@ -68,7 +68,7 @@ public:
 	 * Function returns an instance of the RS232_1-class. Class is
 	 * using singleton pattern, so only one instance for access to
 	 * the serial-port 1 exists.
-	 * \return instance for serial1
+	 * @return instance for serial1
 	 */
 	static RS232_1* getInstance();
 
@@ -80,15 +80,15 @@ public:
 
 	/**
 	 * send a message on serial1
-	 * \param msg control message, will be defined later
-	 * \return number of bytes send, or -1 if sending failed
+	 * @param msg control message, will be defined later
+	 * @return number of bytes send, or -1 if sending failed
 	 */
 	int sendMsg(char msg);
 
 	/**
 	 * read a message on serial1
-	 * \param rbuf receive buffer, msg will be stored to this buf
-	 * \return number of bytes read, or 0 if timeout occured, or -1 if error ocured
+	 * @param rbuf receive buffer, msg will be stored to this buf
+	 * @return number of bytes read, or 0 if timeout occured, or -1 if error ocured
 	 */
 	int readMsg(char* rbuf);
 

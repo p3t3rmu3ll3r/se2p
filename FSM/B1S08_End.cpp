@@ -22,7 +22,7 @@ B1S08_End::~B1S08_End() {
 
 void B1S08_End::sbEndClosed(){
 	puckHandler->removePuckFromBand(controller);
-	if(puckHandler->isBand1Empty()){
+	if(puckHandler->isBandEmpty()){
 		actorHAL->engineStop();
 	}
 	controller->resetController();

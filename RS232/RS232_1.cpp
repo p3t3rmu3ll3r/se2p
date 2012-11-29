@@ -7,13 +7,13 @@
  * function the main-thread is not blocking within the thread's join() function.
  * Sending messages works without a thread.
  *
- * \file RS232_1.cpp
- * \author Chris Addo
+ * @file RS232_1.cpp
+ * @author Chris Addo
  *         Jens Eberwein
  *         Tristan Rudat
  *         Martin Slowikowski
- * \date 2012-10-23
- * \version 0.9
+ * @date 2012-10-23
+ * @version 0.9
  *
  */
 

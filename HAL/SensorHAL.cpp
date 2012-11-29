@@ -7,13 +7,13 @@
  * buttons. All nterrupt driven, except the height control.
  * ISR tells kernel to send a pulse msg to a specific channel.
  *
- * \file SensorHAL.cpp
- * \author Chris Addo
+ * @file SensorHAL.cpp
+ * @author Chris Addo
  *         Jens Eberwein
  *         Tristan Rudat
  *         Martin Slowikowski
- * \date 2012-11-02
- * \version 0.2
+ * @date 2012-11-02
+ * @version 0.2
  *
  */
 

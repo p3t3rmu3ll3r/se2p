@@ -1,8 +1,18 @@
-/*
- * messages.h
+/**
+ * SE2 WiSe 2012
  *
- *  Created on: 17.11.2012
- *      Author: martin
+ * Contains all messages that ISRHandler can send as a
+ * pulse message to the Dispatcher.
+ * The macro MESSAGE_SIZE defines count of signals.
+ *
+ * @file messages.h
+ * @author Chris Addo
+ *         Jens Eberwein
+ *         Tristan Rudat
+ *         Martin Slowikowski
+ * @date 2012-11-28
+ * @version 0.6
+ *
  */
 
 #ifndef MESSAGES_H_
@@ -10,10 +20,7 @@
 
 #define MESSAGES_SIZE 19
 
-
-// ISR Handler pulse messages
-
-enum sensorMessages{
+enum sensorMessages {
 	SB_START_OPEN,
 	SB_START_CLOSED,
 	SB_HEIGHTCONTROL_OPEN,

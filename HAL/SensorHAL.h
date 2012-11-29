@@ -7,13 +7,13 @@
  * buttons. All nterrupt driven, except the height control.
  * ISR tells kernel to send a pulse msg to a specific channel.
  *
- * \file SensorHAL.h
- * \author Chris Addo
+ * @file SensorHAL.h
+ * @author Chris Addo
  *         Jens Eberwein
  *         Tristan Rudat
  *         Martin Slowikowski
- * \date 2012-11-02
- * \version 0.2
+ * @date 2012-11-02
+ * @version 0.2
  *
  */
 
@@ -40,20 +40,20 @@ public:
 
 	/**
 	 * Returns an instance for the sensor hal to work with.
-	 * \return sensor hal instance
+	 * @return sensor hal instance
 	 */
 	static SensorHAL* getInstance();
 
 	/**
 	 * Channel ID for the ISR pulse messages
-	 * \return channelid
+	 * @return channelid
 	 */
 	int getChid();
 
 	/**
 	 * Connection ID for the connection to the channel used
 	 * for ISR pulse messages
-	 * \return connectionid
+	 * @return connectionid
 	 */
 	int getCoid();
 
@@ -65,7 +65,7 @@ public:
 	/**
 	 * Returns an integer value representing measured height
 	 * from the height sensor.
-	 * \return height
+	 * @return height
 	 */
 	int getHeight();
 

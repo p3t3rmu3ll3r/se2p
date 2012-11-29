@@ -1,8 +1,20 @@
-/*
- * Dispatcher.cpp
+/**
+ * SE2 WiSe 2012
+ * Festo Dispatcher
  *
- *  Created on: 17.11.2012
- *      Author: martin
+ * Dispatcher forwards Pulse Messages received from the ISRHandler and RS232 to
+ * all registered Controllers. Each Controller represents a puck on the band conveyor.
+ * Controllers need the messages to do their transitions to get into another state.
+ * The Dispatcher is part of the controller/reactor mechanism for the state pattern
+ *
+ * @file Dispatcher.cpp
+ * @author Chris Addo
+ *         Jens Eberwein
+ *         Tristan Rudat
+ *         Martin Slowikowski
+ * @date 2012-11-28
+ * @version 0.4
+ *
  */
 
 #include "PuckHandler.h"
@@ -16,6 +28,7 @@ Dispatcher::Dispatcher() {
 		printf("Dispatcher: Error in ChannelCreate\n");
 	}
 
+	// Initialize *fp Array, set up all possible signals
 	funcArr = new callFuncs[MESSAGES_SIZE];
 	int i = 0;
 
@@ -41,7 +54,6 @@ Dispatcher::Dispatcher() {
 
 	lc = LightController::getInstance();
 	eStop = false;
-
 }
 
 Dispatcher::~Dispatcher() {
@@ -87,44 +99,35 @@ void Dispatcher::execute(void*) {
 			int funcIdx = pulse.value.sival_int;
 
 			if(funcIdx == BTN_START_PRESSED && !isRunning && !eStop){
-				//printf("BTN_START_PRESED && !isRunning && !eStop\n");
 				isRunning = true;
 				lc->operatingNormal();
 			} else if(funcIdx == BTN_STOP_PRESSED && isRunning && !eStop){
-				//printf("BTN_STOP_PRESED && isRunning && !eStop\n");
 				isRunning = false;
 			}
 
 			if(isRunning && !eStop){
-				//printf("isRunning && !eStop\n");
-				//werte pulseval aus
-				//printf("--------------------------------------------\n"
-				//	   "Dispatcher received ISR pulse: %d\n",	pulse.value);
+#ifdef DEBUG_DISPATCHER
+				printf("--------------------------------------------\n");
+				printf("Dispatcher received ISR pulse: %d\n", pulse.value);
+#endif
 
-				//TODO ggf siwtch um alles bauen, um tasten abzufragen -> EStop und Ein/Aus, prog starten und beenden
-				// solange EIN nicht pressed, nix dispatchen und nix tun ... if pressed, bool setzen ... gleiches bei stop,
-				// natuerlich alles resetten ;)
-				// if(funcIdx == ESTOP_BTNPRESSED) nix an die pucks weiterleiten und puckhandler estop(true) callen
-				// if (funcIdx == ESTOP_BTNRELEASED) setze bool step1 auf true
-				// if(funcIdx == RESET_BTNPRESSED) setze bool step2 auf true und alles rennt weiter, call puckhandler estop(false)
-				// oder den button in die error fsm verlegen, wenn estop pushed wird, dispatcht dispatcher nix mehr, bis error
-				// fsm sagt -> alles cool
 				if (funcIdx == SB_START_OPEN) {
 					PuckHandler::getInstance()->activatePuck();
+#ifdef DEBUG_DISPATCHER
 					printf("Dispatcher called activatePuck \n");
+#endif
 				}
 
 				for (uint32_t i = 0; i < controllersForFunc[funcIdx].size(); i++) {
 					(controllersForFunc[funcIdx].at(i)->*funcArr[funcIdx])();
 				}
-				//printf("Dispatcher called func%d \n", funcIdx);
+#ifdef DEBUG_DISPATCHER
+				printf("Dispatcher called func%d \n", funcIdx);
+#endif
 			}
 		} else if(pulse.code == PULSE_FROM_RS232){
-			//TODO eigentlich unguenstig, dass hier xtra zu behandeln, eigentlich dispatcht
-			//er ja auch nur n funktionsaufruf, is hier mom nur fuer debug, koennte doch oben mit rein oder?
-			//also if (pulse.code == PULSE_FROM_ISRHANDLER || pulse.code == PULSE_FROM_RS232)
-			int codeSer = pulse.value.sival_int;
-			printf("Dispatcher received RS232 pulse: %d\n", codeSer);
+			//int codeSer = pulse.value.sival_int;
+			//printf("Dispatcher received RS232 pulse: %d\n", codeSer);
 		} else if(pulse.code == PULSE_FROM_ERR_FSM) {
 			// wenn PULSE_FROM_ISRHANDLER ein estop bemerkt, running auf false setzen, kein dispatchen mehr
 			// setze hier running bool zurueck auf true
@@ -137,7 +140,7 @@ void Dispatcher::registerContextForFunc(int funcIdx, CallInterface* callInterfac
 }
 
 void Dispatcher::registerContextForAllFuncs(CallInterface* callInterface) {
-	for(int i = 0; i < MESSAGES_SIZE; i++){
+	for (int i = 0; i < MESSAGES_SIZE; i++) {
 		controllersForFunc[i].push_back(callInterface);
 	}
 }
@@ -157,6 +160,6 @@ int Dispatcher::getChid() {
 	return chid;
 }
 
-void Dispatcher::setEstop(bool eStop){
+void Dispatcher::setEstop(bool eStop) {
 	this->eStop = eStop;
 }

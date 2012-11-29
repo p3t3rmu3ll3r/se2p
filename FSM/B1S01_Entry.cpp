@@ -18,7 +18,7 @@ B1S01_Entry::~B1S01_Entry() {
 }
 
 void B1S01_Entry::sbStartOpen() {
-	if(puckHandler->isOnlyOneElemeOnBand1()){
+	if(puckHandler->isOnlyOneElemeOnBand()){
 		actorHAL->engineRight(false);
 		actorHAL->engineUnstop();
 	}

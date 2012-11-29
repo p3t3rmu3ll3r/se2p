@@ -1,8 +1,16 @@
-/*
- * pucktypes.h
+/**
+ * SE2 WiSe 2012
  *
- *  Created on: 27.11.2012
- *      Author: aba079
+ * Contains all types that a puck can have
+ *
+ * @file puckTypes.h
+ * @author Chris Addo
+ *         Jens Eberwein
+ *         Tristan Rudat
+ *         Martin Slowikowski
+ * @date 2012-11-22
+ * @version 0.1
+ *
  */
 
 #ifndef PUCKTYPES_H_
