@@ -1,8 +1,18 @@
-/*
- * BaseState.h
+/**
+ * SE2 WiSe 2012
+ * BaseState
  *
- *  Created on: 21.11.2012
- *      Author: aay973
+ * Represents a state in the used state pattern. All used states
+ * are derived from this class.
+ *
+ * @file BaseState.h
+ * @author Chris Addo
+ *         Jens Eberwein
+ *         Tristan Rudat
+ *         Martin Slowikowski
+ * @date 2012-11-22
+ * @version 0.1
+ *
  */
 
 #ifndef BASESTATE_H_

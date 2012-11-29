@@ -7,13 +7,13 @@
 * the traffic light is manipulated through public
 * accessible functions.
 *
-* \file LightController.h
-* \author Chris Addo
+* @file LightController.h
+* @author Chris Addo
 * Jens Eberwein
 * Tristan Rudat
 * Martin Slowikowski
-* \date 2012-10-29
-* \version 0.4
+* @date 2012-10-29
+* @version 0.4
 *
 */
 
@@ -45,7 +45,7 @@ virtual void shutdown();
 
 /**
 * Returns instance to work with LightController (Singleton)
-* \return LightController instance
+* @return LightController instance
 */
 static LightController* getInstance();
 

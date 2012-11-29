@@ -6,13 +6,13 @@
  * festo system. All functions are implemented threadsafe by using
  * mutexes.
  * 
- * \file HAL.cpp
- * \author Chris Addo
+ * @file HAL.cpp
+ * @author Chris Addo
  *         Jens Eberwein
  *         Tristan Rudat
  *         Martin Slowikowski
- * \date 2012-10-18
- * \version 1.0
+ * @date 2012-10-18
+ * @version 1.0
  * 
  */
 

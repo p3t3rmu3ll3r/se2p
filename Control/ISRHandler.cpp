@@ -1,15 +1,18 @@
 /**
  * SE2 WiSe 2012
- * ISR with pulse messages
+ * Festo ISRHandler
  *
+ * ISRHandler receives pulse messages from the system. System is set up to send a pulse
+ * message upon completion. ISRHandler evaluates the pulse received by the ISR and sends
+ * a specific pulse to Dispatcher and ErrorFSM.
  *
- * \file ISRHandler.cpp
- * \author Chris Addo
+ * @file ISRHandler.cpp
+ * @author Chris Addo
  *         Jens Eberwein
  *         Tristan Rudat
  *         Martin Slowikowski
- * \date 2012-11-02
- * \version 0.1
+ * @date 2012-11-22
+ * @version 0.2
  *
  */
 
@@ -112,8 +115,7 @@ void ISRHandler::execute(void*) {
 					}
 					break;
 				case 2:
-					//TODO diesen IRQ ignorieren, wenn IRQ WS in Hoehenmessung einfach getHeight()
-					//generiert sonst diverse IRQs, brauchen wir nicht ...
+					// Check type/height of pucks only over A/D, no IRQ forwarded!
 					if (newVal) {
 #ifdef DEBUG_ISRHandler
 						printf("no pulse! Werkstueck im Toleranzbereich\n");
@@ -138,12 +140,7 @@ void ISRHandler::execute(void*) {
 					}
 					break;
 				case 4:
-					//TODO Wenn metall, dann IRQ == 1, Werkstueck weg dann IRQ == 0
-					// kommt dann ein WS ohne metall, gibts KEIN irq, aufpassen!
-					//solange also kein IRQ kommt == alles ok. wenn metall enthalten ist,
-					//kommen zwei interrupts, dann auf band2!!!! handeln und den zweiten
-					//irq ignorieren. Alternative, messen wie bei der hoehe.
-					//TODO Metalsensor pollen, statt irq auswerten
+					// Only IRQ needed is, if puck contains metal; other one not forwarded
 					if (newVal) {
 #ifdef DEBUG_ISRHandler
 						printf("Werkstueck Metall\n");
@@ -156,7 +153,7 @@ void ISRHandler::execute(void*) {
 					}
 					break;
 				case 5:
-					//TODO eigentlich auch not needed
+					// IRQs not needed, so will not be forwarded
 					if (newVal) {
 #ifdef DEBUG_ISRHandler
 						printf("no pulse! Weiche offen\n");
@@ -254,8 +251,6 @@ void ISRHandler::execute(void*) {
 				}
 
 				if(action != -1){
-					//TODO pulse werden mom einfach an errorfsm und dispatcher geschickt.
-					//TODO wenn error fsm arbeitet, soll dispatcher nix mehr tun ... hierrueber regeln oder im disp selber?!
 					rc = MsgSendPulse(dispatcherCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_ISRHANDLER, action);
 					if (rc < 0) {
 						printf("ISRHandler: Error in MsgSendPulse");

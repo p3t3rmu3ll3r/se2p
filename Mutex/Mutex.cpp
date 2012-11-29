@@ -2,7 +2,8 @@
  * SE2 WiSe 2012
  * pThread Mutex
  *
- * Some bla bla bla for this file
+ * Mutual exclusion refers to the problem of ensuring that no two processes
+ * or threads can be in their critical section at the same time.
  * 
  * @file Mutex.cpp
  * @author Chris Addo

@@ -7,13 +7,13 @@
  * the traffic light is manipulated through public
  * accessible functions.
  *
- * \file LightController.cpp
- * \author Chris Addo
+ * @file LightController.cpp
+ * @author Chris Addo
  * Jens Eberwein
  * Tristan Rudat
  * Martin Slowikowski
- * \date 2012-10-29
- * \version 0.4
+ * @date 2012-10-29
+ * @version 0.4
  *
  */
 

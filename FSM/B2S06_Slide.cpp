@@ -20,7 +20,7 @@ B2S06_Slide::~B2S06_Slide() {
 
 void B2S06_Slide::sbSlideClosed(){
 	puckHandler->removePuckFromBand(controller);
-	if(puckHandler->isBand1Empty()){
+	if(puckHandler->isBandEmpty()){
 		actorHAL->engineStop();
 	}
 	controller->resetController();
