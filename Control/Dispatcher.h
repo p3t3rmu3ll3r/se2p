@@ -85,6 +85,8 @@ public:
 	 */
 	void registerContextForAllFuncs(CallInterface* context);
 
+	void unRegisterAll();
+
 	/**
 	 * Returns channel-id for ConnectAttach for sending pulse messages to the Dispatcher
 	 *

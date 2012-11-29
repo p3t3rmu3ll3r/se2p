@@ -238,5 +238,9 @@ void PuckHandler::reset(){
 		pucksInSeg3.pop();
 	}
 
+
+	//TODO: real cleanup, deconstructor... etc.
+	Dispatcher::getInstance()->unRegisterAll();
+
 	initializePucks(Dispatcher::getInstance());
 }

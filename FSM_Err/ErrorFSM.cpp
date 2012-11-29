@@ -208,6 +208,7 @@ void ErrorFSM::execute(void*) {
 		case ERR_STATE_ESTOP:
 			aHal->engineFullStop();
 			lc->upcomingNotReceipted();
+			aHal->gate(false);
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_ESTOP_RELEASED && isEstopPressed){
 					lc->upcomingReceipted();
@@ -222,6 +223,7 @@ void ErrorFSM::execute(void*) {
 					PuckHandler::getInstance()->reset();
 					lc->operatingNormal();
 					aHal->engineFullUnstop();
+					aHal->revokeEngineRight();
 					disp->setEstop(false);
 					state = oldState;
 				}

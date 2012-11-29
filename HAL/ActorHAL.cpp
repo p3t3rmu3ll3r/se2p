@@ -164,6 +164,18 @@ void ActorHAL::engineRight(bool isSlow) {
 	halMutex->unlock();
 }
 
+void ActorHAL::revokeEngineRight() {
+	uint8_t val = in8(PORT_A);
+
+	halMutex->lock();
+
+	//out8(PORT_A, 0x00);
+
+	out8(PORT_A, val & ~(ENGINE_SLOW_RIGHT));
+
+	halMutex->unlock();
+}
+
 void ActorHAL::engineLeft(bool isSlow) {
 	uint8_t val = in8(PORT_A);
 

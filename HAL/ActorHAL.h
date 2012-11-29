@@ -76,8 +76,10 @@ public:
 	 * if parameter isSlow is set to true, engine moves slow
 	 * @param isSlow [false is fast, true is slow]
 	 */
-
 	void engineRight(bool isSlow);
+
+	void revokeEngineRight();
+
 	/**
 	 * Belt conveyor engine moves left with normal speed,
 	 * if parameter isSlow is set to true, engine moves slow

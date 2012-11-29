@@ -145,6 +145,12 @@ void Dispatcher::registerContextForAllFuncs(CallInterface* callInterface) {
 	}
 }
 
+void Dispatcher::unRegisterAll() {
+	for (int i = 0; i < MESSAGES_SIZE; i++) {
+		controllersForFunc[i].clear();
+	}
+}
+
 void Dispatcher::stop() {
 	HAWThread::stop();
 
