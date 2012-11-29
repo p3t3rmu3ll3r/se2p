@@ -1,3 +1,14 @@
+- wird resetController() wirklich ausgeführt?
+- stop klasse, gerufen aus dispatcher oder direkt isrhandler, holt sich alle rennenden instanzen und ruft stop() auf
+- cleanup, nach start erstmal stop aufrufen, danach join; an chan destroy denken, um ausm recvpulse zu kommen
+- dispatcher: 	//TODO eigentlich unnötig, genauso wie detach, da wir nur receiven, aber nicht senden
+	if ((coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+		printf("Dispatcher: Error in ConnectAttach\n");
+	}
+
+- isrhandler macht das stopInterrupt fuer SensorHal
+- hoehenmessung band1 auch anhalten?!
+
 Patterns:
 Singleton
 Facade
