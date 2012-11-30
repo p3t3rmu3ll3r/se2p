@@ -133,7 +133,6 @@ int RS232_1::sendMsg(char msg) {
 int RS232_1::readMsg(char* rbuf) {
 	int rc = readcond(fd, rbuf, sizeof(rbuf), 1, 0, 10);
 
-
 	if(rc <= 0) {
 		if(errno == EAGAIN || rc == 0){
 #ifdef DEBUG_RS232

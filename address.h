@@ -1,8 +1,8 @@
 /**
  * SE2 WiSe 2012
- * I/O addresses
+ * I/O addresses and some defines
  *
- * Some bla bla bla for this file
+ * Contains all defines for hardware access, interrupts and pulse codes
  * 
  * @file address.h
  * @author Chris Addo
@@ -10,7 +10,7 @@
  *         Tristan Rudat
  *         Martin Slowikowski
  * @date 2012-10-18
- * @version 0.1
+ * @version 0.8
  * 
  */
 

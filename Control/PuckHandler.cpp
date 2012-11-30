@@ -240,6 +240,7 @@ void PuckHandler::reset(){
 
 
 	//TODO: real cleanup, deconstructor... etc.
+	//TODO y unregister?! we need all the MAX_PUCKS_BAND after estop mechanism is done.
 	Dispatcher::getInstance()->unRegisterAll();
 
 	initializePucks(Dispatcher::getInstance());

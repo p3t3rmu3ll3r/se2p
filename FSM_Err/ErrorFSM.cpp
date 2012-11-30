@@ -1,9 +1,21 @@
-/*
- * ErrorFSM.cpp
+/**
+ * SE2 WiSe 2012
+ * ErrorFSM
  *
- *  Created on: 26.11.2012
- *      Author: martin
- */
+ * ErrorFSM handles errors that can take place on the Festo system.
+ * It reacts on messages by the ISRHandler (stop, estop), the pucks
+ * and RS232.
+ * It has its own channel where it is receiving pulse messages sent by
+ * ISRHandler, pucks or the RS232. Reply is sent using a special reply
+ * channel on which the pucks can listen to.
+ *
+ * @file ErrorFSM.cpp
+ * @author Chris Addo
+ *         Jens Eberwein
+ *         Tristan Rudat
+ *         Martin Slowikowski
+ * @date 2012-11-29
+ * @version 0.3
 
 #include "ErrorFSM.h"
 

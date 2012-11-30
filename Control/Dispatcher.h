@@ -85,6 +85,9 @@ public:
 	 */
 	void registerContextForAllFuncs(CallInterface* context);
 
+	/**
+	 * Deletes all registered controllers (pucks) from Dispatcher's controller vector.
+	 */
 	void unRegisterAll();
 
 	/**

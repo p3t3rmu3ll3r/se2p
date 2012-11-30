@@ -1,8 +1,21 @@
-/*
- * Receiver.cpp
+/**
+ * SE2 WiSe 2012
+ * RS232 (serial connection) receiver
  *
- *  Created on: 24.11.2012
- *      Author: martin
+ * This receiver uses the RS232 class to receive messages
+ * from another festo system via the serial interface.
+ * It is running in a thread calling RS232's readMsg() function.
+ * If a valid message is received, it is forwarded to responsible
+ * unit (Dispatcher, ErrorFSM)
+ *
+ * @file Receiver.cpp
+ * @author Chris Addo
+ *         Jens Eberwein
+ *         Tristan Rudat
+ *         Martin Slowikowski
+ * @date 2012-10-23
+ * @version 0.1
+ *
  */
 
 #include "Receiver.h"
@@ -56,7 +69,9 @@ void Receiver::execute(void*) {
 		readBytes = rs232_1->readMsg(&buffer);
 
 		if (readBytes < 0) {
-			printf("Error Receiver: Error in readMsg\n");
+#ifdef DEBUG_Receiver
+			printf("Error Receiver: Error or Timeout in readMsg\n");
+#endif
 		}
 
 		if (readBytes > 0) {
@@ -91,4 +106,15 @@ void Receiver::execute(void*) {
 }
 
 void Receiver::shutdown() {
+}
+
+void Receiver::stop(){
+	HAWThread::stop();
+
+	if (ConnectDetach(coid) == -1) {
+		printf("Receiver: Error in ConnectDetach\n");
+	}
+
+	//TODO eigentlich müsste das die main machen ...
+	rs232_1->~RS232_1();
 }

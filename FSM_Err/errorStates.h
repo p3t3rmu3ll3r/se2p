@@ -1,8 +1,19 @@
-/*
- * errorStaters.h
+/**
+ * SE2 WiSe 2012
+ * errorStates
  *
- *  Created on: 26.11.2012
- *      Author: martin
+ * Contains all possible error states the festo system
+ * can get into as an enum
+ *
+ *
+ * @file errorStates.h
+ * @author Chris Addo
+ *         Jens Eberwein
+ *         Tristan Rudat
+ *         Martin Slowikowski
+ * @date 2012-11-28
+ * @version 0.1
+ *
  */
 
 #ifndef ERRORSTATES_H_

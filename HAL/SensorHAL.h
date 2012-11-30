@@ -58,7 +58,11 @@ public:
 	int getCoid();
 
 	/**
-	 * TODO
+	 * Returns the type of a puck that is currently lying in
+	 * the height measurement on the band conveyor.
+	 * Valid types are defined in puckTypes.h
+	 *
+	 * @return pucktype
 	 */
 	int getHeightPuckType();
 

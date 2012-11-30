@@ -7,8 +7,8 @@
  *         Jens Eberwein
  *         Tristan Rudat
  *         Martin Slowikowski
- * @date 2012-10-23
- * @version 0.2
+ * @date 2012-10-18
+ * @version 5.01
  * 
  */
 

@@ -19,24 +19,99 @@
 
 class CallInterface {
 public:
+	/**
+	 * LightBarrier 1 at the beginning of band conveyor is interrupted
+	 */
 	virtual void sbStartOpen()=0;
+
+	/**
+	 * LightBarrier 1 at the beginning of band conveyor is closed
+	 */
 	virtual void sbStartClosed()=0;
+
+	/**
+	 * LightBarrier 2 at the height measurement of band conveyor is interrupted
+	 */
 	virtual void sbHeightcontrolOpen()=0;
+
+	/**
+	 * LightBarrier 2 at the height measurement of band conveyor is closed
+	 */
 	virtual void sbHeightcontrolClosed()=0;
+
+	/**
+	 * LightBarrier 3 at the gate of band conveyor is interrupted
+	 */
 	virtual void sbGateOpen()=0;
+
+	/**
+	 * LightBarrier 3 at the gate of band conveyor is closed
+	 */
 	virtual void sbGateClosed()=0;
+
+	/**
+	 * Puck contains metal
+	 */
 	virtual void msMetalTrue()=0;
+
+	/**
+	 * LightBarrier 4 at the slide of band conveyor is interrupted
+	 */
 	virtual void sbSlideOpen()=0;
+
+	/**
+	 * LightBarrier 4 at the slide of band conveyor is closed
+	 */
 	virtual void sbSlideClosed()=0;
+
+	/**
+	 * LightBarrier 5 at the end of band conveyor is interrupted
+	 */
 	virtual void sbEndOpen()=0;
+
+	/**
+	 * LightBarrier 5 at the end of band conveyor is closed
+	 */
 	virtual void sbEndClosed()=0;
+
+	/**
+	 * Start button at Festo system was pressed
+	 */
 	virtual void btnStartPressed()=0;
+
+	/**
+	 * Start button at Festo system was released
+	 */
 	virtual void btnStartReleased()=0;
+
+	/**
+	 * Stop button at Festo system was pressed
+	 */
 	virtual void btnStopPressed()=0;
+
+	/**
+	 * Stop button at Festo system was released
+	 */
 	virtual void btnStopReleased()=0;
+
+	/**
+	 * Reset button at Festo system was pressed
+	 */
 	virtual void btnResetPressed()=0;
+
+	/**
+	 * Reset button at Festo system was released
+	 */
 	virtual void btnResetReleased()=0;
+
+	/**
+	 * Emergency stop button at Festo system was pressed
+	 */
 	virtual void btnEstopPressed()=0;
+
+	/**
+	 * Emergency stop button at Festo system was released
+	 */
 	virtual void btnEstopReleased()=0;
 };
 

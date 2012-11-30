@@ -74,9 +74,6 @@ const struct sigevent* ISR(void *arg, int id) {
 	return event;
 }
 
-//TODO singleton, mutex für in/out, da nur einmal beim Setup ...
-//eigentlich glob mutex needed, angenommen thread fuer Actor und Sensor HAL
-//initen sich zeitgleich ... unwahrscheinlich, aber moeglich
 void SensorHAL::initInterrupt() {
 	//Create channel for pulse notification
 	if ((chid = ChannelCreate(0)) == -1) {
@@ -137,7 +134,7 @@ int SensorHAL::getHeight() {
 
 int SensorHAL::getHeightPuckType() {
 	int height = getHeight();
-	//TODO
+	//TODO <--- wozu steht das hier?!
 	printf("height: %d\n", height);
 	int type = -1;
 

@@ -27,8 +27,19 @@
 
 class BaseState: public CallInterface {
 public:
+	/**
+	 * Standard constructor, all private defined variables are
+	 * instanciated here.
+	 */
 	BaseState();
 
+	/**
+	 * BasteState is derived from CallInterface, all methods already commented
+	 * in CallInterface.h
+	 * All methods are implemented in this class as empty method stubs. If one is called
+	 * and not overwritten by the substate its corresponding call from this superclass
+	 * is a NOOP.
+	 */
 	virtual void sbStartOpen();
 	virtual void sbStartClosed();
 	virtual void sbHeightcontrolOpen();
@@ -49,13 +60,35 @@ public:
 	virtual void btnEstopPressed();
 	virtual void btnEstopReleased();
 
+	/**
+	 * Standard destructor
+	 */
 	virtual ~BaseState();
 
 protected:
+	/**
+	 * Instance of the ActorHAL to work with
+	 */
 	ActorHAL* actorHAL;
+
+	/**
+	 * Instance of the SensorHAL to work with
+	 */
 	SensorHAL* sensorHAL;
+
+	/**
+	 * Instance of the PuckHandler to work with
+	 */
 	PuckHandler* puckHandler;
+
+	/**
+	 * Instance of the Controller to work with
+	 */
 	Controller* controller;
+
+	/**
+	 * Instance of the ErrorFSM to work with
+	 */
 	ErrorFSM* errfsm;
 };
 

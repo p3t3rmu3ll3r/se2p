@@ -78,6 +78,9 @@ public:
 	 */
 	void engineRight(bool isSlow);
 
+	/**
+	 * TODO what is it doing?! :)
+	 */
 	void revokeEngineRight();
 
 	/**

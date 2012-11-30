@@ -27,119 +27,135 @@
 
 class LightController : public thread::HAWThread {
 public:
-/**
-* Standard destructor
-*/
-virtual ~LightController();
+	/**
+	* Standard destructor
+	*/
+	virtual ~LightController();
 
-/**
-* Executes the chosen light function, initially starts with
-* all lighs off. function to start with configured in constructor
-*/
-virtual void execute(void* arg);
+	/**
+	* Executes the chosen light function, initially starts with
+	* all lighs off. function to start with configured in constructor
+	*/
+	virtual void execute(void* arg);
 
-/**
-* Empty shutdown() function
-*/
-virtual void shutdown();
+	/**
+	* Empty shutdown() function
+	*/
+	virtual void shutdown();
 
-/**
-* Returns instance to work with LightController (Singleton)
-* @return LightController instance
-*/
-static LightController* getInstance();
-
-
-/**
-* Signals an upcoming error, not yet receipted.
-* Red light blinking fast with 1Hz
-*/
-void upcomingNotReceipted();
-
-/**
-* Signals an upcoming and receipted error.
-* Red light on
-*/
-void upcomingReceipted();
-
-/**
-* Signals an error gone but not receipted.
-* Red light blinking slow with 0,5Hz
-*/
-void goneUnreceipted();
-
-/**
-* Signals normal operating system
-* Green light on
-*/
-void operatingNormal();
-
-/**
-* Signals a workpiece with opening at top at the end
-* of conveyor 1.
-* Yellow light blinking
-*/
-void manualTurnover();
-
-void bandHalted();
-void ledReset(bool isOn);
-void ledStart(bool isOn);
-
-/**
-* Switches all lights of and suspends the thread.
-*/
-void lightsOff();
-void off();
+	/**
+	* Returns instance to work with LightController (Singleton)
+	* @return LightController instance
+	*/
+	static LightController* getInstance();
 
 
+	/**
+	* Signals an upcoming error, not yet receipted.
+	* Red light blinking fast with 1Hz
+	*/
+	void upcomingNotReceipted();
+
+	/**
+	* Signals an upcoming and receipted error.
+	* Red light on
+	*/
+	void upcomingReceipted();
+
+	/**
+	* Signals an error gone but not receipted.
+	* Red light blinking slow with 0,5Hz
+	*/
+	void goneUnreceipted();
+
+	/**
+	* Signals normal operating system
+	* Green light on
+	*/
+	void operatingNormal();
+
+	/**
+	* Signals a workpiece with opening at top at the end
+	* of conveyor 1.
+	* Yellow light blinking
+	*/
+	void manualTurnover();
+
+	/**
+	 * If band conveyor was paused freen light is flickering fast
+	 */
+	void bandHalted();
+
+	/**
+	 * Switches the led on the reset button [on if true, else off]
+	 *
+	 * @param [true if on, false if off]
+	 */
+	void ledReset(bool isOn);
+
+	/**
+	 * Switches the led on the start button [on if true, else off]
+	 *
+	 * @param [true if on, false if off]
+	 */
+	void ledStart(bool isOn);
+
+	/**
+	* Switches all lights of and suspends the thread.
+	*/
+	void lightsOff();
+
+	/**
+	 * Pauses execution of the thread by calling hold() from superclass
+	 */
+	void off();
 private:
-/**
-* Private constructor for singleton. Starts and then
-* suspends the thread. Initial function is lightsOff();
-*/
-LightController();
+	/**
+	* Private constructor for singleton. Starts and then
+	* suspends the thread. Initial function is lightsOff();
+	*/
+	LightController();
 
-/**
-* HAL instance to get access to actors.
-*/
-ActorHAL* aHal;
+	/**
+	* HAL instance to get access to actors.
+	*/
+	ActorHAL* aHal;
 
-/**
-* Mutex for creation of the LightController instance
-*/
-static Mutex* lightInstanceMutex;
+	/**
+	* Mutex for creation of the LightController instance
+	*/
+	static Mutex* lightInstanceMutex;
 
-/**
-* Instance for using LightController (Singleton)
-*/
-static LightController* instance;
+	/**
+	* Instance for using LightController (Singleton)
+	*/
+	static LightController* instance;
 
-/**
-* Function-pointer for the execute function. Can be set by
-* the public methods to be executed in the thread.
-*/
-void (LightController::*function)(void);
+	/**
+	* Function-pointer for the execute function. Can be set by
+	* the public methods to be executed in the thread.
+	*/
+	void (LightController::*function)(void);
 
-/**
-* Blink yellow
-*/
-void blinkYellow();
+	/**
+	* Blink yellow
+	*/
+	void blinkYellow();
 
-/**
-* Blink red fast
-*/
-void blinkRedFast();
+	/**
+	* Blink red fast
+	*/
+	void blinkRedFast();
 
-/**
-* Blink red slow
-*/
-void blinkRedSlow();
+	/**
+	* Blink red slow
+	*/
+	void blinkRedSlow();
 
-/**
- *
- */
-void blinkGreenFast();
-
+	/**
+	 * Blink green fast
+	 */
+	void blinkGreenFast();
 };
 
 #endif /* LIGHTCONTROLLER_H_ */

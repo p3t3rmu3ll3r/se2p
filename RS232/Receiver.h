@@ -1,8 +1,21 @@
-/*
- * Receiver.h
+/**
+ * SE2 WiSe 2012
+ * RS232 (serial connection) receiver
  *
- *  Created on: 24.11.2012
- *      Author: martin
+ * This receiver uses the RS232 class to receive messages
+ * from another festo system via the serial interface.
+ * It is running in a thread calling RS232's readMsg() function.
+ * If a valid message is received, it is forwarded to responsible
+ * unit (Dispatcher, ErrorFSM)
+ *
+ * @file Receiver.h
+ * @author Chris Addo
+ *         Jens Eberwein
+ *         Tristan Rudat
+ *         Martin Slowikowski
+ * @date 2012-10-23
+ * @version 0.1
+ *
  */
 
 #ifndef RECEIVER_H_
@@ -25,6 +38,7 @@ class Receiver: public thread::HAWThread {
 public:
 	virtual void execute(void* arg);
 	virtual void shutdown();
+	void stop();
 	static Receiver* getInstance();
 	virtual ~Receiver();
 
