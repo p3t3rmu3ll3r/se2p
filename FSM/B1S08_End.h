@@ -10,6 +10,7 @@
 
 #include "BaseState.h"
 #include "B1S09_ERR_TurnOver.h"
+#include "B1S11_ReadyWait.h"
 
 class B1S08_End: public BaseState {
 public:

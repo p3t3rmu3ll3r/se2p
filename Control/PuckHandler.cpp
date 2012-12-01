@@ -81,11 +81,22 @@ void PuckHandler::activatePuck() {
 	}
 }
 
+void PuckHandler::resetAllPucks() {
+	if (!pucks.empty()) {
+		for (int i = 0; i < MAX_PUCKS_BAND; i++) {
+			pucks.at(i)->resetController();
+#ifdef DEBUG_PuckHandler
+			printf("Debug PuckHandler: resetted Puck%d \n", pucks.at(i)->getID());
+#endif
+		}
+	}
+}
+
 
 void PuckHandler::addPuckToBand(Controller* contr) {
 	pucksBandMutex->lock();
-	if (pucksOnBand1.size() < MAX_PUCKS_BAND) {
-		pucksOnBand1.push_back(contr);
+	if (pucksOnBand.size() < MAX_PUCKS_BAND) {
+		pucksOnBand.push_back(contr);
 		pucksBandMutex->unlock();
 	} else {
 		pucksBandMutex->unlock();
@@ -114,10 +125,10 @@ void PuckHandler::addPuckToSeg3(Controller* contr) {
 
 void PuckHandler::removePuckFromBand(Controller* contr) {
 	pucksBandMutex->lock();
-	if (!pucksOnBand1.empty()) {
-		for (uint32_t i = 0; i < pucksOnBand1.size(); i++) {
-			if (pucksOnBand1.at(i) == contr) {
-				pucksOnBand1.erase(pucksOnBand1.begin() + i);
+	if (!pucksOnBand.empty()) {
+		for (uint32_t i = 0; i < pucksOnBand.size(); i++) {
+			if (pucksOnBand.at(i) == contr) {
+				pucksOnBand.erase(pucksOnBand.begin() + i);
 				break;
 			}
 		}
@@ -164,13 +175,13 @@ void PuckHandler::removePuckFromSeg3() {
 
 bool PuckHandler::isBandEmpty() {
 	pucksBandMutex->lock();
-	return pucksOnBand1.empty();
+	return pucksOnBand.empty();
 	pucksBandMutex->unlock();
 }
 
 bool PuckHandler::isOnlyOneElemeOnBand() {
 	pucksBandMutex->lock();
-	return pucksOnBand1.size() == 1 ? true : false;
+	return pucksOnBand.size() == 1 ? true : false;
 	pucksBandMutex->unlock();
 }
 
@@ -208,7 +219,7 @@ void PuckHandler::printQueueStatus() {
 					: pucksInSeg3.front()->getID()), (pucksInSeg3.empty() ? 'X'
 					: pucksInSeg3.front()->isFirstElementInSegment() ? 't'
 							: 'c'));
-	printf("Queue Band size(): %d\n", pucksOnBand1.size());
+	printf("Queue Band size(): %d\n", pucksOnBand.size());
 }
 
 void PuckHandler::reset(){
@@ -223,8 +234,7 @@ void PuckHandler::reset(){
 	seg3Mutex = new Mutex;
 	pucksBandMutex = new Mutex;
 
-	pucks.clear();
-	pucksOnBand1.clear();
+	pucksOnBand.clear();
 
 	while(!pucksInSeg1.empty()) {
 		pucksInSeg1.pop();
@@ -238,10 +248,5 @@ void PuckHandler::reset(){
 		pucksInSeg3.pop();
 	}
 
-
-	//TODO: real cleanup, deconstructor... etc.
-	//TODO y unregister?! we need all the MAX_PUCKS_BAND after estop mechanism is done.
-	Dispatcher::getInstance()->unRegisterAll();
-
-	initializePucks(Dispatcher::getInstance());
+	resetAllPucks();
 }

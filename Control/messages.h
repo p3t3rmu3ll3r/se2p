@@ -18,8 +18,10 @@
 #ifndef MESSAGES_H_
 #define MESSAGES_H_
 
-#define MESSAGES_SIZE 19
+#define SENSOR_MESSAGES_SIZE 19
+#define RS232_MESSAGES_SIZE 3
 
+//all this messages need to be dispatched
 enum sensorMessages {
 	SB_START_OPEN,
 	SB_START_CLOSED,
@@ -39,7 +41,13 @@ enum sensorMessages {
 	BTN_RESET_PRESSED,
 	BTN_RESET_RELEASED,
 	BTN_ESTOP_PRESSED,
-	BTN_ESTOP_RELEASED
+	BTN_ESTOP_RELEASED,
+};
+
+enum rs232Messages {
+	RS232_BAND2_ACK,
+	RS232_BAND2_READY,
+	RS232_BAND1_WAITING,
 };
 
 #endif /* MESSAGES_H_ */

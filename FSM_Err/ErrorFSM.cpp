@@ -16,6 +16,7 @@
  *         Martin Slowikowski
  * @date 2012-11-29
  * @version 0.3
+ */
 
 #include "ErrorFSM.h"
 
@@ -96,8 +97,6 @@ void ErrorFSM::execute(void*) {
 		if(pulseVal == BTN_ESTOP_PRESSED && !isEstopPressed){
 			isEstopPressed = true;
 			disp->setEstop(true);
-			oldState = state;
-			isEngineStopped = aHal->isEngineStopped();
 			state = ERR_STATE_ESTOP;
 		} else if(pulseVal == BTN_STOP_PRESSED && !isStopPressed){
 			isStopPressed = true;
@@ -161,7 +160,6 @@ void ErrorFSM::execute(void*) {
 		case ERR_STATE_TURNOVER:
 			aHal->engineFullStop();
 			lc->manualTurnover();
-			//TODO spaeter auch SB_END_CLOSED abfangen mit if und timer starten fuer wartezeit, bis gedreht wird
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == SB_END_OPEN){
 					lc->operatingNormal();
@@ -237,7 +235,7 @@ void ErrorFSM::execute(void*) {
 					aHal->engineFullUnstop();
 					aHal->revokeEngineRight();
 					disp->setEstop(false);
-					state = oldState;
+					state = ERR_STATE_IDLE;
 				}
 			}
 			break;

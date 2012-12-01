@@ -79,7 +79,7 @@ public:
 	void engineRight(bool isSlow);
 
 	/**
-	 * TODO what is it doing?! :)
+	 * Deletes the ENGINE_RIGHT and ENGINE_RIGHT_SLOW bit, band conveyor stops
 	 */
 	void revokeEngineRight();
 

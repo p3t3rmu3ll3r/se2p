@@ -134,8 +134,9 @@ int SensorHAL::getHeight() {
 
 int SensorHAL::getHeightPuckType() {
 	int height = getHeight();
-	//TODO <--- wozu steht das hier?!
+#ifdef DEBUG_SENSORHAL
 	printf("height: %d\n", height);
+#endif
 	int type = -1;
 
 	if ((height < 2900) && (height > 2600)) {
@@ -145,7 +146,9 @@ int SensorHAL::getHeightPuckType() {
 	} else {
 		type = PUCK_ACCEPTED;
 	}
+#ifdef DEBUG_SENSORHAL
 	printf("getType: %d\n", type);
+#endif
 	return type;
 }
 

@@ -29,7 +29,7 @@
 #include "Mutex.h"
 #include "CallInterface.h"
 #include "LightController.h"
-
+#include "RS232_1.h"
 
 #define DEBUG_DISPATCHER
 
@@ -71,24 +71,11 @@ public:
 	virtual ~Dispatcher();
 
 	/**
-	 * Controllers (Pucks) can register for a special function they want to get a callback for.
-	 *
-	 * @param funcIdx signal for callback
-	 * @param context referenced puck
-	 */
-	void registerContextForFunc(int funcIdx, CallInterface* context);
-
-	/**
 	 * Controllers (Pucks) can register for all existing functions to get callback for.
 	 *
 	 * @param context referenced puck
 	 */
 	void registerContextForAllFuncs(CallInterface* context);
-
-	/**
-	 * Deletes all registered controllers (pucks) from Dispatcher's controller vector.
-	 */
-	void unRegisterAll();
 
 	/**
 	 * Returns channel-id for ConnectAttach for sending pulse messages to the Dispatcher
@@ -132,20 +119,26 @@ private:
 	 */
 	bool eStop;
 
+	//TODO Docu stuff
 	/**
 	 *  Array for all known signals (*fp), initialized in constructor
 	 */
-	callFuncs* funcArr;
+	callFuncs* sensorFuncArr;
+
+	callFuncs* rs232FuncArr;
 
 	/**
 	 * Instance of the LightController
 	 */
 	LightController* lc;
 
+	//TODO Docu stuff
 	/**
 	 * Vector contains all Controllers (Pucks) registered
 	 */
-	vector<CallInterface*> controllersForFunc[MESSAGES_SIZE];
+	vector<CallInterface*> controllersForSensorFunc[SENSOR_MESSAGES_SIZE];
+
+	vector<CallInterface*> controllersForRS232Func[RS232_MESSAGES_SIZE];
 };
 
 #endif /* DISPATCHER_H_ */

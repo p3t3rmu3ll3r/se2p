@@ -50,11 +50,6 @@ public:
 	 * if called also stops interrupts.
 	 */
 	void stop();
-	//TODO stop methode ueberschreiben, stop von hawthread ausfuehren,
-	//danach stopInterrupt aus SensorHAl aufrufen. Wichtig fuer unseren Dispatcher
-	//der wird spaeter im MsgReceivePulse blocken. alternativ immer IRQs gesondert
-	//abschalten, solange kein anderer dispatcher/thread die msges verarbeitet
-	//kann das aber stop mitmachen.
 
 private:
 	/**

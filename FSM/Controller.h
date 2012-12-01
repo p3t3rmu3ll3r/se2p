@@ -55,6 +55,9 @@ public:
 	void btnResetReleased();
 	void btnEstopPressed();
 	void btnEstopReleased();
+	void rs232Band2Ack();
+	void rs232Band2Ready();
+	void rs232Band1Waiting();
 
 	/**
 	 * Each controller (puck) is held in a specific queue. For each
@@ -109,6 +112,13 @@ public:
 	virtual ~Controller();
 
 	/**
+	 * Returns if band1 is currently waiting to transfer a puck
+	 *
+	 * @return [true if band1 is waiting, else false]
+	 */
+	bool isBand1Waiting();
+
+	/**
 	 * Type of the puck, valid types are defined in puckTypes.h
 	 */
 	int puckType;
@@ -143,7 +153,12 @@ private:
 	 * sbStartOpen(). inUse is set to true. Otherwise everytime the signal
 	 * is issued again (new puck on band) the state would be reset!
 	 */
-	bool inUse;
+	bool startable;
+
+	/**
+	 * Defines if band1 is waiting to transfer a puck to band2
+	 */
+	bool band1Waiting;
 };
 
 #endif /* CONTROLLER_H_ */

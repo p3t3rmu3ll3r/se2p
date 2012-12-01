@@ -29,28 +29,34 @@ Dispatcher::Dispatcher() {
 	}
 
 	// Initialize *fp Array, set up all possible signals
-	funcArr = new callFuncs[MESSAGES_SIZE];
+	sensorFuncArr = new callFuncs[SENSOR_MESSAGES_SIZE];
+	rs232FuncArr = new callFuncs[RS232_MESSAGES_SIZE];
 	int i = 0;
 
-	funcArr[i++] = &CallInterface::sbStartOpen;
-	funcArr[i++] = &CallInterface::sbStartClosed;
-	funcArr[i++] = &CallInterface::sbHeightcontrolOpen;
-	funcArr[i++] = &CallInterface::sbHeightcontrolClosed;
-	funcArr[i++] = &CallInterface::sbGateOpen;
-	funcArr[i++] = &CallInterface::sbGateClosed;
-	funcArr[i++] = &CallInterface::msMetalTrue;
-	funcArr[i++] = &CallInterface::sbSlideOpen;
-	funcArr[i++] = &CallInterface::sbSlideClosed;
-	funcArr[i++] = &CallInterface::sbEndOpen;
-	funcArr[i++] = &CallInterface::sbEndClosed;
-	funcArr[i++] = &CallInterface::btnStartPressed;
-	funcArr[i++] = &CallInterface::btnStartReleased;
-	funcArr[i++] = &CallInterface::btnStopPressed;
-	funcArr[i++] = &CallInterface::btnStopReleased;
-	funcArr[i++] = &CallInterface::btnResetPressed;
-	funcArr[i++] = &CallInterface::btnResetReleased;
-	funcArr[i++] = &CallInterface::btnEstopPressed;
-	funcArr[i++] = &CallInterface::btnEstopReleased;
+	sensorFuncArr[i++] = &CallInterface::sbStartOpen;
+	sensorFuncArr[i++] = &CallInterface::sbStartClosed;
+	sensorFuncArr[i++] = &CallInterface::sbHeightcontrolOpen;
+	sensorFuncArr[i++] = &CallInterface::sbHeightcontrolClosed;
+	sensorFuncArr[i++] = &CallInterface::sbGateOpen;
+	sensorFuncArr[i++] = &CallInterface::sbGateClosed;
+	sensorFuncArr[i++] = &CallInterface::msMetalTrue;
+	sensorFuncArr[i++] = &CallInterface::sbSlideOpen;
+	sensorFuncArr[i++] = &CallInterface::sbSlideClosed;
+	sensorFuncArr[i++] = &CallInterface::sbEndOpen;
+	sensorFuncArr[i++] = &CallInterface::sbEndClosed;
+	sensorFuncArr[i++] = &CallInterface::btnStartPressed;
+	sensorFuncArr[i++] = &CallInterface::btnStartReleased;
+	sensorFuncArr[i++] = &CallInterface::btnStopPressed;
+	sensorFuncArr[i++] = &CallInterface::btnStopReleased;
+	sensorFuncArr[i++] = &CallInterface::btnResetPressed;
+	sensorFuncArr[i++] = &CallInterface::btnResetReleased;
+	sensorFuncArr[i++] = &CallInterface::btnEstopPressed;
+	sensorFuncArr[i++] = &CallInterface::btnEstopReleased;
+
+	i = 0;
+	rs232FuncArr[i++] = &CallInterface::rs232Band2Ack;
+	rs232FuncArr[i++] = &CallInterface::rs232Band2Ready;
+	rs232FuncArr[i++] = &CallInterface::rs232Band1Waiting;
 
 	lc = LightController::getInstance();
 	eStop = false;
@@ -58,7 +64,7 @@ Dispatcher::Dispatcher() {
 
 Dispatcher::~Dispatcher() {
 	if (instance != NULL) {
-		delete[] funcArr;
+		delete[] sensorFuncArr;
 		delete instance;
 		instance = NULL;
 		dispatcherInstanceMutex->~Mutex();
@@ -95,8 +101,9 @@ void Dispatcher::execute(void*) {
 			}
 		}
 
+		int funcIdx = pulse.value.sival_int;
+
 		if (pulse.code == PULSE_FROM_ISRHANDLER) {
-			int funcIdx = pulse.value.sival_int;
 
 			if(funcIdx == BTN_START_PRESSED && !isRunning && !eStop){
 				isRunning = true;
@@ -118,36 +125,53 @@ void Dispatcher::execute(void*) {
 #endif
 				}
 
-				for (uint32_t i = 0; i < controllersForFunc[funcIdx].size(); i++) {
-					(controllersForFunc[funcIdx].at(i)->*funcArr[funcIdx])();
+				for (uint32_t i = 0; i < controllersForSensorFunc[funcIdx].size(); i++) {
+					(controllersForSensorFunc[funcIdx].at(i)->*sensorFuncArr[funcIdx])();
 				}
 #ifdef DEBUG_DISPATCHER
 				printf("Dispatcher called func%d \n", funcIdx);
 #endif
 			}
 		} else if(pulse.code == PULSE_FROM_RS232){
-			//int codeSer = pulse.value.sival_int;
-			//printf("Dispatcher received RS232 pulse: %d\n", codeSer);
+
+			if(isRunning && !eStop){
+#ifdef DEBUG_DISPATCHER
+				printf("--------------------------------------------\n");
+				printf("Dispatcher received RS232 pulse: %d\n", pulse.value);
+#endif
+#ifdef BAND_2
+				if(funcIdx == RS232_BAND1_WAITING && PuckHandler::getInstance()->isBandEmpty()){
+					RS232_1::getInstance()->sendMsg(RS232_BAND2_READY);
+					ActorHAL::getInstance()->engineRight(false);
+					ActorHAL::getInstance()->engineUnstop();
+				} else if(funcIdx == RS232_BAND1_WAITING) {
+					RS232_1::getInstance()->sendMsg(RS232_BAND2_ACK);
+#endif
+
+				for (uint32_t i = 0; i < controllersForRS232Func[funcIdx].size(); i++) {
+					(controllersForRS232Func[funcIdx].at(i)->*rs232FuncArr[funcIdx])();
+				}
+#ifdef BAND_2
+				}
+#endif
+
+#ifdef DEBUG_DISPATCHER
+				printf("Dispatcher called func%d \n", funcIdx);
+#endif
+			}
 		} else if(pulse.code == PULSE_FROM_ERR_FSM) {
-			// wenn PULSE_FROM_ISRHANDLER ein estop bemerkt, running auf false setzen, kein dispatchen mehr
-			// setze hier running bool zurueck auf true
+			//not used atm
 		}
 	}
 }
 
-void Dispatcher::registerContextForFunc(int funcIdx, CallInterface* callInterface) {
-	controllersForFunc[funcIdx].push_back(callInterface);
-}
-
 void Dispatcher::registerContextForAllFuncs(CallInterface* callInterface) {
-	for (int i = 0; i < MESSAGES_SIZE; i++) {
-		controllersForFunc[i].push_back(callInterface);
+	for (int i = 0; i < SENSOR_MESSAGES_SIZE; i++) {
+		controllersForSensorFunc[i].push_back(callInterface);
 	}
-}
 
-void Dispatcher::unRegisterAll() {
-	for (int i = 0; i < MESSAGES_SIZE; i++) {
-		controllersForFunc[i].clear();
+	for (int i = 0; i < RS232_MESSAGES_SIZE; i++) {
+		controllersForRS232Func[i].push_back(callInterface);
 	}
 }
 

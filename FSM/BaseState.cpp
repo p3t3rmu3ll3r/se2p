@@ -5,13 +5,13 @@
  * Represents a state in the used state pattern. All used states
  * are derived from this class.
  *
- * @file BaseState.h
+ * @file BaseState.cpp
  * @author Chris Addo
  *         Jens Eberwein
  *         Tristan Rudat
  *         Martin Slowikowski
- * @date 2012-11-22
- * @version 0.1
+ * @date 2012-12-01
+ * @version 0.2
  *
  */
 
@@ -22,6 +22,7 @@ BaseState::BaseState() {
 	sensorHAL = SensorHAL::getInstance();
 	puckHandler = PuckHandler::getInstance();
 	errfsm = ErrorFSM::getInstance();
+	rs232_1 = RS232_1::getInstance();
 }
 
 BaseState::~BaseState() {
@@ -46,3 +47,6 @@ void BaseState::btnResetPressed(){}
 void BaseState::btnResetReleased(){}
 void BaseState::btnEstopPressed(){}
 void BaseState::btnEstopReleased(){}
+void BaseState::rs232Band2Ack(){}
+void BaseState::rs232Band2Ready(){}
+void BaseState::rs232Band1Waiting(){}

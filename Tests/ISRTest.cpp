@@ -55,8 +55,6 @@ void ISRTest::execute(void*) {
 		for (i = 0; i < 12; i++) {
 			if (((newVal >> i) & 1) != ((oldVal >> i) & 1)) {
 				hasChanged = (newVal >> i) & 1;
-				//TODO fuer die einzelnen Faelle DEFINEs oder enums machen, brauchen
-				//wir eh fuer die states spaeter, aber auch erst im Dispatcher ;)
 				switch (i) {
 				case 0:
 					if (hasChanged) {
@@ -91,8 +89,6 @@ void ISRTest::execute(void*) {
 					}
 					break;
 				case 2:
-					//TODO diesen IRQ ignorieren, wenn IRQ WS in Hoehenmessung einfach getHeight()
-					//generiert sonst diverse IRQs, brauchen wir nicht ...
 					if (hasChanged) {
 						printf("Werkstueck im Toleranzbereich: %d\n",
 								sHal->getHeight());
@@ -112,11 +108,6 @@ void ISRTest::execute(void*) {
 					}
 					break;
 				case 4:
-					//TODO Wenn metall, dann IRQ == 1, Werkstueck weg dann IRQ == 0
-					// kommt dann ein WS ohne metall, gibts KEIN irq, aufpassen!
-					//solange also kein IRQ kommt == alles ok. wenn metall enthalten ist,
-					//kommen zwei interrupts, dann auf band2!!!! handeln und den zweiten
-					//irq ignorieren. Alternative, messen wie bei der hoehe.
 					if (hasChanged) {
 						printf("Werkstueck Metall\n");
 						hasMetal = true;
@@ -184,10 +175,6 @@ void ISRTest::execute(void*) {
 					}
 					break;
 				case 11:
-					//TODO schalter prellt beim rausziehen ... loest zig mal IRQs aus, entprellen
-					//z.B.wenn not aus ISR ausgeloest, not aus ignorieren, beim ersten mal einfach
-					//n bool setzen, den erst wieder ruecksetzen, wenn start gedrueckt wird.
-					//start prueft dann, ob not aus freigegeben ist und startet erst DANN wieder.
 					if (hasChanged) {
 						printf("E-Stoptaste geloest\n");
 						eStopBtn = false;

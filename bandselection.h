@@ -18,6 +18,6 @@
 #define BANDSELECTION_H_
 
 //valid defines are BAND_1 BAND_2 BAND_TEST
-#define BAND_1
+#define BAND_2
 
 #endif /* BANDSELECTION_H_ */

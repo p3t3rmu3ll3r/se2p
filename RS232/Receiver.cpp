@@ -60,7 +60,7 @@ Receiver* Receiver::getInstance() {
 }
 
 void Receiver::execute(void*) {
-	char buffer = '0';
+	char buffer = -1;
 	int readBytes; 
 	int rc;
 	int pulseval = -1;
@@ -77,21 +77,27 @@ void Receiver::execute(void*) {
 		if (readBytes > 0) {
 
 			switch (buffer) {
-			case '0':
-				pulseval = B2_MSG0;
+			case RS232_BAND2_ACK:
+				pulseval = RS232_BAND2_ACK;
 #ifdef DEBUG_Receiver
-				printf("Received random shit to be defined\n");
+				printf("Received RS232_BAND2_ACK\n");
 #endif
 				break;
-			case '1':
-				pulseval = B2_MSG1;
+			case RS232_BAND2_READY:
+				pulseval = RS232_BAND2_READY;
 #ifdef DEBUG_Receiver
-				printf("Received random shit to be defined\n");
+				printf("Received RS232_BAND2_READY\n");
+#endif
+				break;
+			case RS232_BAND1_WAITING:
+				pulseval = RS232_BAND1_WAITING;
+#ifdef DEBUG_Receiver
+				printf("Received RS232_BAND2_READY\n");
 #endif
 				break;
 			default:
 #ifdef DEBUG_Receiver
-				printf("Received random shit to be defined\n");
+				printf("Received random shit not wanted...\n");
 #endif
 			}
 			rc = MsgSendPulse(coid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_RS232, pulseval);

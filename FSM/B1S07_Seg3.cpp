@@ -12,7 +12,8 @@ B1S07_Seg3::B1S07_Seg3(Controller* controller) {
 
 	//printf("DEBUG STATE: Puck%d -> B1S07_Seg3\n", this->controller->getID());
 
-	//TODO 2 chk if ok
+	//TODO 2 chk if ok, bad bcuz selftransition, in extry last state!
+	// TODO auch im fsm diag anpass0rn
 	usleep(400000);
 	actorHAL->gate(false);
 

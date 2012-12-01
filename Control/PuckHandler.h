@@ -170,6 +170,11 @@ private:
 	PuckHandler();
 
 	/**
+	 * resets all the pucks
+	 */
+	void resetAllPucks();
+
+	/**
 	 * Instance for the PuckHandler
 	 */
 	static PuckHandler* instance;
@@ -207,7 +212,7 @@ private:
 	/**
 	 * Contains all pucks that are currently on band conveyor
 	 */
-	vector<Controller*> pucksOnBand1;
+	vector<Controller*> pucksOnBand;
 
 	/**
 	 * Contains all pucks that are currently in segment1

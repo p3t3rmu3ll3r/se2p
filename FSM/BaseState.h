@@ -10,8 +10,8 @@
  *         Jens Eberwein
  *         Tristan Rudat
  *         Martin Slowikowski
- * @date 2012-11-22
- * @version 0.1
+ * @date 2012-12-01
+ * @version 0.2
  *
  */
 
@@ -24,6 +24,7 @@
 #include "ActorHAL.h"
 #include "SensorHAL.h"
 #include "ErrorFSM.h"
+#include "RS232_1.h"
 
 class BaseState: public CallInterface {
 public:
@@ -59,6 +60,9 @@ public:
 	virtual void btnResetReleased();
 	virtual void btnEstopPressed();
 	virtual void btnEstopReleased();
+	virtual void rs232Band2Ack();
+	virtual void rs232Band2Ready();
+	virtual void rs232Band1Waiting();
 
 	/**
 	 * Standard destructor
@@ -90,6 +94,11 @@ protected:
 	 * Instance of the ErrorFSM to work with
 	 */
 	ErrorFSM* errfsm;
+
+	/**
+	 * Instance of the RS232 port 1 to work with
+	 */
+	RS232_1* rs232_1;
 };
 
 #endif /* BASESTATE_H_ */

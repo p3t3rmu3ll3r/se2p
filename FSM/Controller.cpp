@@ -42,15 +42,16 @@ void Controller::activate() {
 
 void Controller::resetController() {
 	active = false;
-	inUse = false;
+	startable = true;
+	band1Waiting = false;
 	puckType = -1;
 	firstElementInSegment = false;
 	//state = new BaseState();
 }
 
 void Controller::sbStartOpen() {
-	if(active && !inUse){
-		inUse = true;
+	if(active && startable){
+		startable = false;
 #ifdef BAND_1
 		state = new B1S01_Entry(this);
 #endif
@@ -66,110 +67,131 @@ void Controller::sbStartOpen() {
 
 
 void Controller::sbStartClosed() {
-	if(active && inUse){
+	if(active){
 		state->sbStartClosed();
 	}
 }
 
 void Controller::sbHeightcontrolOpen() {
-	if(active && inUse){
+	if(active){
 		state->sbHeightcontrolOpen();
 	}
 }
 
 void Controller::sbHeightcontrolClosed() {
-	if(active && inUse){
+	if(active){
 		state->sbHeightcontrolClosed();
 	}
 }
 
 void Controller::sbGateOpen() {
-	if(active && inUse){
+	if(active){
 		state->sbGateOpen();
 	}
 }
 
 void Controller::sbGateClosed() {
-	if(active && inUse){
+	if(active){
 		state->sbGateClosed();
 	}
 }
 
 void Controller::msMetalTrue() {
-	if(active && inUse){
+	if(active){
 		state->msMetalTrue();
 	}
 }
 
 void Controller::sbSlideOpen() {
-	if(active && inUse){
+	if(active){
 		state->sbSlideOpen();
 	}
 }
 
 void Controller::sbSlideClosed() {
-	if(active && inUse){
+	if(active){
 	state->sbSlideClosed();
 	}
 }
 
 void Controller::sbEndOpen() {
-	if(active && inUse){
+	if(active){
 		state->sbEndOpen();
 	}
 }
 
 void Controller::sbEndClosed() {
-	if(active && inUse){
+	if(active){
 		state->sbEndClosed();
 	}
 }
 
 void Controller::btnStartPressed() {
-	if(active && inUse){
+	if(active){
 		state->btnStartPressed();
 	}
 }
 
 void Controller::btnStartReleased() {
-	if(active && inUse){
+	if(active){
 		state->btnStartReleased();
 	}
 }
 
 void Controller::btnStopPressed() {
-	if(active && inUse){
+	if(active){
 		state->btnStopPressed();
 	}
 }
 
 void Controller::btnStopReleased() {
-	if(active && inUse){
+	if(active){
 		state->btnStopReleased();
 	}
 }
 
 void Controller::btnResetPressed() {
-	if(active && inUse){
+	if(active){
 		state->btnResetPressed();
 	}
 }
 
 void Controller::btnResetReleased() {
-	if(active && inUse){
+	if(active){
 		state->btnResetReleased();
 	}
 }
 
 void Controller::btnEstopPressed() {
-	if(active && inUse){
+	if(active){
 		state->btnEstopPressed();
 	}
 }
 
 void Controller::btnEstopReleased() {
-	if(active && inUse){
+	if(active){
 		state->btnEstopReleased();
+	}
+}
+
+void Controller::rs232Band2Ready(){
+	if(active){
+		state->rs232Band2Ready();
+	}
+}
+
+void Controller::rs232Band2Ack(){
+	if(active){
+		state->rs232Band2Ack();
+	}
+}
+
+void Controller::rs232Band1Waiting(){
+	if(active){
+#ifdef BAND_2
+		band1Waiting = true;
+#endif
+		state->rs232Band1Waiting();
 	}
 }
 
@@ -179,4 +201,8 @@ void Controller::setFirstElementInSegment(bool isFirst) {
 
 bool Controller::isFirstElementInSegment() {
 	return firstElementInSegment;
+}
+
+bool Controller::isBand1Waiting(){
+	return band1Waiting;
 }

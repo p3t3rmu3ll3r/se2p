@@ -113,6 +113,21 @@ public:
 	 * Emergency stop button at Festo system was released
 	 */
 	virtual void btnEstopReleased()=0;
+
+	/**
+	 * RS232 heartbeat signal, that band2 is still alive
+	 */
+	virtual void rs232Band2Ack()=0;
+
+	/**
+	 * Band2 is ready to receive new puck
+	 */
+	virtual void rs232Band2Ready()=0;
+
+	/**
+	 * Band1 is waiting for band2 to be free
+	 */
+	virtual void rs232Band1Waiting()=0;
 };
 
 #endif /* CALLINTERFACE_H_ */
