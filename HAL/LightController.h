@@ -82,7 +82,7 @@ public:
 	void manualTurnover();
 
 	/**
-	 * If band conveyor was paused freen light is flickering fast
+	 * If band conveyor was paused green light is flickering fast
 	 */
 	void bandHalted();
 

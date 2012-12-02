@@ -154,6 +154,9 @@ public:
 	 */
 	virtual ~PuckHandler();
 
+	/**
+	 * TODO doc
+	 */
 	void reset();
 
 
