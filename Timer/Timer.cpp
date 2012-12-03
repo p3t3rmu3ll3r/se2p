@@ -4,7 +4,7 @@
  *
  * Timer class for exception and error handling.
  *
- * @file Timer.h
+ * @file Timer.cpp
  * @author Chris Addo
  *         Jens Eberwein
  *         Tristan Rudat
