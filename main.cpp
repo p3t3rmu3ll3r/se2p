@@ -16,6 +16,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <stdio.h>
+#include <sys/neutrino.h>
 
 #include "Tests/HALTest.h"
 #include "Tests/RS232Test.h"
@@ -28,6 +29,7 @@
 #include "PuckHandler.h"
 #include "Controller.h"
 #include "ErrorFSM.h"
+#include "Timer.h"
 
 #define BAND_1
 
@@ -72,6 +74,23 @@ int main(int argc, char *argv[]) {
 
 	PuckHandler::getInstance()->initializePucks(disp);
 
+
+	// Testing Milestone 5
+	// http://www.c-plusplus.de/forum/295269-full
+	struct _pulse pulse;
+	int chid = ChannelCreate(0);
+	Timer timer(chid, 10, 0);
+	timer.start();
+	sleep(5);
+	timer.pause();
+	//sleep(5);
+	//timer.start();
+	MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
+	if(pulse.code == PULSE_FROM_TIMER){
+		printf("recved timer timeout pulse\n");
+	}
+	// wait 10secs without sleeping! if pause didnt work pulse would be lying in queue until MsgReceivePulse is called!
+	// we wouldnt realize if it wont work ;> in the next test run add timer.start()
 
 	/*START CLEANUP*/
 	char breakWhile = 0;
