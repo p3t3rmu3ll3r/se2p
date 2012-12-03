@@ -119,12 +119,15 @@ private:
 	 */
 	bool eStop;
 
-	//TODO Docu stuff
 	/**
-	 *  Array for all known signals (*fp), initialized in constructor
+	 *  Array for all known sensor signals (*fp), initialized in constructor
 	 */
 	callFuncs* sensorFuncArr;
 
+
+	/**
+	 *  Array for all known RS232 signals (*fp), initialized in constructor
+	 */
 	callFuncs* rs232FuncArr;
 
 	/**
@@ -132,12 +135,15 @@ private:
 	 */
 	LightController* lc;
 
-	//TODO Docu stuff
 	/**
-	 * Vector contains all Controllers (Pucks) registered
+	 * Vector contains all Controllers (Pucks) registered for sensor messages
 	 */
 	vector<CallInterface*> controllersForSensorFunc[SENSOR_MESSAGES_SIZE];
 
+
+	/**
+	 * * Vector contains all Controllers (Pucks) registered for RS232 messages
+	 */
 	vector<CallInterface*> controllersForRS232Func[RS232_MESSAGES_SIZE];
 };
 

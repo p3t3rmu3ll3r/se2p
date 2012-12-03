@@ -155,7 +155,8 @@ public:
 	virtual ~PuckHandler();
 
 	/**
-	 * TODO doc
+	 * Resets the PuckHandler, including mutexes, queues, vectors, variables
+	 * for a new clean run.
 	 */
 	void reset();
 

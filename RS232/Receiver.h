@@ -31,8 +31,6 @@
 #include "address.h"
 
 #define DEBUG_Receiver
-#define B2_MSG0 0
-#define B2_MSG1 1
 
 class Receiver: public thread::HAWThread {
 public:
