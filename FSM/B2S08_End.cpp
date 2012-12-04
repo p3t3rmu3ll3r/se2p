@@ -20,9 +20,6 @@ void B2S08_End::sbEndClosed(){
 	puckHandler->removePuckFromBand(controller);
 	if(controller->isBand1Waiting()){
 		rs232_1->sendMsg(RS232_BAND2_READY);
-		actorHAL->engineRight(false);
-		actorHAL->engineUnstop();
-		//TODO timer magic, if no puck travels over
 	}
 	controller->resetController();
 }

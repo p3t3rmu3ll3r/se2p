@@ -20,8 +20,9 @@ B2S06_Slide::~B2S06_Slide() {
 
 void B2S06_Slide::sbSlideClosed(){
 	puckHandler->removePuckFromBand(controller);
-	if(puckHandler->isBandEmpty()){
-		actorHAL->engineStop();
+	actorHAL->engineStop();
+	if(controller->isBand1Waiting()){
+		rs232_1->sendMsg(RS232_BAND2_READY);
 	}
 	controller->resetController();
 }
