@@ -31,8 +31,6 @@
 #include "ErrorFSM.h"
 #include "Timer.h"
 
-#define BAND_1
-
 int main(int argc, char *argv[]) {
 
 	//MyObject* myObject = new MyObject();
@@ -74,6 +72,9 @@ int main(int argc, char *argv[]) {
 
 	PuckHandler::getInstance()->initializePucks(disp);
 
+	Receiver::getInstance()->start(0);
+
+	/*
 
 	// Testing Milestone 5
 	// http://www.c-plusplus.de/forum/295269-full
@@ -91,6 +92,8 @@ int main(int argc, char *argv[]) {
 	}
 	// wait 10secs without sleeping! if pause didnt work pulse would be lying in queue until MsgReceivePulse is called!
 	// we wouldnt realize if it wont work ;> in the next test run add timer.start()
+
+	 */
 
 	/*START CLEANUP*/
 	char breakWhile = 0;
