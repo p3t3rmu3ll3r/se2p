@@ -16,12 +16,12 @@
 
 #include "Timer.h"
 
-Timer::Timer(int chid, int sec, int msec) {
+Timer::Timer(int chid, int sec, int msec, int msg) {
 	if ((coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
 		printf("Timer: Error in ConnectAttach\n");
 	}
 
-	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_TIMER, 0/*Timer abgelaufen*/);
+	SIGEV_PULSE_INIT(&event, coid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_TIMER, msg/*Timer abgelaufen*/);
 
 	if (timer_create(CLOCK_REALTIME, &event, &timerid) == -1) {
 		printf("Timer: Error in timer_create()\n");

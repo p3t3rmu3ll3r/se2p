@@ -138,10 +138,8 @@ public:
 	/**
 	 * Initializes all controllers (Pucks, 12 per define at the moment). Each puck
 	 * is registered for all signals at the Dispatcher.
-	 *
-	 * @param Dispatcher to register at
 	 */
-	void initializePucks(Dispatcher* disp);
+	void initializePucks();
 
 	/**
 	 * If a new controller (Puck) is placed on band conveyor, on of MAX_PUCKS_BAND
@@ -165,6 +163,8 @@ public:
 	 * Helper method: prints status of all used queues
 	 */
 	void printQueueStatus();
+
+	int getDispChid();
 
 private:
 
@@ -232,6 +232,17 @@ private:
 	 * Contains all pucks that are currently in segment3
 	 */
 	queue<Controller*> pucksInSeg3;
+
+	/**
+	 * Instance of the Dispatcher to work with
+	 */
+	Dispatcher* disp;
+
+	/**
+	 * Instance of the Dispatcher to work with
+	 */
+	int dispChid;
+
 };
 
 #endif /* PUCKHANDLER_H_ */

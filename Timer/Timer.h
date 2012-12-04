@@ -35,8 +35,9 @@ public:
 	 * @param chid
 	 * @param seconds
 	 * @param milliseconds
+	 * @param msg
 	 */
-	Timer(int chid, int sec, int msec);
+	Timer(int chid, int sec, int msec, int msg);
 
 	/**
 	 * Deletes timer after detach from channel

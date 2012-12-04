@@ -17,6 +17,7 @@ public:
 	virtual ~B1S07_Seg3();
 
 	void sbEndOpen();
+	void timerGateClose();
 };
 
 #endif /* B1S07_SEG3_H_ */

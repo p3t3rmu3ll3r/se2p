@@ -26,6 +26,8 @@ PuckHandler::PuckHandler() {
 	seg2Mutex = new Mutex;
 	seg3Mutex = new Mutex;
 	pucksBandMutex = new Mutex;
+	disp = Dispatcher::getInstance();
+	dispChid = disp->getChid();
 }
 
 PuckHandler::~PuckHandler() {
@@ -57,7 +59,7 @@ PuckHandler* PuckHandler::getInstance() {
 }
 
 
-void PuckHandler::initializePucks(Dispatcher* disp) {
+void PuckHandler::initializePucks() {
 	for (int i = 0; i < MAX_PUCKS_BAND; i++) {
 		pucks.push_back(new Controller(i + 1));
 		disp->registerContextForAllFuncs(pucks.at(i));
@@ -220,6 +222,10 @@ void PuckHandler::printQueueStatus() {
 					: pucksInSeg3.front()->isFirstElementInSegment() ? 't'
 							: 'c'));
 	printf("Queue Band size(): %d\n", pucksOnBand.size());
+}
+
+int PuckHandler::getDispChid(){
+	return dispChid;
 }
 
 void PuckHandler::reset(){

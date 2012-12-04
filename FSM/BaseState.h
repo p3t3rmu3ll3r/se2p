@@ -25,6 +25,7 @@
 #include "SensorHAL.h"
 #include "ErrorFSM.h"
 #include "RS232_1.h"
+#include "Timer.h"
 
 class BaseState: public CallInterface {
 public:
@@ -60,9 +61,13 @@ public:
 	virtual void btnResetReleased();
 	virtual void btnEstopPressed();
 	virtual void btnEstopReleased();
+
 	virtual void rs232Band2Ack();
 	virtual void rs232Band2Ready();
 	virtual void rs232Band1Waiting();
+
+	virtual void timerGateClose();
+	virtual void timerSlideFull();
 
 	/**
 	 * Standard destructor

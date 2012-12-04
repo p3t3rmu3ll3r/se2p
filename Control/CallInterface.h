@@ -114,6 +114,10 @@ public:
 	 */
 	virtual void btnEstopReleased()=0;
 
+	/* ----- */
+	/* RS232 */
+	/* ----- */
+
 	/**
 	 * RS232 heartbeat signal, that band2 is still alive
 	 */
@@ -128,6 +132,15 @@ public:
 	 * Band1 is waiting for band2 to be free
 	 */
 	virtual void rs232Band1Waiting()=0;
+
+	/* ----- */
+	/* TIMER */
+	/* ----- */
+
+	//TODO : COMMENTS!!! >-<
+	virtual void timerGateClose()=0;
+	virtual void timerSlideFull()=0;
+
 };
 
 #endif /* CALLINTERFACE_H_ */

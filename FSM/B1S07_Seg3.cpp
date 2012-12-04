@@ -10,12 +10,17 @@
 B1S07_Seg3::B1S07_Seg3(Controller* controller) {
 	this->controller = controller;
 
+	Timer gateTimer(puckHandler->getDispChid(),0,400,TIMER_GATE_CLOSE);
+
 	//printf("DEBUG STATE: Puck%d -> B1S07_Seg3\n", this->controller->getID());
 
 	//TODO 2 chk if ok, bad bcuz selftransition, in extry last state!
 	// TODO auch im fsm diag anpass0rn
-	usleep(400000);
-	actorHAL->gate(false);
+	//usleep(400000);
+	//actorHAL->gate(false);
+
+
+	gateTimer.start();
 
 	this->controller->setFirstElementInSegment(puckHandler->checkIfFirstElemInSeg3(this->controller));
 }
@@ -30,4 +35,8 @@ void B1S07_Seg3::sbEndOpen() {
  	} else {
 		new (this) B1S07_Seg3(controller);
 	}
+}
+
+void B1S07_Seg3::timerGateClose() {
+	actorHAL->gate(false);
 }

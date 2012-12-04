@@ -31,6 +31,7 @@ Dispatcher::Dispatcher() {
 	// Initialize *fp Array, set up all possible signals
 	sensorFuncArr = new callFuncs[SENSOR_MESSAGES_SIZE];
 	rs232FuncArr = new callFuncs[RS232_MESSAGES_SIZE];
+	timerFuncArr = new callFuncs[TIMER_MESSAGES_SIZE];
 	int i = 0;
 
 	sensorFuncArr[i++] = &CallInterface::sbStartOpen;
@@ -58,6 +59,10 @@ Dispatcher::Dispatcher() {
 	rs232FuncArr[i++] = &CallInterface::rs232Band2Ready;
 	rs232FuncArr[i++] = &CallInterface::rs232Band1Waiting;
 
+	i = 0;
+	timerFuncArr[i++] = &CallInterface::timerGateClose;
+	timerFuncArr[i++] = &CallInterface::timerSlideFull;
+
 	lc = LightController::getInstance();
 	eStop = false;
 }
@@ -65,6 +70,8 @@ Dispatcher::Dispatcher() {
 Dispatcher::~Dispatcher() {
 	if (instance != NULL) {
 		delete[] sensorFuncArr;
+		delete[] rs232FuncArr;
+		delete[] timerFuncArr;
 		delete instance;
 		instance = NULL;
 		dispatcherInstanceMutex->~Mutex();
@@ -159,8 +166,11 @@ void Dispatcher::execute(void*) {
 				printf("Dispatcher called func%d \n", funcIdx);
 #endif
 			}
-		} else if(pulse.code == PULSE_FROM_ERR_FSM) {
-			//not used atm
+		} else if(pulse.code == PULSE_FROM_TIMER) {
+
+			for (uint32_t i = 0; i < controllersForTimerFunc[funcIdx].size(); i++) {
+				(controllersForTimerFunc[funcIdx].at(i)->*timerFuncArr[funcIdx])();
+			}
 		}
 	}
 }
@@ -172,6 +182,10 @@ void Dispatcher::registerContextForAllFuncs(CallInterface* callInterface) {
 
 	for (int i = 0; i < RS232_MESSAGES_SIZE; i++) {
 		controllersForRS232Func[i].push_back(callInterface);
+	}
+
+	for (int i = 0; i < TIMER_MESSAGES_SIZE; i++) {
+		controllersForTimerFunc[i].push_back(callInterface);
 	}
 }
 

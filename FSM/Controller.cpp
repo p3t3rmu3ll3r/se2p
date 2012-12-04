@@ -195,6 +195,17 @@ void Controller::rs232Band1Waiting(){
 	}
 }
 
+void Controller::timerGateClose(){
+	if(active){
+		state->timerGateClose();
+	}
+}
+void Controller::timerSlideFull(){
+	if(active){
+		state->timerSlideFull();
+	}
+}
+
 void Controller::setFirstElementInSegment(bool isFirst) {
 	firstElementInSegment = isFirst;
 }

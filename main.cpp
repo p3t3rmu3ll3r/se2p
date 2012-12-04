@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 	ISRHandler* isrhandler = ISRHandler::getInstance();
 	isrhandler->start(0);
 
-	PuckHandler::getInstance()->initializePucks(disp);
+	PuckHandler::getInstance()->initializePucks();
 
 	Receiver::getInstance()->start(0);
 

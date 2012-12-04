@@ -55,9 +55,13 @@ public:
 	void btnResetReleased();
 	void btnEstopPressed();
 	void btnEstopReleased();
+
 	void rs232Band2Ack();
 	void rs232Band2Ready();
 	void rs232Band1Waiting();
+
+	void timerGateClose();
+	void timerSlideFull();
 
 	/**
 	 * Each controller (puck) is held in a specific queue. For each

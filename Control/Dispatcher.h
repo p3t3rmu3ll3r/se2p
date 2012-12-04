@@ -120,10 +120,15 @@ private:
 	bool eStop;
 
 	/**
+	 * Instance of the LightController
+	 */
+	LightController* lc;
+
+
+	/**
 	 *  Array for all known sensor signals (*fp), initialized in constructor
 	 */
 	callFuncs* sensorFuncArr;
-
 
 	/**
 	 *  Array for all known RS232 signals (*fp), initialized in constructor
@@ -131,20 +136,25 @@ private:
 	callFuncs* rs232FuncArr;
 
 	/**
-	 * Instance of the LightController
+	 *  Array for all known RS232 signals (*fp), initialized in constructor
 	 */
-	LightController* lc;
+	callFuncs* timerFuncArr;
+
 
 	/**
 	 * Vector contains all Controllers (Pucks) registered for sensor messages
 	 */
 	vector<CallInterface*> controllersForSensorFunc[SENSOR_MESSAGES_SIZE];
 
-
 	/**
 	 * * Vector contains all Controllers (Pucks) registered for RS232 messages
 	 */
 	vector<CallInterface*> controllersForRS232Func[RS232_MESSAGES_SIZE];
+
+	/**
+	 * * Vector contains all Controllers (Pucks) registered for RS232 messages
+	 */
+	vector<CallInterface*> controllersForTimerFunc[TIMER_MESSAGES_SIZE];
 };
 
 #endif /* DISPATCHER_H_ */
