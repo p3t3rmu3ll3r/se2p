@@ -30,6 +30,7 @@ void B1S08_End::sbEndClosed(){
 	//test with sleep, but carefully :>
 	puckHandler->removePuckFromBand(controller);
 	if(puckHandler->isBandEmpty()){
+		sleep(3);
 		actorHAL->engineStop();
 	}
 	controller->resetController();
