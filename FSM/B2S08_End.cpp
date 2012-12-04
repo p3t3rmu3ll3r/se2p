@@ -20,6 +20,8 @@ void B2S08_End::sbEndClosed(){
 	puckHandler->removePuckFromBand(controller);
 	if(controller->isBand1Waiting()){
 		rs232_1->sendMsg(RS232_BAND2_READY);
+		ActorHAL::getInstance()->engineRight(false);
+		ActorHAL::getInstance()->engineUnstop();
 	}
 	controller->resetController();
 }

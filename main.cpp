@@ -30,6 +30,7 @@
 #include "Controller.h"
 #include "ErrorFSM.h"
 #include "Timer.h"
+#include "Receiver.h"
 
 int main(int argc, char *argv[]) {
 
