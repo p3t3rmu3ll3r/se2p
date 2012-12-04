@@ -47,8 +47,8 @@ RS232_1::RS232_1()
 	tcgetattr(fd, &ts);
 
 	// Input/Output Datenrate setzen
-	cfsetispeed(&ts, B115200);
-	cfsetospeed(&ts, B115200);
+	cfsetispeed(&ts, B19200);
+	cfsetospeed(&ts, B19200);
 
 	// Schnittstelle konfigurieren
 	ts.c_cflag &= ~CSIZE;	// clear number of data bits
