@@ -71,16 +71,22 @@ void Timer::pause() {
 	timer.it_interval.tv_nsec = 0;
 
 	// derzeitigen Timerstand backuppen
-	timer_gettime(timerid, &backupTimer);
+	if(timer_gettime(timerid, &backupTimer) == -1){
+		printf("Timer: Error in timer_gettime()\n");
+	}
 	// disarm (da alles auf 0)
-	timer_settime(timerid, 0, &timer, NULL);
+	if(timer_settime(timerid, 0, &timer, NULL) == -1){
+		printf("Timer: Error in timer_settime()\n");
+	}
 }
 
 void Timer::cont() {
 	// Geht das? Alte Werte recovern
 	timer = backupTimer;
 	// Arm, da Werte im struct wieder != 0
-	timer_settime(timerid, 0, &timer, NULL);
+	if(timer_settime(timerid, 0, &timer, NULL) == -1) {
+		printf("Timer: Error in timer_settime()\n");
+	}
 }
 
 void Timer::reset(){
