@@ -44,6 +44,7 @@ Timer::~Timer() {
 }
 
 void Timer::start() {
+	//TODO running flag, wg doppelt pause / continue
 	if(timer_settime(timerid, 0, &timer, NULL) == -1){
 		printf("Timer: Error in timer_settime()\n");
 	}

@@ -25,7 +25,7 @@
 #include "SensorHAL.h"
 #include "ErrorFSM.h"
 #include "RS232_1.h"
-#include "Timer.h"
+#include "TimerHandler.h"
 
 class BaseState: public CallInterface {
 public:
@@ -104,6 +104,18 @@ protected:
 	 * Instance of the RS232 port 1 to work with
 	 */
 	RS232_1* rs232_1;
+
+	/**
+	 * Instance of the TimerHandler to work with
+	 */
+	TimerHandler* timerHandler;
+
+	/**
+	 * TODO
+	 */
+	Timer* gateTimer;
+	Timer* slideTimer;
+	Timer* segTimer;
 };
 
 #endif /* BASESTATE_H_ */

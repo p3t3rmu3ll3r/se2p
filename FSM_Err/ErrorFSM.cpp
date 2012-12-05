@@ -29,6 +29,7 @@ ErrorFSM::ErrorFSM() {
 	aHal = ActorHAL::getInstance();
 	lc = LightController::getInstance();
 	disp = Dispatcher::getInstance();
+	th = TimerHandler::getInstance();
 
 	//Create channel for pulse notification
 	if ((ownChid = ChannelCreate(0)) == -1) {
@@ -243,6 +244,7 @@ void ErrorFSM::execute(void*) {
 			}
 			break;
 		case ERR_STATE_STOP:
+			th->pauseAllTimers();
 			aHal->engineFullStop();
 			lc->bandHalted();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
@@ -250,6 +252,7 @@ void ErrorFSM::execute(void*) {
 					isStopPressed = false;
 					lc->operatingNormal();
 					aHal->engineFullUnstop();
+					th->continueAllTimers();
 					if(isEngineStopped){
 						aHal->engineStop();
 					}

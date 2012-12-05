@@ -23,6 +23,7 @@ BaseState::BaseState() {
 	puckHandler = PuckHandler::getInstance();
 	errfsm = ErrorFSM::getInstance();
 	rs232_1 = RS232_1::getInstance();
+	timerHandler = TimerHandler::getInstance();
 }
 
 BaseState::~BaseState() {

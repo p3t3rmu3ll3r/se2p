@@ -22,7 +22,7 @@
 #ifndef ERRORFSM_H_
 #define ERRORFSM_H_
 
-#include "sys/neutrino.h"
+#include <sys/neutrino.h>
 #include "address.h"
 #include "HAWThread.h"
 #include "messages.h"
@@ -32,6 +32,7 @@
 #include "Mutex.h"
 #include "Dispatcher.h"
 #include "PuckHandler.h"
+#include "TimerHandler.h"
 
 #define DEBUG_ErrorFSM
 
@@ -140,6 +141,11 @@ private:
 	 * LightController instance to work with
 	 */
 	LightController* lc;
+
+	/**
+	 * TimerHandler instance to work with
+	 */
+	TimerHandler* th;
 };
 
 #endif /* ERRORFSM_H_ */
