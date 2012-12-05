@@ -51,11 +51,7 @@ void Timer::start() {
 
 void Timer::stop() {
 	// Stoppe den Timer
-	timer.it_value.tv_sec = 0;
-	timer.it_value.tv_nsec = 0;
-	timer.it_interval.tv_sec = 0;
-	timer.it_interval.tv_nsec = 0;
-	if(timer_settime(timerid, 0, &timer, NULL) == -1){
+	if(timer_settime(timerid, 0, NULL, NULL) == -1){
 		printf("Timer: Error in timer_settime()\n");
 	}
 
@@ -64,27 +60,15 @@ void Timer::stop() {
 }
 
 void Timer::pause() {
-	// geht das? Waehrend Timer rennt in dem struct arbeiten?
-	timer.it_value.tv_sec = 0;
-	timer.it_value.tv_nsec = 0;
-	timer.it_interval.tv_sec = 0;
-	timer.it_interval.tv_nsec = 0;
-
-	// derzeitigen Timerstand backuppen
-	if(timer_gettime(timerid, &backupTimer) == -1){
-		printf("Timer: Error in timer_gettime()\n");
-	}
-	// disarm (da alles auf 0)
-	if(timer_settime(timerid, 0, &timer, NULL) == -1){
+	// disarm (da erster Wert NULL)
+	if(timer_settime(timerid, 0, NULL, &backupTimer) == -1){
 		printf("Timer: Error in timer_settime()\n");
 	}
 }
 
 void Timer::cont() {
-	// Geht das? Alte Werte recovern
-	timer = backupTimer;
 	// Arm, da Werte im struct wieder != 0
-	if(timer_settime(timerid, 0, &timer, NULL) == -1) {
+	if(timer_settime(timerid, 0, &backupTimer, NULL) == -1) {
 		printf("Timer: Error in timer_settime()\n");
 	}
 }
