@@ -167,6 +167,7 @@ void Dispatcher::execute(void*) {
 #endif
 			}
 		} else if(pulse.code == PULSE_FROM_TIMER) {
+			printf("Dispatcher received TIMER pulse: %d\n", pulse.value);
 
 			for (uint32_t i = 0; i < controllersForTimerFunc[funcIdx].size(); i++) {
 				(controllersForTimerFunc[funcIdx].at(i)->*timerFuncArr[funcIdx])();

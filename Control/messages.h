@@ -49,6 +49,9 @@ enum rs232Messages {
 	RS232_BAND2_ACK,
 	RS232_BAND2_READY,
 	RS232_BAND1_WAITING,
+
+	//will not be dispatched, therefor size is still 3
+	RS232_ESTOP = 133
 };
 
 enum timerMessages {

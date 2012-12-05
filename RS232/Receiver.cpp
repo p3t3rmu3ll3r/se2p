@@ -26,11 +26,16 @@ Mutex* Receiver::receiverInstanceMutex = new Mutex();
 Receiver::Receiver() {
 	rs232_1 = RS232_1::getInstance();
 	
-	disp = Dispatcher::getInstance();
-	dispatcherChid = disp->getChid();
+	dispatcherChid = Dispatcher::getInstance()->getChid();
+	errfsmChid = ErrorFSM::getInstance()->getErrorFSMChid();
 
 	//Connect to channel
-	if ((coid = ConnectAttach(0, 0, dispatcherChid, _NTO_SIDE_CHANNEL, 0))
+	if ((dispatcherCoid = ConnectAttach(0, 0, dispatcherChid, _NTO_SIDE_CHANNEL, 0))
+			== -1) {
+		printf("Receiver: Error in ConnectAttach\n");
+	}
+
+	if ((errfsmCoid = ConnectAttach(0, 0, errfsmChid, _NTO_SIDE_CHANNEL, 0))
 			== -1) {
 		printf("Receiver: Error in ConnectAttach\n");
 	}
@@ -64,6 +69,7 @@ void Receiver::execute(void*) {
 	int readBytes; 
 	int rc;
 	int pulseval = -1;
+	int coid = -1;
 	
 	while (!isStopped()) {
 		readBytes = rs232_1->readMsg(&buffer);
@@ -79,20 +85,30 @@ void Receiver::execute(void*) {
 			switch (buffer) {
 			case RS232_BAND2_ACK:
 				pulseval = RS232_BAND2_ACK;
+				coid = dispatcherCoid;
 #ifdef DEBUG_Receiver
 				printf("Received RS232_BAND2_ACK\n");
 #endif
 				break;
 			case RS232_BAND2_READY:
 				pulseval = RS232_BAND2_READY;
+				coid = dispatcherCoid;
 #ifdef DEBUG_Receiver
 				printf("Received RS232_BAND2_READY\n");
 #endif
 				break;
 			case RS232_BAND1_WAITING:
 				pulseval = RS232_BAND1_WAITING;
+				coid = dispatcherCoid;
 #ifdef DEBUG_Receiver
-				printf("Received RS232_BAND2_READY\n");
+				printf("Received RS232_BAND1_WAITING\n");
+#endif
+				break;
+			case RS232_ESTOP:
+				pulseval = RS232_ESTOP;
+				coid = errfsmCoid;
+#ifdef DEBUG_Receiver
+				printf("Received RS232_ESTOP\n");
 #endif
 				break;
 			default:
@@ -117,7 +133,11 @@ void Receiver::shutdown() {
 void Receiver::stop(){
 	HAWThread::stop();
 
-	if (ConnectDetach(coid) == -1) {
+	if (ConnectDetach(dispatcherCoid) == -1) {
+		printf("Receiver: Error in ConnectDetach\n");
+	}
+
+	if (ConnectDetach(errfsmCoid) == -1) {
 		printf("Receiver: Error in ConnectDetach\n");
 	}
 

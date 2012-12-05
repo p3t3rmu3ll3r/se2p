@@ -94,7 +94,7 @@ void ErrorFSM::execute(void*) {
 		printf("errorfsm after recv; code: %d, value: %d\n", pulseCode, pulseVal);
 #endif
 
-		if(pulseVal == BTN_ESTOP_PRESSED && !isEstopPressed){
+		if((pulseVal == RS232_ESTOP || pulseVal == BTN_ESTOP_PRESSED) && !isEstopPressed){
 			isEstopPressed = true;
 			disp->setEstop(true);
 			state = ERR_STATE_ESTOP;

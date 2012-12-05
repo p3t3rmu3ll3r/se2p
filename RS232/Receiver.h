@@ -26,6 +26,7 @@
 #include <sys/neutrino.h>
 
 #include "Dispatcher.h"
+#include "ErrorFSM.h"
 #include "Mutex.h"
 #include "RS232_1.h"
 #include "address.h"
@@ -46,9 +47,11 @@ private:
 	static Receiver* instance;
 	static Mutex* receiverInstanceMutex;
 	
-	Dispatcher* disp;
 	int dispatcherChid;
-	int coid;
+	int dispatcherCoid;
+
+	int errfsmChid;
+	int errfsmCoid;
 	
 	RS232_1* rs232_1;
 };
