@@ -98,6 +98,9 @@ void ErrorFSM::execute(void*) {
 			isEstopPressed = true;
 			disp->setEstop(true);
 			state = ERR_STATE_ESTOP;
+			if(pulseVal == BTN_ESTOP_PRESSED){
+				RS232_1::getInstance()->sendMsg(RS232_ESTOP);
+			}
 		} else if(pulseVal == BTN_STOP_PRESSED && !isStopPressed){
 			isStopPressed = true;
 			isEngineStopped = aHal->isEngineStopped();
