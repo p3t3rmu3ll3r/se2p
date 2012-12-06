@@ -20,6 +20,9 @@
 
 
 //TODO: check dem 8!7C|-|35
+#define TIME_VALUE_SLIDE_FULL 3000
+
+//TODO: check dem 8!7C|-|35
 #define TIME_VALUE_SEG1_MIN 3000
 #define TIME_VALUE_SEG1_MAX 5000
 #define TIME_VALUE_SEG2_MIN 2500

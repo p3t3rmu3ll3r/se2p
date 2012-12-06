@@ -13,6 +13,8 @@ B1S02_Seg1::B1S02_Seg1(Controller* controller) {
 	this->controller->setSegTimerMinCalled(false);
 	this->controller->segTimerMin = timerHandler->createTimer(puckHandler->getDispChid(), 0, TIME_VALUE_SEG1_MIN, TIMER_SEG1_MIN);
 	this->controller->segTimerMax = timerHandler->createTimer(puckHandler->getDispChid(), 0, TIME_VALUE_SEG1_MAX, TIMER_SEG1_MAX);
+	this->controller->segTimerMin->start();
+	this->controller->segTimerMax->start();
 
 	//printf("DEBUG STATE: Puck%d -> B1S02_Seg1 \n", this->controller->getID());
 

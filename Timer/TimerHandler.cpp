@@ -50,7 +50,7 @@ void TimerHandler::deleteTimer(Timer* timer) {
 	if (!timers.empty()) {
 		timer->stop();
 		for (uint32_t i = 0; i < timers.size(); i++) {
-			if (timers.at(i) == timer) {
+			if (timers.at(i) == timer) { //TODO: should be safe if called twice, right?!
 				timers.erase(timers.begin() + i);
 				break;
 			}

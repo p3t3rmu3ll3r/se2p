@@ -22,6 +22,7 @@
 Controller::Controller(int id) {
 	resetController();
 	this->id = id;
+	th = TimerHandler::getInstance();
 }
 
 Controller::~Controller() {
@@ -47,6 +48,9 @@ void Controller::resetController() {
 	puckType = -1;
 	firstElementInSegment = false;
 	//state = new BaseState();
+	resetSegTimers();
+	th->deleteTimer(gateTimer);
+	th->deleteTimer(slideTimer);
 }
 
 void Controller::sbStartOpen() {
@@ -265,6 +269,6 @@ bool Controller::isSegTimerMinCalled(){
 
 void Controller::resetSegTimers(){
 	setSegTimerMinCalled(false);
-	TimerHandler::getInstance()->deleteTimer(segTimerMin);
-	TimerHandler::getInstance()->deleteTimer(segTimerMax);
+	th->deleteTimer(segTimerMin);
+	th->deleteTimer(segTimerMax);
 }

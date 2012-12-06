@@ -10,6 +10,9 @@
 B1S06_Slide::B1S06_Slide(Controller* controller) {
 	this->controller = controller;
 
+	this->controller->slideTimer = timerHandler->createTimer(puckHandler->getDispChid(), 0, TIME_VALUE_SLIDE_FULL, TIMER_SLIDE_FULL);
+	this->controller->slideTimer->start();
+
 	//printf("DEBUG STATE: Puck%d -> B1S06_Slide \n", this->controller->getID());
 
 	//do timer magic for slidefull error
@@ -24,5 +27,9 @@ void B1S06_Slide::sbSlideClosed(){
 		actorHAL->engineStop();
 	}
 	controller->resetController();
+}
+
+void B1S06_Slide::timerSlideFull(){
+	new (this) B1S10_ERR_SlideFull(controller);
 }
 

@@ -17,8 +17,8 @@ B1S07_Seg3::B1S07_Seg3(Controller* controller) {
 	//usleep(400000);
 	//actorHAL->gate(false);
 
-	gateTimer = timerHandler->createTimer(puckHandler->getDispChid(), 0, 400, TIMER_GATE_CLOSE);
-	gateTimer->start();
+	this->controller->gateTimer = timerHandler->createTimer(puckHandler->getDispChid(), 0, 400, TIMER_GATE_CLOSE);
+	this->controller->gateTimer->start();
 
 	this->controller->setFirstElementInSegment(puckHandler->checkIfFirstElemInSeg3(this->controller));
 }
@@ -37,5 +37,5 @@ void B1S07_Seg3::sbEndOpen() {
 
 void B1S07_Seg3::timerGateClose() {
 	actorHAL->gate(false);
-	timerHandler->deleteTimer(gateTimer);
+	timerHandler->deleteTimer(this->controller->gateTimer);
 }

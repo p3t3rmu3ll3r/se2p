@@ -162,6 +162,12 @@ public:
 	Timer* segTimerMax;
 
 private:
+
+	/**
+	 * TODO
+	 */
+	TimerHandler* th;
+
 	/**
 	 * Corresponding id of this controller (puck), can be number between
 	 * 1 and MAX_PUCKS_BAND (defined in PuckHandler.h)

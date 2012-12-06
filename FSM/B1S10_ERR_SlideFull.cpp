@@ -39,7 +39,14 @@ B1S10_ERR_SlideFull::B1S10_ERR_SlideFull(Controller* controller) {
 		printf("B1S10_ERR_SlideFull: Error in ConnectDetach\n");
 	}
 
-	new (this) B1S06_Slide(this->controller);
+	//new (this) B1S06_Slide(this->controller); //TODO: not necessary
+
+	//TODO: Diagramme anpassen
+	puckHandler->removePuckFromBand(controller);
+	if(puckHandler->isBandEmpty()){
+		actorHAL->engineStop();
+	}
+	controller->resetController();
 }
 
 B1S10_ERR_SlideFull::~B1S10_ERR_SlideFull() {
