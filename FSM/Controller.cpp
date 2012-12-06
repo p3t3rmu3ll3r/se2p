@@ -206,6 +206,37 @@ void Controller::timerSlideFull(){
 	}
 }
 
+void Controller::timerSeg1Min(){
+	if(active){
+		state->timerSeg1Min();
+	}
+}
+void Controller::timerSeg1Max(){
+	if(active){
+		state->timerSeg1Max();
+	}
+}
+void Controller::timerSeg2Min(){
+	if(active){
+		state->timerSeg2Min();
+	}
+}
+void Controller::timerSeg2Max(){
+	if(active){
+		state->timerSeg2Max();
+	}
+}
+void Controller::timerSeg3Min(){
+	if(active){
+		state->timerSeg3Min();
+	}
+}
+void Controller::timerSeg3Max(){
+	if(active){
+		state->timerSeg3Max();
+	}
+}
+
 void Controller::setFirstElementInSegment(bool isFirst) {
 	firstElementInSegment = isFirst;
 }
@@ -216,4 +247,18 @@ bool Controller::isFirstElementInSegment() {
 
 bool Controller::isBand1Waiting(){
 	return band1Waiting;
+}
+
+void Controller::setSegTimerMinCalled(bool boolean){
+	segTimerMinCalled = boolean;
+}
+
+bool Controller::isSegTimerMinCalled(){
+	return segTimerMinCalled;
+}
+
+void Controller::resetSegTimers(){
+	setSegTimerMinCalled(false);
+	TimerHandler::getInstance()->deleteTimer(segTimerMin);
+	TimerHandler::getInstance()->deleteTimer(segTimerMax);
 }

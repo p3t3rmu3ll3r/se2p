@@ -22,6 +22,7 @@ class BaseState;
 #include <stdio.h>
 #include "puckTypes.h"
 #include "bandselection.h"
+#include "TimerHandler.h"
 
 class Controller: public CallInterface {
 public:
@@ -62,6 +63,12 @@ public:
 
 	void timerGateClose();
 	void timerSlideFull();
+	void timerSeg1Min();
+	void timerSeg1Max();
+	void timerSeg2Min();
+	void timerSeg2Max();
+	void timerSeg3Min();
+	void timerSeg3Max();
 
 	/**
 	 * Each controller (puck) is held in a specific queue. For each
@@ -122,11 +129,36 @@ public:
 	 */
 	bool isBand1Waiting();
 
+
+	/**
+	 * TODO
+	 */
+	void setSegTimerMinCalled(bool boolean);
+
+	/**
+	 * Returns if the current segTimerMin already has been called // TODO: check grammar
+	 *
+	 * @return [true if segTimerMin called, else false]
+	 */
+	bool isSegTimerMinCalled();
+
+	/**
+	 * TODO
+	 */
+	void resetSegTimers();
+
 	/**
 	 * Type of the puck, valid types are defined in puckTypes.h
 	 */
 	int puckType;
 
+	/**
+	 * TODO
+	 */
+	Timer* gateTimer;
+	Timer* slideTimer;
+	Timer* segTimerMin;
+	Timer* segTimerMax;
 
 private:
 	/**
@@ -163,6 +195,11 @@ private:
 	 * Defines if band1 is waiting to transfer a puck to band2
 	 */
 	bool band1Waiting;
+
+	/**
+	 * TODO
+	 */
+	bool segTimerMinCalled;
 };
 
 #endif /* CONTROLLER_H_ */

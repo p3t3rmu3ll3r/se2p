@@ -57,6 +57,12 @@ enum rs232Messages {
 enum timerMessages {
 	TIMER_GATE_CLOSE,
 	TIMER_SLIDE_FULL,
+	TIMER_SEG1_MIN,
+	TIMER_SEG1_MAX,
+	TIMER_SEG2_MIN,
+	TIMER_SEG2_MAX,
+	TIMER_SEG3_MIN,
+	TIMER_SEG3_MAX,
 };
 
 #endif /* MESSAGES_H_ */

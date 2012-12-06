@@ -140,6 +140,12 @@ public:
 	//TODO : COMMENTS!!! >-<
 	virtual void timerGateClose()=0;
 	virtual void timerSlideFull()=0;
+	virtual void timerSeg1Min()=0;
+	virtual void timerSeg1Max()=0;
+	virtual void timerSeg2Min()=0;
+	virtual void timerSeg2Max()=0;
+	virtual void timerSeg3Min()=0;
+	virtual void timerSeg3Max()=0;
 
 };
 

@@ -62,6 +62,12 @@ Dispatcher::Dispatcher() {
 	i = 0;
 	timerFuncArr[i++] = &CallInterface::timerGateClose;
 	timerFuncArr[i++] = &CallInterface::timerSlideFull;
+	timerFuncArr[i++] = &CallInterface::timerSeg1Min;
+	timerFuncArr[i++] = &CallInterface::timerSeg1Max;
+	timerFuncArr[i++] = &CallInterface::timerSeg2Min;
+	timerFuncArr[i++] = &CallInterface::timerSeg2Max;
+	timerFuncArr[i++] = &CallInterface::timerSeg3Min;
+	timerFuncArr[i++] = &CallInterface::timerSeg3Max;
 
 	lc = LightController::getInstance();
 	eStop = false;

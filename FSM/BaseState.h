@@ -26,6 +26,7 @@
 #include "ErrorFSM.h"
 #include "RS232_1.h"
 #include "TimerHandler.h"
+#include "time_values.h"
 
 class BaseState: public CallInterface {
 public:
@@ -68,6 +69,12 @@ public:
 
 	virtual void timerGateClose();
 	virtual void timerSlideFull();
+	virtual void timerSeg1Min();
+	virtual void timerSeg1Max();
+	virtual void timerSeg2Min();
+	virtual void timerSeg2Max();
+	virtual void timerSeg3Min();
+	virtual void timerSeg3Max();
 
 	/**
 	 * Standard destructor
@@ -109,13 +116,6 @@ protected:
 	 * Instance of the TimerHandler to work with
 	 */
 	TimerHandler* timerHandler;
-
-	/**
-	 * TODO
-	 */
-	Timer* gateTimer;
-	Timer* slideTimer;
-	Timer* segTimer;
 };
 
 #endif /* BASESTATE_H_ */

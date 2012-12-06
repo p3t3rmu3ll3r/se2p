@@ -55,6 +55,12 @@ void BaseState::rs232Band1Waiting(){}
 
 void BaseState::timerGateClose(){}
 void BaseState::timerSlideFull(){}
+void BaseState::timerSeg1Min(){}
+void BaseState::timerSeg1Max(){}
+void BaseState::timerSeg2Min(){}
+void BaseState::timerSeg2Max(){}
+void BaseState::timerSeg3Min(){}
+void BaseState::timerSeg3Max(){}
 
 
 
