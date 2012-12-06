@@ -66,6 +66,7 @@ public:
 	virtual void rs232Band2Ack();
 	virtual void rs232Band2Ready();
 	virtual void rs232Band1Waiting();
+	virtual void rs232PuckArrivedOnBand2();
 
 	virtual void timerGateClose();
 	virtual void timerSlideFull();

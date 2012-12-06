@@ -133,6 +133,11 @@ public:
 	 */
 	virtual void rs232Band1Waiting()=0;
 
+	/**
+	 * TODO RS232_PUCK_ARRIVED_ON_BAND2
+	 */
+	virtual void rs232PuckArrivedOnBand2()=0;
+
 	/* ----- */
 	/* TIMER */
 	/* ----- */

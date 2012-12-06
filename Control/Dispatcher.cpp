@@ -58,6 +58,7 @@ Dispatcher::Dispatcher() {
 	rs232FuncArr[i++] = &CallInterface::rs232Band2Ack;
 	rs232FuncArr[i++] = &CallInterface::rs232Band2Ready;
 	rs232FuncArr[i++] = &CallInterface::rs232Band1Waiting;
+	rs232FuncArr[i++] = &CallInterface::rs232PuckArrivedOnBand2;
 
 	i = 0;
 	timerFuncArr[i++] = &CallInterface::timerGateClose;

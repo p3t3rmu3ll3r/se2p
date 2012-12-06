@@ -60,6 +60,7 @@ public:
 	void rs232Band2Ack();
 	void rs232Band2Ready();
 	void rs232Band1Waiting();
+	void rs232PuckArrivedOnBand2();
 
 	void timerGateClose();
 	void timerSlideFull();

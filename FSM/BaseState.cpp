@@ -52,6 +52,7 @@ void BaseState::btnEstopReleased(){}
 void BaseState::rs232Band2Ack(){}
 void BaseState::rs232Band2Ready(){}
 void BaseState::rs232Band1Waiting(){}
+void BaseState::rs232PuckArrivedOnBand2(){}
 
 void BaseState::timerGateClose(){}
 void BaseState::timerSlideFull(){}

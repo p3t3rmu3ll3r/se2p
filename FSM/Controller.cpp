@@ -195,6 +195,12 @@ void Controller::rs232Band1Waiting(){
 	}
 }
 
+void Controller::rs232PuckArrivedOnBand2(){
+	if(active){
+		state->rs232PuckArrivedOnBand2();
+	}
+}
+
 void Controller::timerGateClose(){
 	if(active){
 		state->timerGateClose();

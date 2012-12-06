@@ -22,6 +22,14 @@ B1S08_End::B1S08_End(Controller* controller) {
 B1S08_End::~B1S08_End() {
 }
 
+void B1S08_End::rs232PuckArrivedOnBand2(){
+	puckHandler->removePuckFromBand(controller);
+	if(puckHandler->isBandEmpty()){
+		actorHAL->engineStop();
+	}
+	controller->resetController();
+}
+/*
 void B1S08_End::sbEndClosed(){
 	//some moar seconds engineRight();
 	//TODO timer magic, in sbEndClosed nur timer starten
@@ -30,8 +38,9 @@ void B1S08_End::sbEndClosed(){
 	//test with sleep, but carefully :>
 	puckHandler->removePuckFromBand(controller);
 	if(puckHandler->isBandEmpty()){
-		sleep(3);
+		sleep(3); //TODO: dont 4get da sl33p
 		actorHAL->engineStop();
 	}
 	controller->resetController();
 }
+*/
