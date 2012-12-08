@@ -29,6 +29,7 @@ Timer::Timer(int chid, int sec, int msec, int msg) {
 
 	seconds = sec;
 	miliSeconds = msec;
+	isPaused = false;
 
 	reset();
 }
@@ -44,9 +45,11 @@ Timer::~Timer() {
 }
 
 void Timer::start() {
-	//TODO running flag, wg doppelt pause / continue
-	if(timer_settime(timerid, 0, &timer, NULL) == -1){
-		printf("Timer: Error in timer_settime()\n");
+	if (!isStarted) {
+		if (timer_settime(timerid, 0, &timer, NULL) == -1) {
+			printf("Timer: Error in timer_settime()\n");
+		}
+		isStarted = true;
 	}
 }
 
@@ -62,15 +65,21 @@ void Timer::stop() {
 
 void Timer::pause() {
 	// disarm (da erster Wert NULL)
-	if(timer_settime(timerid, 0, NULL, &backupTimer) == -1){
-		printf("Timer: Error in timer_settime()\n");
+	if (!isPaused) {
+		if (timer_settime(timerid, 0, NULL, &backupTimer) == -1) {
+			printf("Timer: Error in timer_settime()\n");
+		}
+		isPaused = true;
 	}
 }
 
 void Timer::cont() {
 	// Arm, da Werte im struct wieder != 0
-	if(timer_settime(timerid, 0, &backupTimer, NULL) == -1) {
-		printf("Timer: Error in timer_settime()\n");
+	if (isPaused) {
+		if (timer_settime(timerid, 0, &backupTimer, NULL) == -1) {
+			printf("Timer: Error in timer_settime()\n");
+		}
+		isPaused = false;
 	}
 }
 
@@ -79,10 +88,11 @@ void Timer::reset(){
 	timer.it_value.tv_nsec = miliSeconds * MILLISECONDS_NANOSECONDS_CONV;
 	timer.it_interval.tv_sec = 0;
 	timer.it_interval.tv_nsec = 0;
+	isStarted = false;
 }
 
 void Timer::changeTime(int sec, int msec){
 	seconds = sec;
 	miliSeconds = msec;
-	reset();
+	stop();
 }

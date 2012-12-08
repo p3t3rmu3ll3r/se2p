@@ -132,19 +132,21 @@ public:
 
 
 	/**
-	 * TODO
+	 * Sets bool if the minimum puckruntime timer has fired
+	 *
+	 * @param [true if yes, else false]
 	 */
 	void setSegTimerMinCalled(bool boolean);
 
 	/**
-	 * Returns if the current segTimerMin already has been called // TODO: check grammar
+	 * Returns if the current segTimerMin has already been called
 	 *
 	 * @return [true if segTimerMin called, else false]
 	 */
 	bool isSegTimerMinCalled();
 
 	/**
-	 * TODO
+	 * Resets both timer (min/max runtime) and corresponding boolean (segTimerMinCalled)
 	 */
 	void resetSegTimers();
 
@@ -154,17 +156,33 @@ public:
 	int puckType;
 
 	/**
-	 * TODO
+	 * Timer for closing the gate, if it was opened to let a puck pass
 	 */
 	Timer* gateTimer;
+
+
+	/**
+	 * Timer for the slide, if slide lightbarrier does not close after a given time,
+	 * it is assumed that the slide is full and needs to be emptied
+	 */
 	Timer* slideTimer;
+
+	/**
+	 * Timer for minimum puck runtime per segment. With this timer random spawned
+	 * pucks can be spotted
+	 */
 	Timer* segTimerMin;
+
+	/**
+	 * Timer for maximum puck runtime per segment. With this timer lost pucks can be
+	 * spotted
+	 */
 	Timer* segTimerMax;
 
 private:
 
 	/**
-	 * TODO
+	 * TimerHandler instance to work wtih
 	 */
 	TimerHandler* th;
 
@@ -204,7 +222,7 @@ private:
 	bool band1Waiting;
 
 	/**
-	 * TODO
+	 * Was the current segTimerMin already been called
 	 */
 	bool segTimerMinCalled;
 };

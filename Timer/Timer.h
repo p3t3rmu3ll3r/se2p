@@ -114,6 +114,16 @@ private:
 	 * Event structure for timer if it fires
 	 */
 	struct sigevent event;
+
+	/**
+	 * Is set if timer was paused
+	 */
+	bool isPaused;
+
+	/**
+	 * Is set if timer was started
+	 */
+	bool isStarted;
 };
 
 #endif /* TIMER_H_ */

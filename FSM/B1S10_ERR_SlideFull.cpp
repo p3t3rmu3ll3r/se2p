@@ -33,8 +33,6 @@ B1S10_ERR_SlideFull::B1S10_ERR_SlideFull(Controller* controller) {
 		printf("B1S10_ERR_SlideFull: Error in recv pulse\n");
 	}
 
-	this->controller->puckType = PUCK_ACCEPTED;
-
 	if (ConnectDetach(errorfsmCoid) == -1) {
 		printf("B1S10_ERR_SlideFull: Error in ConnectDetach\n");
 	}

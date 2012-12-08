@@ -32,11 +32,32 @@ public:
 	static TimerHandler* getInstance();
 
 	/**
-	 * TODO
+	 * Creates a new timer with the given values and adds the timer to the
+	 * timervector
+	 *
+	 * @param chid to send timeout msg to
+	 * @param seconds
+	 * @param milliseconds
+	 * @param msg sent with pulse on timeout
+	 * @return reference to the created timerobejct
 	 */
 	Timer* createTimer(int chid, int sec, int msec, int msg);
+
+	/**
+	 * Deletes the given timer, also from the timervector
+	 *
+	 * @paramm timer to delete
+	 */
 	void deleteTimer(Timer* timer);
+
+	/**
+	 * Calls pause()-function on all timers in the timervector
+	 */
 	void pauseAllTimers();
+
+	/**
+	 * Calls cont()-function on all timers in the timervector
+	 */
 	void continueAllTimers();
 
 private:
@@ -56,9 +77,13 @@ private:
 	static Mutex* instanceMutex;
 
 	/**
-	 * TODO
+	 * Vector to save references to all created timers
 	 */
 	vector<Timer*> timers;
+
+	/**
+	 * Mutex to secure access to the timervector
+	 */
 	Mutex* mutex;
 };
 

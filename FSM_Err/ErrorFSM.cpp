@@ -77,6 +77,8 @@ void ErrorFSM::execute(void*) {
 	bool isEstopPressed = false;
 	bool isStopPressed = false;
 	bool isEngineStopped = false;
+	bool error = false;
+	bool isSbSlideClosed = false;
 
 	while (!isStopped()) {
 #ifdef DEBUG_ErrorFSM
@@ -102,8 +104,10 @@ void ErrorFSM::execute(void*) {
 			if(pulseVal == BTN_ESTOP_PRESSED){
 				RS232_1::getInstance()->sendMsg(RS232_ESTOP);
 			}
-		} else if(pulseVal == BTN_STOP_PRESSED && !isStopPressed){
+			th->pauseAllTimers();
+		} else if(pulseVal == BTN_STOP_PRESSED && !isStopPressed && !error){
 			isStopPressed = true;
+			th->pauseAllTimers();
 			isEngineStopped = aHal->isEngineStopped();
 			oldState = state;
 			state = ERR_STATE_STOP;
@@ -116,20 +120,36 @@ void ErrorFSM::execute(void*) {
 				//naechsten zustand vorbereiten mit licht band anhalten und so ...
 				switch (pulseVal) {
 				case ERR_STATE_SLIDE_FULL:
+					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->upcomingNotReceipted();
+					error = true;
 					break;
 				case ERR_STATE_TURNOVER:
+					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->manualTurnover();
+					error = true;
 					break;
 				case ERR_STATE_ERROR:
+					disp->setError(true);
+					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->upcomingNotReceipted();
+					error = true;
+					break;
+				case ERR_STATE_CRITICAL_ERROR:
+					disp->setError(true);
+					th->pauseAllTimers();
+					aHal->engineFullStop();
+					lc->upcomingNotReceipted();
+					error = true;
 					break;
 				case ERR_STATE_TURNOVER_BAND2:
+					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->upcomingNotReceipted();
+					error = true;
 					break;
 				default:
 					printf("nop\n");
@@ -144,6 +164,7 @@ void ErrorFSM::execute(void*) {
 			if (pulseCode == PULSE_FROM_ISRHANDLER) {
 				if (pulseVal == SB_SLIDE_CLOSED) {
 					lc->goneUnreceipted();
+					isSbSlideClosed = true;
 				} else if (pulseVal == BTN_RESET_PRESSED) {
 					lc->upcomingReceipted();
 					state = ERR_STATE_SLIDE_FULL_RECEIPTED;
@@ -152,11 +173,16 @@ void ErrorFSM::execute(void*) {
 			break;
 		case ERR_STATE_SLIDE_FULL_RECEIPTED:
 			if (pulseCode == PULSE_FROM_ISRHANDLER) {
-				if(pulseVal == BTN_START_PRESSED){
+				if(pulseVal == SB_SLIDE_CLOSED){
+					isSbSlideClosed = true;
+				} else if(pulseVal == BTN_START_PRESSED && isSbSlideClosed){
 					lc->operatingNormal();
 					//msg puck error solved, reihenfolge unstop und msg puck?!
 					sendPuckReply();
 					aHal->engineFullUnstop();
+					error = false;
+					isSbSlideClosed = false;
+					th->continueAllTimers();
 					state = ERR_STATE_IDLE;
 				}
 			}
@@ -170,6 +196,8 @@ void ErrorFSM::execute(void*) {
 					//msg puck error solved, reihenfolge unstop und msg puck?!
 					sendPuckReply();
 					aHal->engineFullUnstop();
+					error = false;
+					th->continueAllTimers();
 					state = ERR_STATE_IDLE;
 				}
 			}
@@ -188,10 +216,31 @@ void ErrorFSM::execute(void*) {
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_START_PRESSED){
 					lc->operatingNormal();
-					//msg puck error solved, reihenfolge unstop und msg puck?!
-					sendPuckReply();
+					aHal->engineFullUnstop();
+					disp->setError(false);
+					th->continueAllTimers();
+					error = false;
+					state = ERR_STATE_IDLE;
+				}
+			}
+			break;
+		case ERR_STATE_CRITICAL_ERROR:
+			aHal->engineFullStop();
+			lc->upcomingNotReceipted();
+			if(pulseCode == PULSE_FROM_ISRHANDLER){
+				if(pulseVal == BTN_RESET_PRESSED){
+					lc->upcomingReceipted();
+					state = ERR_STATE_ERROR_RECEIPTED;
+				}
+			}
+			break;
+		case ERR_STATE_CRITICAL_ERROR_RECEIPTED:
+			if(pulseCode == PULSE_FROM_ISRHANDLER){
+				if(pulseVal == BTN_START_PRESSED){
+					lc->operatingNormal();
 					aHal->engineFullUnstop();
 					state = ERR_STATE_IDLE;
+					error = false;
 				}
 			}
 			break;
@@ -215,6 +264,8 @@ void ErrorFSM::execute(void*) {
 					//msg puck error solved, reihenfolge unstop und msg puck?!
 					sendPuckReply();
 					aHal->engineFullUnstop();
+					error = false;
+					th->continueAllTimers();
 					state = ERR_STATE_IDLE;
 				}
 			}
@@ -239,12 +290,19 @@ void ErrorFSM::execute(void*) {
 					aHal->engineFullUnstop();
 					aHal->revokeEngineRight();
 					disp->setEstop(false);
+					disp->setError(false);
+
+					error = false;
+					isSbStartOpen = false;
+					isEstopPressed = false;
+					isStopPressed = false;
+					isEngineStopped = false;
+					isSbSlideClosed = false;
 					state = ERR_STATE_IDLE;
 				}
 			}
 			break;
 		case ERR_STATE_STOP:
-			th->pauseAllTimers();
 			aHal->engineFullStop();
 			lc->bandHalted();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
@@ -288,7 +346,6 @@ void ErrorFSM::shutdown() {
 int ErrorFSM::getErrorFSMChid() {
 	return ownChid;
 }
-
 
 int ErrorFSM::getReplyChid() {
 	return replyChid;

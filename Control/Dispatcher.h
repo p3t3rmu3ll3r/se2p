@@ -92,6 +92,15 @@ public:
 	 */
 	void setEstop(bool eStop);
 
+
+	/**
+	 * Sets corresponding bool if an error occured in the festo system. If set to
+	 * true, dispatching stops until error was fixed.
+	 *
+	 * @param error [true if error occured, false if not]
+	 */
+	void setError(bool error);
+
 private:
 	/**
 	 * Setting up functionpointer array for all signals to dispatch to the registered controllers.
@@ -118,6 +127,11 @@ private:
 	 * Represents status of EStop Button [true if button pressed, false if not]
 	 */
 	bool eStop;
+
+	/**
+	 * Indicates if an error occured [true if yes, false if not]
+	 */
+	bool error;
 
 	/**
 	 * Instance of the LightController

@@ -72,6 +72,7 @@ Dispatcher::Dispatcher() {
 
 	lc = LightController::getInstance();
 	eStop = false;
+	error = false;
 }
 
 Dispatcher::~Dispatcher() {
@@ -119,14 +120,14 @@ void Dispatcher::execute(void*) {
 
 		if (pulse.code == PULSE_FROM_ISRHANDLER) {
 
-			if(funcIdx == BTN_START_PRESSED && !isRunning && !eStop){
+			if(funcIdx == BTN_START_PRESSED && !isRunning && !eStop && !error){
 				isRunning = true;
 				lc->operatingNormal();
-			} else if(funcIdx == BTN_STOP_PRESSED && isRunning && !eStop){
+			} else if(funcIdx == BTN_STOP_PRESSED && isRunning && !eStop && !error){
 				isRunning = false;
 			}
 
-			if(isRunning && !eStop){
+			if(isRunning && !eStop && !error){
 #ifdef DEBUG_DISPATCHER
 				printf("--------------------------------------------\n");
 				printf("Dispatcher received ISR pulse: %d\n", pulse.value);
@@ -148,7 +149,7 @@ void Dispatcher::execute(void*) {
 			}
 		} else if(pulse.code == PULSE_FROM_RS232){
 
-			if(isRunning && !eStop){
+			if(isRunning && !eStop && !error){
 #ifdef DEBUG_DISPATCHER
 				printf("--------------------------------------------\n");
 				printf("Dispatcher received RS232 pulse: %d\n", pulse.value);
@@ -214,4 +215,8 @@ int Dispatcher::getChid() {
 
 void Dispatcher::setEstop(bool eStop) {
 	this->eStop = eStop;
+}
+
+void Dispatcher::setError(bool error) {
+	this->error = error;
 }
