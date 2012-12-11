@@ -138,13 +138,13 @@ void ErrorFSM::execute(void*) {
 					lc->upcomingNotReceipted();
 					error = true;
 					break;
-				case ERR_STATE_CRITICAL_ERROR:
+				/*case ERR_STATE_CRITICAL_ERROR:
 					disp->setError(true);
 					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->upcomingNotReceipted();
 					error = true;
-					break;
+					break;*/
 				case ERR_STATE_TURNOVER_BAND2:
 					th->pauseAllTimers();
 					aHal->engineFullStop();
@@ -224,7 +224,7 @@ void ErrorFSM::execute(void*) {
 				}
 			}
 			break;
-		case ERR_STATE_CRITICAL_ERROR:
+/*		case ERR_STATE_CRITICAL_ERROR:
 			aHal->engineFullStop();
 			lc->upcomingNotReceipted();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
@@ -243,7 +243,7 @@ void ErrorFSM::execute(void*) {
 					error = false;
 				}
 			}
-			break;
+			break;*/
 		case ERR_STATE_TURNOVER_BAND2:
 			aHal->engineFullStop();
 			lc->upcomingNotReceipted();

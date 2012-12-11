@@ -69,7 +69,8 @@ void B1S02_Seg1::timerSeg1Max() {
 			printf("B1S02_Seg1: Error in ConnectAttach\n");
 		}
 
-		rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_CRITICAL_ERROR);
+		//rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_CRITICAL_ERROR);
+		rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_ERROR);
 		if (rc < 0) {
 			printf("B1S02_Seg1: Error in MsgSendPulse");
 		}
@@ -78,4 +79,10 @@ void B1S02_Seg1::timerSeg1Max() {
 			printf("B1S02_Seg1: Error in ConnectDetach\n");
 		}
 	}
+
+	puckHandler->removePuckFromBand(controller);
+	if(puckHandler->isBandEmpty()){
+		actorHAL->engineStop();
+	}
+	controller->resetController();
 }
