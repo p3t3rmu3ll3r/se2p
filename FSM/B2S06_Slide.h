@@ -17,6 +17,7 @@ public:
 	virtual ~B2S06_Slide();
 
 	void sbSlideClosed();
+	void timerSlideFull();
 };
 
 #endif /* B2S06_SLIDE_H_ */

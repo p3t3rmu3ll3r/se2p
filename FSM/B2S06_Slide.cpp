@@ -32,3 +32,6 @@ void B2S06_Slide::sbSlideClosed(){
 	controller->resetController();
 }
 
+void B2S06_Slide::timerSlideFull(){
+	new (this) B2S10_ERR_SlideFull(controller);
+}
