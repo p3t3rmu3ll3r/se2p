@@ -55,6 +55,13 @@ void B2S07_Seg3::timerSeg3Min() {
 }
 
 void B2S07_Seg3::timerSeg3Max() {
+
+	puckHandler->removePuckFromBand(controller);
+	if(puckHandler->isBandEmpty()){
+		actorHAL->engineStop();
+	}
+	controller->resetController();
+
 	int errorfsmChid = errfsm->getErrorFSMChid();
 	int errorfsmCoid;
 	int rc;
@@ -72,10 +79,4 @@ void B2S07_Seg3::timerSeg3Max() {
 	if (ConnectDetach(errorfsmCoid) == -1) {
 		printf("B2S07_Seg3: Error in ConnectDetach\n");
 	}
-
-	puckHandler->removePuckFromBand(controller);
-	if(puckHandler->isBandEmpty()){
-		actorHAL->engineStop();
-	}
-	controller->resetController();
 }

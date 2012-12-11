@@ -144,6 +144,7 @@ void ErrorFSM::execute(void*) {
 #endif
 					break;
 				case ERR_STATE_ERROR:
+					isEngineStopped = aHal->isEngineStopped();
 					disp->setError(true);
 					th->pauseAllTimers();
 					aHal->engineFullStop();
@@ -235,9 +236,12 @@ void ErrorFSM::execute(void*) {
 				if(pulseVal == BTN_START_PRESSED){
 					lc->operatingNormal();
 					aHal->engineFullUnstop();
+					if(isEngineStopped){
+						aHal->engineStop();
+					}
+					error = false;
 					disp->setError(false);
 					th->continueAllTimers();
-					error = false;
 					state = ERR_STATE_IDLE;
 				}
 			}
@@ -328,10 +332,10 @@ void ErrorFSM::execute(void*) {
 					isStopPressed = false;
 					lc->operatingNormal();
 					aHal->engineFullUnstop();
-					th->continueAllTimers();
 					if(isEngineStopped){
 						aHal->engineStop();
 					}
+					th->continueAllTimers();
 					state = oldState;
 				}
 			}

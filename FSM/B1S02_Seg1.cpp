@@ -58,6 +58,14 @@ void B1S02_Seg1::timerSeg1Min() {
 }
 
 void B1S02_Seg1::timerSeg1Max() {
+
+	puckHandler->removePuckFromSeg1();
+	puckHandler->removePuckFromBand(controller);
+	if(puckHandler->isBandEmpty()){
+		actorHAL->engineStop();
+	}
+	controller->resetController();
+
 	if(controller->isFirstElementInSegment()) {
 
 		int errorfsmChid = errfsm->getErrorFSMChid();
@@ -78,11 +86,4 @@ void B1S02_Seg1::timerSeg1Max() {
 			printf("B1S02_Seg1: Error in ConnectDetach\n");
 		}
 	}
-
-	puckHandler->removePuckFromSeg1();
-	puckHandler->removePuckFromBand(controller);
-	if(puckHandler->isBandEmpty()){
-		actorHAL->engineStop();
-	}
-	controller->resetController();
 }
