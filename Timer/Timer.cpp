@@ -16,6 +16,8 @@
 
 #include "Timer.h"
 
+#include <errno.h>
+
 Timer::Timer(int chid, int sec, int msec, int msg) {
 	if ((coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0)) == -1) {
 		printf("Timer: Error in ConnectAttach\n");
@@ -49,13 +51,17 @@ void Timer::start() {
 		if (timer_settime(timerid, 0, &timer, NULL) == -1) {
 			printf("Timer: Error in start() timer_settime()\n");
 		}
+		timer.it_value.tv_sec = 0;
+		timer.it_value.tv_nsec = 0;
+		timer.it_interval.tv_sec = 0;
+		timer.it_interval.tv_nsec = 0;
 		isStarted = true;
 	}
 }
 
 void Timer::stop() {
 	// Stoppe den Timer
-	if(timer_settime(timerid, 0, NULL, NULL) == -1){
+	if(timer_settime(timerid, 0, &timer, NULL) == -1){
 		printf("Timer: Error in stop() timer_settime()\n");
 	}
 
@@ -66,8 +72,8 @@ void Timer::stop() {
 void Timer::pause() {
 	// disarm (da erster Wert NULL)
 	if (!isPaused) {
-		if (timer_settime(timerid, 0, NULL, &backupTimer) == -1) {
-			printf("Timer: Error in pause() timer_settime()\n");
+		if (timer_settime(timerid, 0, &timer, &backupTimer) == -1) {
+			printf("Timer: Error in pause() timer_settime(), errno:%d\n", errno);
 		}
 		isPaused = true;
 	}

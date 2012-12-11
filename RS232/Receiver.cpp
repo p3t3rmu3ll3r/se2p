@@ -87,33 +87,40 @@ void Receiver::execute(void*) {
 				pulseval = RS232_BAND2_ACK;
 				coid = dispatcherCoid;
 #ifdef DEBUG_Receiver
-				printf("Received RS232_BAND2_ACK\n");
+				printf("DEBUG_Receiver: Received RS232_BAND2_ACK\n");
 #endif
 				break;
 			case RS232_BAND2_READY:
 				pulseval = RS232_BAND2_READY;
 				coid = dispatcherCoid;
 #ifdef DEBUG_Receiver
-				printf("Received RS232_BAND2_READY\n");
+				printf("DEBUG_Receiver: Received RS232_BAND2_READY\n");
 #endif
 				break;
 			case RS232_BAND1_WAITING:
 				pulseval = RS232_BAND1_WAITING;
 				coid = dispatcherCoid;
 #ifdef DEBUG_Receiver
-				printf("Received RS232_BAND1_WAITING\n");
+				printf("DEBUG_Receiver: Received RS232_BAND1_WAITING\n");
 #endif
 				break;
 			case RS232_ESTOP:
 				pulseval = RS232_ESTOP;
 				coid = errfsmCoid;
 #ifdef DEBUG_Receiver
-				printf("Received RS232_ESTOP\n");
+				printf("DEBUG_Receiver: Received RS232_ESTOP\n");
+#endif
+				break;
+			case RS232_PUCK_ARRIVED_ON_BAND2:
+				pulseval = RS232_PUCK_ARRIVED_ON_BAND2;
+				coid = dispatcherCoid;
+#ifdef DEBUG_Receiver
+				printf("DEBUG_Receiver: Received RS232_PUCK_ARRIVED_ON_BAND2\n");
 #endif
 				break;
 			default:
 #ifdef DEBUG_Receiver
-				printf("Received random shit not wanted...\n");
+				printf("Error Receiver: Received random shit not wanted...\n");
 #endif
 			}
 			rc = MsgSendPulse(coid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_RS232, pulseval);
