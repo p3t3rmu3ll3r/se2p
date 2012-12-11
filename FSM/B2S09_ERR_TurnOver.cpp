@@ -10,7 +10,9 @@
 B2S09_ERR_TurnOver::B2S09_ERR_TurnOver(Controller* controller) {
 	this->controller = controller;
 
+#ifdef DEBUG_STATE_PRINTF
 	printf("DEBUG STATE: Puck%d -> B2S09_ERR_TurnOver \n", this->controller->getID());
+#endif
 
 	int replyChid = errfsm->getReplyChid();
 	int errorfsmChid = errfsm->getErrorFSMChid();

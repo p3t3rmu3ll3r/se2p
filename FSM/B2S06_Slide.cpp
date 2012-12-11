@@ -10,7 +10,9 @@
 B2S06_Slide::B2S06_Slide(Controller* controller) {
 	this->controller = controller;
 
+#ifdef DEBUG_STATE_PRINTF
 	printf("DEBUG STATE: Puck%d -> B2S06_Slide \n", this->controller->getID());
+#endif
 
 	//do timer magic for slidefull error
 }

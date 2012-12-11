@@ -11,7 +11,9 @@ B2S01_Entry::B2S01_Entry(Controller* controller) {
 	this->controller = controller;
 	puckHandler->addPuckToBand(this->controller);
 
+#ifdef DEBUG_STATE_PRINTF
 	printf("DEBUG STATE: Puck%d -> B2S01_Entry \n", this->controller->getID());
+#endif
 }
 
 B2S01_Entry::~B2S01_Entry() {
@@ -19,11 +21,19 @@ B2S01_Entry::~B2S01_Entry() {
 
 void B2S01_Entry::sbStartOpen() {
 	/* TODO eigentlich not needed if baender gekoppelt */
-	actorHAL->engineRight(false);
-	actorHAL->engineUnstop();
+	//actorHAL->engineRight(false);
+	//actorHAL->engineUnstop();
+	rs232_1->sendMsg(RS232_PUCK_ARRIVED_ON_BAND2);
 }
 
 void B2S01_Entry::sbStartClosed() {
+
+	this->controller->setSegTimerMinCalled(false);
+	this->controller->segTimerMin = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG1_MIN_SEC, TIME_VALUE_SEG1_MIN_MSEC, TIMER_SEG1_MIN);
+	this->controller->segTimerMax = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG1_MAX_SEC, TIME_VALUE_SEG1_MAX_MSEC, TIMER_SEG1_MAX);
+	this->controller->segTimerMin->start();
+	this->controller->segTimerMax->start();
+
 	new (this) B2S02_Seg1(controller);
 }
 

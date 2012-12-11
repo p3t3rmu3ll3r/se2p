@@ -10,7 +10,9 @@
 B2S05_Gate::B2S05_Gate(Controller* controller) {
 	this->controller = controller;
 
+#ifdef DEBUG_STATE_PRINTF
 	printf("DEBUG STATE: Puck%d -> B2S05_Gate \n", this->controller->getID());
+#endif
 
 	if(this->controller->puckType == PUCK_ACCEPTED){
 		actorHAL->gate(true);
@@ -25,6 +27,13 @@ B2S05_Gate::~B2S05_Gate() {
 
 void B2S05_Gate::sbGateClosed(){
 	if(this->controller->puckType == PUCK_ACCEPTED){
+
+		this->controller->setSegTimerMinCalled(false);
+		this->controller->segTimerMin = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG3_MIN_SEC, TIME_VALUE_SEG3_MIN_MSEC, TIMER_SEG3_MIN);
+		this->controller->segTimerMax = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG3_MAX_SEC, TIME_VALUE_SEG3_MAX_MSEC, TIMER_SEG3_MAX);
+		this->controller->segTimerMin->start();
+		this->controller->segTimerMax->start();
+
 		new (this) B2S07_Seg3(controller);
 	}
 }

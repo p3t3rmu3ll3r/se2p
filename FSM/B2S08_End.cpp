@@ -10,7 +10,9 @@
 B2S08_End::B2S08_End(Controller* controller) {
 	this->controller = controller;
 
+#ifdef DEBUG_STATE_PRINTF
 	printf("DEBUG STATE: Puck%d -> B2S08_End \n", this->controller->getID());
+#endif
 }
 
 B2S08_End::~B2S08_End() {

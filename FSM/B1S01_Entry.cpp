@@ -11,7 +11,9 @@ B1S01_Entry::B1S01_Entry(Controller* controller) {
 	this->controller = controller;
 	puckHandler->addPuckToBand(this->controller);
 
-	//printf("DEBUG STATE: Puck%d -> B1S01_Entry \n", this->controller->getID());
+#ifdef DEBUG_STATE_PRINTF
+	printf("DEBUG STATE: Puck%d -> B1S01_Entry \n", this->controller->getID());
+#endif
 }
 
 B1S01_Entry::~B1S01_Entry() {

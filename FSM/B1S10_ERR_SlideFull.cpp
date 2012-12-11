@@ -10,7 +10,9 @@
 B1S10_ERR_SlideFull::B1S10_ERR_SlideFull(Controller* controller) {
 	this->controller = controller;
 
-	//printf("DEBUG STATE: Puck%d -> B1S10_ERR_SlideFull \n", this->controller->getID());
+#ifdef DEBUG_STATE_PRINTF
+	printf("DEBUG STATE: Puck%d -> B1S10_ERR_SlideFull \n", this->controller->getID());
+#endif
 
 	int replyChid = errfsm->getReplyChid();
 	int errorfsmChid = errfsm->getErrorFSMChid();

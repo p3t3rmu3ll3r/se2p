@@ -10,13 +10,14 @@
 B1S02_Seg1::B1S02_Seg1(Controller* controller) {
 	this->controller = controller;
 
-	//printf("DEBUG STATE: Puck%d -> B1S02_Seg1 \n", this->controller->getID());
+#ifdef DEBUG_STATE_PRINTF
+	printf("DEBUG STATE: Puck%d -> B1S02_Seg1 \n", this->controller->getID());
+#endif
 
 	this->controller->setFirstElementInSegment(puckHandler->checkIfFirstElemInSeg1(this->controller));
 }
 
 B1S02_Seg1::~B1S02_Seg1() {
-
 }
 
 void B1S02_Seg1::sbHeightcontrolOpen() {
@@ -57,9 +58,7 @@ void B1S02_Seg1::timerSeg1Min() {
 }
 
 void B1S02_Seg1::timerSeg1Max() {
-	printf("B1S02_Seg1: timerSeg1Max\n");
 	if(controller->isFirstElementInSegment()) {
-		printf("B1S02_Seg1: timerSeg1Max -> isFirstElementInSegment\n");
 
 		int errorfsmChid = errfsm->getErrorFSMChid();
 		int errorfsmCoid;
@@ -80,6 +79,7 @@ void B1S02_Seg1::timerSeg1Max() {
 		}
 	}
 
+	puckHandler->removePuckFromSeg1();
 	puckHandler->removePuckFromBand(controller);
 	if(puckHandler->isBandEmpty()){
 		actorHAL->engineStop();
