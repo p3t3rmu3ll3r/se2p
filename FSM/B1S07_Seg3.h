@@ -18,6 +18,8 @@ public:
 
 	void sbEndOpen();
 	void timerGateClose();
+	void timerSeg3Min();
+	void timerSeg3Max();
 };
 
 #endif /* B1S07_SEG3_H_ */

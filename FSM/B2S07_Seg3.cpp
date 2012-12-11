@@ -11,10 +11,6 @@ B2S07_Seg3::B2S07_Seg3(Controller* controller) {
 	this->controller = controller;
 
 	printf("DEBUG STATE: Puck%d -> B2S07_Seg3\n", this->controller->getID());
-
-	//TODO 2 chk if ok
-	usleep(400000);
-	actorHAL->gate(false);
 }
 
 B2S07_Seg3::~B2S07_Seg3() {

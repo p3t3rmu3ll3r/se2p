@@ -14,6 +14,9 @@ B2S05_Gate::B2S05_Gate(Controller* controller) {
 
 	if(this->controller->puckType == PUCK_ACCEPTED){
 		actorHAL->gate(true);
+
+		this->controller->gateTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_CLOSE_GATE_SEC, TIME_VALUE_CLOSE_GATE_MSEC, TIMER_GATE_CLOSE);
+		this->controller->gateTimer->start();
 	}
 }
 

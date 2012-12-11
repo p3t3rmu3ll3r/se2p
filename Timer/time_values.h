@@ -20,6 +20,10 @@
 
 
 //TODO: check dem 8!7C|-|35
+#define TIME_VALUE_CLOSE_GATE_SEC 1
+#define TIME_VALUE_CLOSE_GATE_MSEC 400
+
+//TODO: check dem 8!7C|-|35
 #define TIME_VALUE_SLIDE_FULL_SEC 1
 #define TIME_VALUE_SLIDE_FULL_MSEC 0
 

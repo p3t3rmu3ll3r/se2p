@@ -14,8 +14,6 @@ B1S06_Slide::B1S06_Slide(Controller* controller) {
 	this->controller->slideTimer->start();
 
 	//printf("DEBUG STATE: Puck%d -> B1S06_Slide \n", this->controller->getID());
-
-	//do timer magic for slidefull error
 }
 
 B1S06_Slide::~B1S06_Slide() {
