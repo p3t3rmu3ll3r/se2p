@@ -22,28 +22,33 @@ B2S10_ERR_SlideFull::B2S10_ERR_SlideFull(Controller* controller) {
 	struct _pulse pulse;
 
 	if ((errorfsmCoid = ConnectAttach(0, 0, errorfsmChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
-		printf("B2S10_ERR_SlideFull: Error in ConnectAttach\n");
+		printf("B1S10_ERR_SlideFull: Error in ConnectAttach\n");
 	}
 
 	rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_SLIDE_FULL);
 	if (rc < 0) {
-		printf("B2S10_ERR_SlideFull: Error in MsgSendPulse");
+		printf("B1S10_ERR_SlideFull: Error in MsgSendPulse");
 	}
 
-	printf("now i goin blocked\n");
 	rc = MsgReceivePulse(replyChid, &pulse, sizeof(pulse), NULL);
 	if (rc < 0) {
-		printf("B2S10_ERR_SlideFull: Error in recv pulse\n");
+		printf("B1S10_ERR_SlideFull: Error in recv pulse\n");
 	}
-
-	printf("now i unblocked\n");
-	this->controller->puckType = PUCK_ACCEPTED;
 
 	if (ConnectDetach(errorfsmCoid) == -1) {
-		printf("B2S10_ERR_SlideFull: Error in ConnectDetach\n");
+		printf("B1S10_ERR_SlideFull: Error in ConnectDetach\n");
 	}
 
-	new (this) B2S06_Slide(this->controller);
+	//new (this) B2S06_Slide(this->controller); //TODO: not necessary
+
+	//TODO: Diagramme anpassen
+
+	//new (this) B2S06_Slide(this->controller);
+	puckHandler->removePuckFromBand(controller);
+	if(puckHandler->isBandEmpty()){
+		actorHAL->engineStop();
+	}
+	controller->resetController();
 }
 
 B2S10_ERR_SlideFull::~B2S10_ERR_SlideFull() {

@@ -63,15 +63,14 @@ void B1S07_Seg3::timerSeg3Min() {
 }
 
 void B1S07_Seg3::timerSeg3Max() {
-
-	puckHandler->removePuckFromSeg3();
-	puckHandler->removePuckFromBand(controller);
-	if(puckHandler->isBandEmpty()){
-		actorHAL->engineStop();
-	}
-	controller->resetController();
-
 	if(controller->isFirstElementInSegment()) {
+
+		puckHandler->removePuckFromSeg3();
+		puckHandler->removePuckFromBand(controller);
+		if(puckHandler->isBandEmpty()){
+			actorHAL->engineStop();
+		}
+		controller->resetController();
 
 		int errorfsmChid = errfsm->getErrorFSMChid();
 		int errorfsmCoid;

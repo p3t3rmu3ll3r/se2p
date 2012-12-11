@@ -99,12 +99,12 @@ void ErrorFSM::execute(void*) {
 
 		if((pulseVal == RS232_ESTOP || pulseVal == BTN_ESTOP_PRESSED) && !isEstopPressed){
 			isEstopPressed = true;
+			th->pauseAllTimers();
 			disp->setEstop(true);
 			state = ERR_STATE_ESTOP;
 			if(pulseVal == BTN_ESTOP_PRESSED){
 				RS232_1::getInstance()->sendMsg(RS232_ESTOP);
 			}
-			th->pauseAllTimers();
 #ifdef DEBUG_ErrorFSM
 			printf("Debug Error FSM: Error -> ERR_STATE_ESTOP\n");
 #endif
@@ -144,9 +144,9 @@ void ErrorFSM::execute(void*) {
 #endif
 					break;
 				case ERR_STATE_ERROR:
+					th->pauseAllTimers();
 					isEngineStopped = aHal->isEngineStopped();
 					disp->setError(true);
-					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->upcomingNotReceipted();
 					error = true;
