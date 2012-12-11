@@ -20,9 +20,9 @@
 #include "State_Test01_Entry.h"
 
 Controller::Controller(int id) {
+	th = TimerHandler::getInstance();
 	resetController();
 	this->id = id;
-	th = TimerHandler::getInstance();
 }
 
 Controller::~Controller() {

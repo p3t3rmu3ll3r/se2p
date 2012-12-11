@@ -47,16 +47,18 @@ Timer* TimerHandler::createTimer(int chid, int sec, int msec, int msg) {
 
 void TimerHandler::deleteTimer(Timer* timer) {
 	mutex->lock();
-	if (!timers.empty()) {
-		timer->stop();
-		for (uint32_t i = 0; i < timers.size(); i++) {
-			if (timers.at(i) == timer) { //TODO: should be safe if called twice, right?! is chris calling delete twice?! :>
-				timers.erase(timers.begin() + i);
-				break;
+	if(timer != NULL){
+		if (!timers.empty()) {
+			timer->stop();
+			for (uint32_t i = 0; i < timers.size(); i++) {
+				if (timers.at(i) == timer) { //TODO: should be safe if called twice, right?! is chris calling delete twice?! :>
+					timers.erase(timers.begin() + i);
+					delete timer;
+					timer = NULL;
+					break;
+				}
 			}
 		}
-		delete timer;
-		timer = NULL;
 	}
 	mutex->unlock();
 }

@@ -19,8 +19,8 @@
 #define MESSAGES_H_
 
 #define SENSOR_MESSAGES_SIZE 19
-#define RS232_MESSAGES_SIZE 3
-#define TIMER_MESSAGES_SIZE 2
+#define RS232_MESSAGES_SIZE 4
+#define TIMER_MESSAGES_SIZE 8
 
 //all this messages need to be dispatched
 enum sensorMessages {
