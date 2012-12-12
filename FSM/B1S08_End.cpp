@@ -31,8 +31,10 @@ void B1S08_End::rs232PuckArrivedOnBand2(){
 	}
 	controller->resetController();
 }
-/*
+
 void B1S08_End::sbEndClosed(){
+	puckHandler->resetAllSenseorFuncCounters();
+	/*
 	//some moar seconds engineRight();
 	//TODO timer magic, in sbEndClosed nur timer starten
 	//TODO bei neuer methode popped sich der puck dann und haelt ggf an
@@ -43,6 +45,6 @@ void B1S08_End::sbEndClosed(){
 		sleep(3); //TODO: dont 4get da sl33p
 		actorHAL->engineStop();
 	}
-	controller->resetController();
+	controller->resetController();*/
 }
-*/
+

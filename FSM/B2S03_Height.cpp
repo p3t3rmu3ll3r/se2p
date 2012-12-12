@@ -31,6 +31,7 @@ B2S03_Height::~B2S03_Height() {
 }
 
 void B2S03_Height::sbHeightcontrolClosed() {
+	puckHandler->resetAllSenseorFuncCounters();
 
 	this->controller->setSegTimerMinCalled(false);
 	this->controller->segTimerMin = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG2_MIN_SEC, TIME_VALUE_SEG2_MIN_MSEC, TIMER_SEG2_MIN);

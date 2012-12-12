@@ -26,6 +26,8 @@ B2S05_Gate::~B2S05_Gate() {
 }
 
 void B2S05_Gate::sbGateClosed(){
+	puckHandler->resetAllSenseorFuncCounters();
+
 	if(this->controller->puckType == PUCK_ACCEPTED){
 
 		this->controller->setSegTimerMinCalled(false);

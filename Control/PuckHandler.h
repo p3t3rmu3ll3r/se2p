@@ -26,6 +26,7 @@
 #include "Dispatcher.h"
 #include "Mutex.h"
 #include "bandselection.h"
+#include "ErrorFSM.h"
 
 
 #ifdef BAND_1
@@ -169,7 +170,20 @@ public:
 	 */
 	void printQueueStatus();
 
+	/**
+	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 */
 	int getDispChid();
+
+	/**
+	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 */
+	void incrementSenseorFuncCounter(int funcIdx);
+
+	/**
+	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 */
+	void resetAllSenseorFuncCounters();
 
 private:
 
@@ -248,6 +262,15 @@ private:
 	 */
 	int dispChid;
 
+	/**
+	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 */
+	int sensorFuncCounter[SENSOR_MESSAGES_SIZE];
+
+	/**
+	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 */
+	Mutex* sensorFuncCounterMutex;
 };
 
 #endif /* PUCKHANDLER_H_ */

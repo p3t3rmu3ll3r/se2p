@@ -26,6 +26,8 @@ B1S05_Gate::~B1S05_Gate() {
 }
 
 void B1S05_Gate::sbGateClosed(){
+	puckHandler->resetAllSenseorFuncCounters();
+
 	if(this->controller->puckType == PUCK_ACCEPTED || this->controller->puckType == PUCK_TURNOVER){
 		puckHandler->addPuckToSeg3(controller);
 

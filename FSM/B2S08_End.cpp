@@ -19,6 +19,8 @@ B2S08_End::~B2S08_End() {
 }
 
 void B2S08_End::sbEndClosed(){
+	puckHandler->resetAllSenseorFuncCounters();
+
 	puckHandler->removePuckFromBand(controller);
 	if(controller->isBand1Waiting()){
 		rs232_1->sendMsg(RS232_BAND2_READY);

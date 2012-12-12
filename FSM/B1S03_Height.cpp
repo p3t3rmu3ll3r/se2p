@@ -24,6 +24,7 @@ B1S03_Height::~B1S03_Height() {
 }
 
 void B1S03_Height::sbHeightcontrolClosed() {
+	puckHandler->resetAllSenseorFuncCounters();
 	puckHandler->addPuckToSeg2(controller);
 
 	this->controller->setSegTimerMinCalled(false);

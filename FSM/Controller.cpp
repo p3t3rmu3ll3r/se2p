@@ -47,7 +47,7 @@ void Controller::resetController() {
 	band1Waiting = false;
 	puckType = -1;
 	firstElementInSegment = false;
-	//state = new BaseState();
+	state = new BaseState();
 	resetSegTimers();
 	th->deleteTimer(gateTimer);
 	th->deleteTimer(slideTimer);
@@ -83,9 +83,7 @@ void Controller::sbStartClosed() {
 }
 
 void Controller::sbHeightcontrolOpen() {
-	if(active){
-		state->sbHeightcontrolOpen();
-	}
+	state->sbHeightcontrolOpen();
 }
 
 void Controller::sbHeightcontrolClosed() {
@@ -95,9 +93,7 @@ void Controller::sbHeightcontrolClosed() {
 }
 
 void Controller::sbGateOpen() {
-	if(active){
-		state->sbGateOpen();
-	}
+	state->sbGateOpen();
 }
 
 void Controller::sbGateClosed() {
@@ -120,14 +116,12 @@ void Controller::sbSlideOpen() {
 
 void Controller::sbSlideClosed() {
 	if(active){
-	state->sbSlideClosed();
+		state->sbSlideClosed();
 	}
 }
 
 void Controller::sbEndOpen() {
-	if(active){
-		state->sbEndOpen();
-	}
+	state->sbEndOpen();
 }
 
 void Controller::sbEndClosed() {

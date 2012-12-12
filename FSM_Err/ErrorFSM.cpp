@@ -228,6 +228,7 @@ void ErrorFSM::execute(void*) {
 				if(pulseVal == BTN_RESET_PRESSED){
 					lc->upcomingReceipted();
 					PuckHandler::getInstance()->reInitFirstElemInSegBools();
+					PuckHandler::getInstance()->resetAllSenseorFuncCounters();
 					state = ERR_STATE_ERROR_RECEIPTED;
 				}
 			}

@@ -26,6 +26,7 @@ PuckHandler::PuckHandler() {
 	seg2Mutex = new Mutex;
 	seg3Mutex = new Mutex;
 	pucksBandMutex = new Mutex;
+	sensorFuncCounterMutex = new Mutex;
 	disp = Dispatcher::getInstance();
 	dispChid = disp->getChid();
 }
@@ -236,6 +237,50 @@ void PuckHandler::printQueueStatus() {
 	printf("Queue Band size(): %d\n", pucksOnBand.size());
 }
 
+void PuckHandler::incrementSenseorFuncCounter(int funcIdx) {
+	sensorFuncCounterMutex->lock();
+
+	sensorFuncCounter[funcIdx]++;
+
+	if(sensorFuncCounter[funcIdx] == MAX_PUCKS_BAND) {
+
+
+#ifdef DEBUG_PuckHandler
+			printf("-- > Debug PuckHandler: /me is THROWING big Error!!! \n");
+#endif
+
+		int errorfsmChid = ErrorFSM::getInstance()->getErrorFSMChid();
+		int errorfsmCoid;
+		int rc;
+
+		if ((errorfsmCoid = ConnectAttach(0, 0, errorfsmChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+			printf("PuckHandler: Error in ConnectAttach\n");
+		}
+
+		//rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_CRITICAL_ERROR);
+		rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_ERROR);
+		if (rc < 0) {
+			printf("PuckHandler: Error in MsgSendPulse");
+		}
+
+		if (ConnectDetach(errorfsmCoid) == -1) {
+			printf("PuckHandler: Error in ConnectDetach\n");
+		}
+	}
+
+	sensorFuncCounterMutex->unlock();
+}
+
+void PuckHandler::resetAllSenseorFuncCounters() {
+	sensorFuncCounterMutex->lock();
+
+	for(int i = 0; i < SENSOR_MESSAGES_SIZE; i++) {
+		sensorFuncCounter[i] = 0;
+	}
+
+	sensorFuncCounterMutex->unlock();
+}
+
 int PuckHandler::getDispChid(){
 	return dispChid;
 }
@@ -246,13 +291,17 @@ void PuckHandler::reset(){
 	seg2Mutex->~Mutex();
 	seg3Mutex->~Mutex();
 	pucksBandMutex->~Mutex();
+	sensorFuncCounterMutex->~Mutex();
 
 	seg1Mutex = new Mutex;
 	seg2Mutex = new Mutex;
 	seg3Mutex = new Mutex;
 	pucksBandMutex = new Mutex;
+	sensorFuncCounterMutex = new Mutex;
 
 	pucksOnBand.clear();
+
+	resetAllSenseorFuncCounters();
 
 	while(!pucksInSeg1.empty()) {
 		pucksInSeg1.pop();

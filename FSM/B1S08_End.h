@@ -18,7 +18,7 @@ public:
 	virtual ~B1S08_End();
 
 	void rs232PuckArrivedOnBand2(); //TODO: Check if good
-	//void sbEndClosed();
+	void sbEndClosed();
 };
 
 #endif /* B1S08_END_H_ */
