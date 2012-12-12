@@ -136,6 +136,11 @@ public:
 	bool checkIfFirstElemInSeg3(Controller* contr);
 
 	/**
+	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 */
+	void reInitFirstElemInSegBools();
+
+	/**
 	 * Initializes all controllers (Pucks, 12 per define at the moment). Each puck
 	 * is registered for all signals at the Dispatcher.
 	 */

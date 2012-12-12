@@ -216,7 +216,7 @@ void ErrorFSM::execute(void*) {
 					sendPuckReply();
 					aHal->engineFullUnstop();
 					error = false;
-					th->continueAllTimers();
+					//th->continueAllTimers();
 					state = ERR_STATE_IDLE;
 				}
 			}
@@ -227,6 +227,7 @@ void ErrorFSM::execute(void*) {
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_RESET_PRESSED){
 					lc->upcomingReceipted();
+					PuckHandler::getInstance()->reInitFirstElemInSegBools();
 					state = ERR_STATE_ERROR_RECEIPTED;
 				}
 			}

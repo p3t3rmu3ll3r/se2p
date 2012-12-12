@@ -54,6 +54,7 @@ void B1S07_Seg3::sbEndOpen() {
 void B1S07_Seg3::timerGateClose() {
 	actorHAL->gate(false);
 	timerHandler->deleteTimer(this->controller->gateTimer);
+	this->controller->gateTimer = NULL;
 }
 
 void B1S07_Seg3::timerSeg3Min() {

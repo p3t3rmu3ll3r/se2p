@@ -205,6 +205,18 @@ bool PuckHandler::checkIfFirstElemInSeg3(Controller* contr) {
 	seg3Mutex->unlock();
 }
 
+void PuckHandler::reInitFirstElemInSegBools() {
+	if(!pucksInSeg1.empty()){
+		pucksInSeg1.front()->setFirstElementInSegment(true);
+	}
+	if(!pucksInSeg2.empty()){
+		pucksInSeg2.front()->setFirstElementInSegment(true);
+	}
+	if(!pucksInSeg3.empty()){
+		pucksInSeg3.front()->setFirstElementInSegment(true);
+	}
+}
+
 void PuckHandler::printQueueStatus() {
 	printf("Queue Seg1 size(): %d -> PuckID: %d -> isFront: %c\n",
 			pucksInSeg1.size(), (pucksInSeg1.empty() ? 50
