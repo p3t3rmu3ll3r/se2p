@@ -14,7 +14,11 @@
 class B2S02_Seg1: public BaseState {
 public:
 	B2S02_Seg1(Controller* controller);
+
 	void sbHeightcontrolOpen();
+	void timerSeg1Min();
+	void timerSeg1Max();
+
 	virtual ~B2S02_Seg1();
 };
 

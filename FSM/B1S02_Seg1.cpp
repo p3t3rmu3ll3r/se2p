@@ -10,20 +10,14 @@
 B1S02_Seg1::B1S02_Seg1(Controller* controller) {
 	this->controller = controller;
 
-	//TODO im extry aka exit im state b4 machen
-	this->controller->setSegTimerMinCalled(false);
-	this->controller->segTimerMin = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG1_MIN_SEC, TIME_VALUE_SEG1_MIN_MSEC, TIMER_SEG1_MIN);
-	this->controller->segTimerMax = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG1_MAX_SEC, TIME_VALUE_SEG1_MAX_MSEC, TIMER_SEG1_MAX);
-	this->controller->segTimerMin->start();
-	this->controller->segTimerMax->start();
-
-	//printf("DEBUG STATE: Puck%d -> B1S02_Seg1 \n", this->controller->getID());
+#ifdef DEBUG_STATE_PRINTF
+	printf("DEBUG STATE: Puck%d -> B1S02_Seg1 \n", this->controller->getID());
+#endif
 
 	this->controller->setFirstElementInSegment(puckHandler->checkIfFirstElemInSeg1(this->controller));
 }
 
 B1S02_Seg1::~B1S02_Seg1() {
-
 }
 
 void B1S02_Seg1::sbHeightcontrolOpen() {
@@ -33,9 +27,8 @@ void B1S02_Seg1::sbHeightcontrolOpen() {
 
 			puckHandler->removePuckFromSeg1();
 			new (this) B1S03_Height(controller);
-			//printf("Puck%d being p0pped\n", this->controller->getID());
 		} else {
-			//TODO: Throw MIN Error !!!
+
 			int errorfsmChid = errfsm->getErrorFSMChid();
 			int errorfsmCoid;
 			int rc;
@@ -65,10 +58,15 @@ void B1S02_Seg1::timerSeg1Min() {
 }
 
 void B1S02_Seg1::timerSeg1Max() {
-	printf("B1S02_Seg1: timerSeg1Max\n");
 	if(controller->isFirstElementInSegment()) {
-		printf("B1S02_Seg1: timerSeg1Max -> isFirstElementInSegment\n");
-		// TODO: Throw MAX Error !!!
+
+		puckHandler->removePuckFromSeg1();
+		puckHandler->removePuckFromBand(controller);
+		if(puckHandler->isBandEmpty()){
+			actorHAL->engineStop();
+		}
+		controller->resetController();
+
 		int errorfsmChid = errfsm->getErrorFSMChid();
 		int errorfsmCoid;
 		int rc;
@@ -77,7 +75,8 @@ void B1S02_Seg1::timerSeg1Max() {
 			printf("B1S02_Seg1: Error in ConnectAttach\n");
 		}
 
-		rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_CRITICAL_ERROR);
+		//rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_CRITICAL_ERROR);
+		rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_ERROR);
 		if (rc < 0) {
 			printf("B1S02_Seg1: Error in MsgSendPulse");
 		}

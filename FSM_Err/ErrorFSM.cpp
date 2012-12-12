@@ -99,18 +99,24 @@ void ErrorFSM::execute(void*) {
 
 		if((pulseVal == RS232_ESTOP || pulseVal == BTN_ESTOP_PRESSED) && !isEstopPressed){
 			isEstopPressed = true;
+			th->pauseAllTimers();
 			disp->setEstop(true);
 			state = ERR_STATE_ESTOP;
 			if(pulseVal == BTN_ESTOP_PRESSED){
 				RS232_1::getInstance()->sendMsg(RS232_ESTOP);
 			}
-			th->pauseAllTimers();
+#ifdef DEBUG_ErrorFSM
+			printf("Debug Error FSM: Error -> ERR_STATE_ESTOP\n");
+#endif
 		} else if(pulseVal == BTN_STOP_PRESSED && !isStopPressed && !error){
 			isStopPressed = true;
 			th->pauseAllTimers();
 			isEngineStopped = aHal->isEngineStopped();
 			oldState = state;
 			state = ERR_STATE_STOP;
+#ifdef DEBUG_ErrorFSM
+			printf("Debug Error FSM: Error -> ERR_STATE_STOP\n");
+#endif
 		}
 
 		switch (state) {
@@ -124,32 +130,45 @@ void ErrorFSM::execute(void*) {
 					aHal->engineFullStop();
 					lc->upcomingNotReceipted();
 					error = true;
+#ifdef DEBUG_ErrorFSM
+					printf("Debug Error FSM: Error -> ERR_STATE_SLIDE_FULL\n");
+#endif
 					break;
 				case ERR_STATE_TURNOVER:
 					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->manualTurnover();
 					error = true;
+#ifdef DEBUG_ErrorFSM
+					printf("Debug Error FSM: Error -> ERR_STATE_TURNOVER\n");
+#endif
 					break;
 				case ERR_STATE_ERROR:
+					th->pauseAllTimers();
+					isEngineStopped = aHal->isEngineStopped();
+					disp->setError(true);
+					aHal->engineFullStop();
+					lc->upcomingNotReceipted();
+					error = true;
+#ifdef DEBUG_ErrorFSM
+					printf("Debug Error FSM: Error -> ERR_STATE_ERROR\n");
+#endif
+					break;
+				/*case ERR_STATE_CRITICAL_ERROR:
 					disp->setError(true);
 					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->upcomingNotReceipted();
 					error = true;
-					break;
-				case ERR_STATE_CRITICAL_ERROR:
-					disp->setError(true);
-					th->pauseAllTimers();
-					aHal->engineFullStop();
-					lc->upcomingNotReceipted();
-					error = true;
-					break;
+					break;*/
 				case ERR_STATE_TURNOVER_BAND2:
 					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->upcomingNotReceipted();
 					error = true;
+#ifdef DEBUG_ErrorFSM
+					printf("Debug Error FSM: Error -> ERR_STATE_TURNOVER_BAND2\n");
+#endif
 					break;
 				default:
 					printf("nop\n");
@@ -217,14 +236,17 @@ void ErrorFSM::execute(void*) {
 				if(pulseVal == BTN_START_PRESSED){
 					lc->operatingNormal();
 					aHal->engineFullUnstop();
+					if(isEngineStopped){
+						aHal->engineStop();
+					}
+					error = false;
 					disp->setError(false);
 					th->continueAllTimers();
-					error = false;
 					state = ERR_STATE_IDLE;
 				}
 			}
 			break;
-		case ERR_STATE_CRITICAL_ERROR:
+/*		case ERR_STATE_CRITICAL_ERROR:
 			aHal->engineFullStop();
 			lc->upcomingNotReceipted();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
@@ -243,7 +265,7 @@ void ErrorFSM::execute(void*) {
 					error = false;
 				}
 			}
-			break;
+			break;*/
 		case ERR_STATE_TURNOVER_BAND2:
 			aHal->engineFullStop();
 			lc->upcomingNotReceipted();
@@ -310,10 +332,10 @@ void ErrorFSM::execute(void*) {
 					isStopPressed = false;
 					lc->operatingNormal();
 					aHal->engineFullUnstop();
-					th->continueAllTimers();
 					if(isEngineStopped){
 						aHal->engineStop();
 					}
+					th->continueAllTimers();
 					state = oldState;
 				}
 			}

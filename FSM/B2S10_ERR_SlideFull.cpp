@@ -10,7 +10,9 @@
 B2S10_ERR_SlideFull::B2S10_ERR_SlideFull(Controller* controller) {
 	this->controller = controller;
 
+#ifdef DEBUG_STATE_PRINTF
 	printf("DEBUG STATE: Puck%d -> B2S10_ERR_SlideFull \n", this->controller->getID());
+#endif
 
 	int replyChid = errfsm->getReplyChid();
 	int errorfsmChid = errfsm->getErrorFSMChid();
@@ -28,20 +30,28 @@ B2S10_ERR_SlideFull::B2S10_ERR_SlideFull(Controller* controller) {
 		printf("B2S10_ERR_SlideFull: Error in MsgSendPulse");
 	}
 
-	printf("now i goin blocked\n");
 	rc = MsgReceivePulse(replyChid, &pulse, sizeof(pulse), NULL);
 	if (rc < 0) {
 		printf("B2S10_ERR_SlideFull: Error in recv pulse\n");
 	}
 
-	printf("now i unblocked\n");
-	this->controller->puckType = PUCK_ACCEPTED;
-
 	if (ConnectDetach(errorfsmCoid) == -1) {
 		printf("B2S10_ERR_SlideFull: Error in ConnectDetach\n");
 	}
 
-	new (this) B2S06_Slide(this->controller);
+	//new (this) B2S06_Slide(this->controller); //TODO: not necessary
+
+	//TODO: Diagramme anpassen
+
+	//new (this) B2S06_Slide(this->controller);
+	puckHandler->removePuckFromBand(controller);
+	actorHAL->engineStop();
+	if(controller->isBand1Waiting()){
+		rs232_1->sendMsg(RS232_BAND2_READY);
+		ActorHAL::getInstance()->engineRight(false);
+		ActorHAL::getInstance()->engineUnstop();
+	}
+	controller->resetController();
 }
 
 B2S10_ERR_SlideFull::~B2S10_ERR_SlideFull() {

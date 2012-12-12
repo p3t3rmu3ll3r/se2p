@@ -10,9 +10,12 @@
 B2S06_Slide::B2S06_Slide(Controller* controller) {
 	this->controller = controller;
 
-	printf("DEBUG STATE: Puck%d -> B2S06_Slide \n", this->controller->getID());
+	this->controller->slideTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SLIDE_FULL_SEC, TIME_VALUE_SLIDE_FULL_MSEC, TIMER_SLIDE_FULL);
+	this->controller->slideTimer->start();
 
-	//do timer magic for slidefull error
+#ifdef DEBUG_STATE_PRINTF
+	printf("DEBUG STATE: Puck%d -> B2S06_Slide \n", this->controller->getID());
+#endif
 }
 
 B2S06_Slide::~B2S06_Slide() {
@@ -29,3 +32,6 @@ void B2S06_Slide::sbSlideClosed(){
 	controller->resetController();
 }
 
+void B2S06_Slide::timerSlideFull(){
+	new (this) B2S10_ERR_SlideFull(controller);
+}

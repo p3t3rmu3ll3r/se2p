@@ -10,7 +10,10 @@
 B1S11_ReadyWait::B1S11_ReadyWait(Controller* controller) {
 	this->controller = controller;
 
-	//printf("DEBUG STATE: Puck%d -> B1S11_ReadyWait \n", this->controller->getID());
+#ifdef DEBUG_STATE_PRINTF
+	printf("DEBUG STATE: Puck%d -> B1S11_ReadyWait \n", this->controller->getID());
+#endif
+	timerHandler->pauseAllTimers();
 	actorHAL->engineFullStop();
 	rs232_1->sendMsg(RS232_BAND1_WAITING);
 	//TODO timermagic, if no ack returns
@@ -26,5 +29,6 @@ void B1S11_ReadyWait::rs232Band2Ack(){
 void B1S11_ReadyWait::rs232Band2Ready(){
 	controller->puckType = PUCK_HANDOVER;
 	actorHAL->engineFullUnstop();
+	timerHandler->continueAllTimers();
 	new (this) B1S08_End(controller);
 }

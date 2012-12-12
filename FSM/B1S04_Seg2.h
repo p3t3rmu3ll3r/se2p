@@ -17,6 +17,8 @@ public:
 	virtual ~B1S04_Seg2();
 
 	void sbGateOpen();
+	void timerSeg2Min();
+	void timerSeg2Max();
 };
 
 #endif /* B1S04_SEG2_H_ */

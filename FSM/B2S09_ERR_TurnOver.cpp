@@ -10,7 +10,9 @@
 B2S09_ERR_TurnOver::B2S09_ERR_TurnOver(Controller* controller) {
 	this->controller = controller;
 
+#ifdef DEBUG_STATE_PRINTF
 	printf("DEBUG STATE: Puck%d -> B2S09_ERR_TurnOver \n", this->controller->getID());
+#endif
 
 	int replyChid = errfsm->getReplyChid();
 	int errorfsmChid = errfsm->getErrorFSMChid();
@@ -45,5 +47,12 @@ B2S09_ERR_TurnOver::~B2S09_ERR_TurnOver() {
 }
 
 void B2S09_ERR_TurnOver::sbStartClosed(){
+
+	this->controller->setSegTimerMinCalled(false);
+	this->controller->segTimerMin = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG1_MIN_SEC, TIME_VALUE_SEG1_MIN_MSEC, TIMER_SEG1_MIN);
+	this->controller->segTimerMax = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG1_MAX_SEC, TIME_VALUE_SEG1_MAX_MSEC, TIMER_SEG1_MAX);
+	this->controller->segTimerMin->start();
+	this->controller->segTimerMax->start();
+
 	new (this) B2S02_Seg1(this->controller);
 }

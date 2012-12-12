@@ -10,7 +10,9 @@
 B1S08_End::B1S08_End(Controller* controller) {
 	this->controller = controller;
 
-	//printf("DEBUG STATE: Puck%d -> B1S08_End \n", this->controller->getID());
+#ifdef DEBUG_STATE_PRINTF
+	printf("DEBUG STATE: Puck%d -> B1S08_End \n", this->controller->getID());
+#endif
 
 	if(this->controller->puckType == PUCK_TURNOVER){
 		new (this) B1S09_ERR_TurnOver(this->controller);

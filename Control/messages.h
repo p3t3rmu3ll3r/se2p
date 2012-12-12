@@ -51,7 +51,7 @@ enum rs232Messages {
 	RS232_BAND1_WAITING,
 	RS232_PUCK_ARRIVED_ON_BAND2,
 
-	//will not be dispatched, therefor size is still 3
+	//will not be dispatched, therefore size is still 3
 	RS232_ESTOP = 99
 };
 
