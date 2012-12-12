@@ -63,7 +63,7 @@ void Timer::start() {
 void Timer::stop() {
 	// Stoppe den Timer
 	if(timer_settime(timerid, 0, &timer, NULL) == -1){
-		printf("Timer: Error in stop() timer_settime()\n");
+		printf("Timer: Error in stop() timer_settime(), errno:%d\n", errno);
 	}
 
 	// Zuruecksetzen
@@ -84,7 +84,7 @@ void Timer::cont() {
 	// Arm, da Werte im struct wieder != 0
 	if (isPaused) {
 		if (timer_settime(timerid, 0, &backupTimer, NULL) == -1) {
-			printf("Timer: Error in cont() timer_settime()\n");
+			printf("Timer: Error in cont() timer_settime(), errno:%d\n", errno);
 		}
 		isPaused = false;
 	}

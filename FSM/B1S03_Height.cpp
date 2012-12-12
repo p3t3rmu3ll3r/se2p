@@ -13,9 +13,11 @@ B1S03_Height::B1S03_Height(Controller* controller) {
 #ifdef DEBUG_STATE_PRINTF
 	printf("DEBUG STATE: Puck%d -> B1S03_Height \n", this->controller->getID());
 #endif
+	timerHandler->pauseAllTimers();
 	actorHAL->engineStop();
 	controller->puckType = sensorHAL->getHeightPuckType();
 	actorHAL->engineUnstop();
+	timerHandler->continueAllTimers();
 }
 
 B1S03_Height::~B1S03_Height() {

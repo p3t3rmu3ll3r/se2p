@@ -56,6 +56,9 @@ public:
 	*/
 	void upcomingNotReceipted();
 
+	//TODO: comment or delete
+	void upcomingNotReceiptedTimer();
+
 	/**
 	* Signals an upcoming and receipted error.
 	* Red light on
@@ -151,6 +154,9 @@ private:
 	* Blink red slow
 	*/
 	void blinkRedSlow();
+
+	//TODO: comment or delete
+	void blinkRedSlowDouble();
 
 	/**
 	 * Blink green fast

@@ -78,6 +78,11 @@ public:
 	 */
 	int getReplyChid();
 
+	/**
+	 * TODO
+	 */
+	void unblockWaitingPucks();
+
 private:
 	/**
 	 * Singleton constructor. Variables and states are initialized and

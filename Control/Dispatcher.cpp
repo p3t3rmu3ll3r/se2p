@@ -166,9 +166,9 @@ void Dispatcher::execute(void*) {
 #ifdef BAND_1
 				if(!error) {
 #endif
-				for (uint32_t i = 0; i < controllersForRS232Func[funcIdx].size(); i++) {
-					(controllersForRS232Func[funcIdx].at(i)->*rs232FuncArr[funcIdx])();
-				}
+					for (uint32_t i = 0; i < controllersForRS232Func[funcIdx].size(); i++) {
+						(controllersForRS232Func[funcIdx].at(i)->*rs232FuncArr[funcIdx])();
+					}
 #ifdef BAND_1
 				}
 #endif

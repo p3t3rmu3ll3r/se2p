@@ -14,9 +14,11 @@ B2S03_Height::B2S03_Height(Controller* controller) {
 	printf("DEBUG STATE: Puck%d -> B2S03_Height \n", this->controller->getID());
 #endif
 
+	timerHandler->pauseAllTimers();
 	actorHAL->engineStop();
 	controller->puckType = sensorHAL->getHeightPuckType();
 	actorHAL->engineUnstop();
+	timerHandler->continueAllTimers();
 
 
 	if(controller->puckType == PUCK_TURNOVER){

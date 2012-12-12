@@ -148,7 +148,7 @@ void ErrorFSM::execute(void*) {
 					isEngineStopped = aHal->isEngineStopped();
 					disp->setError(true);
 					aHal->engineFullStop();
-					lc->upcomingNotReceipted();
+					lc->upcomingNotReceiptedTimer();
 					error = true;
 #ifdef DEBUG_ErrorFSM
 					printf("Debug Error FSM: Error -> ERR_STATE_ERROR\n");
@@ -223,7 +223,7 @@ void ErrorFSM::execute(void*) {
 			break;
 		case ERR_STATE_ERROR:
 			aHal->engineFullStop();
-			lc->upcomingNotReceipted();
+			lc->upcomingNotReceiptedTimer();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_RESET_PRESSED){
 					lc->upcomingReceipted();
@@ -296,6 +296,7 @@ void ErrorFSM::execute(void*) {
 			aHal->engineFullStop();
 			lc->upcomingNotReceipted();
 			aHal->gate(false);
+			unblockWaitingPucks();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_ESTOP_RELEASED && isEstopPressed){
 					lc->upcomingReceipted();
@@ -377,5 +378,23 @@ void ErrorFSM::sendPuckReply(){
 	int rc = MsgSendPulse(replyCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_ERR_FSM, 0/*ERROR_SOLVED*/);
 	if (rc < 0) {
 		printf("ErrorFSM: Error in MsgSendPulse\n");
+	}
+}
+
+void ErrorFSM::unblockWaitingPucks(){
+	if (ConnectDetach(replyCoid) == -1) {
+		printf("ErrorFSM: Error in ConnectDetach\n");
+	}
+
+	if (ChannelDestroy(replyChid) == -1) {
+		printf("ErrorFSM: Error in ChannelDestroy\n");
+	}
+
+	if ((replyChid = ChannelCreate(0)) == -1) {
+		printf("ErrorFSM: Error in ChannelCreate\n");
+	}
+
+	if ((replyCoid = ConnectAttach(0, 0, replyChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+		printf("ErrorFSM: Error in ConnectAttach\n");
 	}
 }

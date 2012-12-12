@@ -38,18 +38,18 @@ TimerHandler* TimerHandler::getInstance()
 }
 
 Timer* TimerHandler::createTimer(int chid, int sec, int msec, int msg) {
-	Timer* tmpTimer = new Timer(chid, sec, msec, msg);
 	mutex->lock();
+	Timer* tmpTimer = new Timer(chid, sec, msec, msg);
 	timers.push_back(tmpTimer);
 	mutex->unlock();
-	//printf("Debug TimerHandler: New Timer created with id: %d, vector size: %d\n", tmpTimer->timerid, timers.size());
+	printf("Debug TimerHandler: New Timer created with id: %d, vector size: %d\n", tmpTimer->timerid, timers.size());
 	return tmpTimer;
 }
 
 void TimerHandler::deleteTimer(Timer* timer) {
 	mutex->lock();
-	//printf("Debug TimerHandler: delete called on address %d\n",&timer);
 	if(timer != NULL){
+	printf("Debug TimerHandler: delete called on timerid %d\n",timer->timerid);
 		if (!timers.empty()) {
 			timer->stop();
 			for (uint32_t i = 0; i < timers.size(); i++) {
