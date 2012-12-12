@@ -149,7 +149,7 @@ void Dispatcher::execute(void*) {
 			}
 		} else if(pulse.code == PULSE_FROM_RS232){
 
-			if(isRunning && !eStop && !error){
+			if(isRunning && !eStop){
 #ifdef DEBUG_DISPATCHER
 				printf("--------------------------------------------\n");
 				printf("Dispatcher received RS232 pulse: %d\n", pulse.value);
@@ -163,9 +163,15 @@ void Dispatcher::execute(void*) {
 					RS232_1::getInstance()->sendMsg(RS232_BAND2_ACK);
 #endif
 
+#ifdef BAND_1
+				if(!error) {
+#endif
 				for (uint32_t i = 0; i < controllersForRS232Func[funcIdx].size(); i++) {
 					(controllersForRS232Func[funcIdx].at(i)->*rs232FuncArr[funcIdx])();
 				}
+#ifdef BAND_1
+				}
+#endif
 #ifdef BAND_2
 				}
 #endif

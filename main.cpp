@@ -73,7 +73,8 @@ int main(int argc, char *argv[]) {
 
 	PuckHandler::getInstance()->initializePucks();
 
-	Receiver::getInstance()->start(0);
+	Receiver* recv = Receiver::getInstance();
+	recv->start(0);
 
 	/*
 
@@ -114,12 +115,14 @@ int main(int argc, char *argv[]) {
 	lc->lightsOff();
 	lc->cont();
 	lc->stop();
+	recv->stop();
 
 
 	disp->join();
 	isrhandler->join();
 	lc->join();
 	errfsm->join();
+	recv->join();
 	/*END CLEANUP*/
 
 

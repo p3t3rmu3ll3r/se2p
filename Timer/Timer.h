@@ -79,11 +79,11 @@ public:
 	 */
 	void changeTime(int sec, int msec);
 
+private:
 	/**
 	 * Timer ID
 	 */
 	timer_t timerid;
-private:
 
 	/**
 	 * Timerstruct for running timer
