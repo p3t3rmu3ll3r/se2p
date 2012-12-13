@@ -21,7 +21,7 @@ B2S03_Height::B2S03_Height(Controller* controller) {
 	timerHandler->continueAllTimers();
 
 
-	if(controller->puckType == PUCK_TURNOVER){
+	if(controller->puckType == PUCK_TURNOVER || controller->puckType == PUCK_TOO_LOW){
 		this->controller->resetSegTimers();
 		new (this) B2S09_ERR_TurnOver(this->controller);
 	}

@@ -275,7 +275,7 @@ void ErrorFSM::execute(void*) {
 					lc->upcomingReceipted();
 					PuckHandler::getInstance()->reInitFirstElemInSegBools();
 					PuckHandler::getInstance()->resetAllSenseorFuncCounters();
-					state = ERR_STATE_ERROR_RECEIPTED;
+					state = ERR_STATE_ERROR_RECEIPTED_MAX;
 				}
 			}
 			break;
@@ -288,10 +288,10 @@ void ErrorFSM::execute(void*) {
 						aHal->engineStop();
 					}
 					error = false;
+					disp->setError(false);
 #ifdef BAND_2
 					sendPuckReply();
 #endif
-					disp->setError(false);
 					th->continueAllTimers();
 					state = ERR_STATE_IDLE;
 				}

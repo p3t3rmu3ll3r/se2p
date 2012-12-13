@@ -56,7 +56,6 @@ void B2S04_Seg2::timerSeg2Max() {
 
 	puckHandler->removePuckFromBand(controller);
 	actorHAL->engineStop();
-	controller->resetController();
 
 	int replyChid = errfsm->getReplyChid();
 	int errorfsmChid = errfsm->getErrorFSMChid();
@@ -89,4 +88,5 @@ void B2S04_Seg2::timerSeg2Max() {
 		ActorHAL::getInstance()->engineRight(false);
 		ActorHAL::getInstance()->engineUnstop();
 	}
+	controller->resetController();
 }
