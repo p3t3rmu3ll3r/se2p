@@ -151,6 +151,16 @@ public:
 	void resetSegTimers();
 
 	/**
+	 * TODO: isError
+	 */
+	bool isError();
+
+	/**
+	 * TODO: errorOccured
+	 */
+	void setError(bool error);
+
+	/**
 	 * Type of the puck, valid types are defined in puckTypes.h
 	 */
 	int puckType;
@@ -225,6 +235,11 @@ private:
 	 * Was the current segTimerMin already been called
 	 */
 	bool segTimerMinCalled;
+
+	/**
+	 * TODO: error bool
+	 */
+	bool error;
 };
 
 #endif /* CONTROLLER_H_ */

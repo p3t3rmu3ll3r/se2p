@@ -185,6 +185,16 @@ public:
 	 */
 	void resetAllSenseorFuncCounters();
 
+	/**
+	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 */
+	void errorOccured();
+
+	/**
+	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 */
+	void errorResolved();
+
 private:
 
 	/**

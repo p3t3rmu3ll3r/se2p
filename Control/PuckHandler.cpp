@@ -270,6 +270,21 @@ void PuckHandler::incrementSenseorFuncCounter(int funcIdx) {
 
 	sensorFuncCounterMutex->unlock();
 }
+void PuckHandler::errorOccured() {
+	if (!pucks.empty()) {
+		for (int i = 0; i < MAX_PUCKS_BAND; i++) {
+			pucks.at(i)->setError(true);
+		}
+	}
+}
+
+void PuckHandler::errorResolved() {
+	if (!pucks.empty()) {
+		for (int i = 0; i < MAX_PUCKS_BAND; i++) {
+			pucks.at(i)->setError(false);
+		}
+	}
+}
 
 void PuckHandler::resetAllSenseorFuncCounters() {
 	sensorFuncCounterMutex->lock();

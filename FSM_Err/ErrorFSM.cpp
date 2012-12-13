@@ -136,6 +136,7 @@ void ErrorFSM::execute(void*) {
 					break;
 				case ERR_STATE_TURNOVER:
 					PuckHandler::getInstance()->resetAllSenseorFuncCounters();
+					PuckHandler::getInstance()->errorOccured();
 					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->manualTurnover();
@@ -216,10 +217,11 @@ void ErrorFSM::execute(void*) {
 					lc->operatingNormal();
 					//msg puck error solved, reihenfolge unstop und msg puck?!
 					//sendPuckReply();
-					aHal->engineFullUnstop();
+					//aHal->engineFullUnstop();
 					error = false;
 					//disp->setError(false);
 					//th->continueAllTimers();
+					PuckHandler::getInstance()->errorResolved();
 					state = ERR_STATE_IDLE;
 				}
 			}

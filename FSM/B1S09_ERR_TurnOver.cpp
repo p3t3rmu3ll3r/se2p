@@ -51,3 +51,4 @@ void B1S09_ERR_TurnOver::sbEndOpen() {
 	this->controller->puckType = PUCK_ACCEPTED;
 	new (this) B1S08_End(this->controller);
 }
+

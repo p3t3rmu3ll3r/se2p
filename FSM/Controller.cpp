@@ -47,6 +47,7 @@ void Controller::resetController() {
 	band1Waiting = false;
 	puckType = -1;
 	firstElementInSegment = false;
+	error= false;
 	state = new BaseState();
 	resetSegTimers();
 	th->deleteTimer(gateTimer);
@@ -280,4 +281,12 @@ void Controller::resetSegTimers(){
 
 	segTimerMax = NULL;
 	segTimerMin = NULL;
+}
+
+bool Controller::isError(){
+	return error;
+}
+
+void Controller::setError(bool error){
+	this->error = error;
 }

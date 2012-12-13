@@ -21,7 +21,8 @@ B1S07_Seg3::~B1S07_Seg3() {
 }
 
 void B1S07_Seg3::sbEndOpen() {
-	if (controller->isFirstElementInSegment()) {
+	if (controller->isFirstElementInSegment() && !controller->isError()) {
+		printf("B1S07_Seg3::sbEndOpen() -> I is element at first in SEG3 !!!11\n");
 		if(this->controller->isSegTimerMinCalled()){
 			controller->resetSegTimers();
 

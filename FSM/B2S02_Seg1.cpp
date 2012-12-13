@@ -52,8 +52,11 @@ void B2S02_Seg1::timerSeg1Min() {
 void B2S02_Seg1::timerSeg1Max() {
 
 	puckHandler->removePuckFromBand(controller);
-	if(puckHandler->isBandEmpty()){
-		actorHAL->engineStop();
+	actorHAL->engineStop();
+	if(controller->isBand1Waiting()){
+		rs232_1->sendMsg(RS232_BAND2_READY);
+		ActorHAL::getInstance()->engineRight(false);
+		ActorHAL::getInstance()->engineUnstop();
 	}
 	controller->resetController();
 
