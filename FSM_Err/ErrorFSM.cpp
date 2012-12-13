@@ -157,12 +157,26 @@ void ErrorFSM::execute(void*) {
 					printf("Debug Error FSM: Error -> ERR_STATE_ERROR\n");
 #endif
 					break;
+				case ERR_STATE_ERROR_MAX:
+					th->pauseAllTimers();
+					isEngineStopped = aHal->isEngineStopped();
+					disp->setError(true);
+					aHal->engineFullStop();
+					lc->upcomingNotReceiptedTimer();
+					error = true;
+#ifdef DEBUG_ErrorFSM
+					printf("Debug Error FSM: Error -> ERR_STATE_ERROR_MAX\n");
+#endif
+					break;
 				/*case ERR_STATE_CRITICAL_ERROR:
 					disp->setError(true);
 					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->upcomingNotReceipted();
 					error = true;
+#ifdef DEBUG_ErrorFSM
+					printf("Debug Error FSM: Error -> ERR_STATE_CRITICAL_ERROR\n");
+#endif
 					break;*/
 				case ERR_STATE_TURNOVER_BAND2:
 					th->pauseAllTimers();
@@ -247,6 +261,36 @@ void ErrorFSM::execute(void*) {
 						aHal->engineStop();
 					}
 					error = false;
+					disp->setError(false);
+					th->continueAllTimers();
+					state = ERR_STATE_IDLE;
+				}
+			}
+			break;
+		case ERR_STATE_ERROR_MAX:
+			aHal->engineFullStop();
+			lc->upcomingNotReceiptedTimer();
+			if(pulseCode == PULSE_FROM_ISRHANDLER){
+				if(pulseVal == BTN_RESET_PRESSED){
+					lc->upcomingReceipted();
+					PuckHandler::getInstance()->reInitFirstElemInSegBools();
+					PuckHandler::getInstance()->resetAllSenseorFuncCounters();
+					state = ERR_STATE_ERROR_RECEIPTED;
+				}
+			}
+			break;
+		case ERR_STATE_ERROR_RECEIPTED_MAX:
+			if(pulseCode == PULSE_FROM_ISRHANDLER){
+				if(pulseVal == BTN_START_PRESSED){
+					lc->operatingNormal();
+					aHal->engineFullUnstop();
+					if(isEngineStopped){
+						aHal->engineStop();
+					}
+					error = false;
+#ifdef BAND_2
+					sendPuckReply();
+#endif
 					disp->setError(false);
 					th->continueAllTimers();
 					state = ERR_STATE_IDLE;

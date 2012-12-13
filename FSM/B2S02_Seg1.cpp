@@ -53,28 +53,37 @@ void B2S02_Seg1::timerSeg1Max() {
 
 	puckHandler->removePuckFromBand(controller);
 	actorHAL->engineStop();
-	if(controller->isBand1Waiting()){
-		rs232_1->sendMsg(RS232_BAND2_READY);
-		ActorHAL::getInstance()->engineRight(false);
-		ActorHAL::getInstance()->engineUnstop();
-	}
 	controller->resetController();
 
+	int replyChid = errfsm->getReplyChid();
 	int errorfsmChid = errfsm->getErrorFSMChid();
 	int errorfsmCoid;
 	int rc;
+
+	struct _pulse pulse;
 
 	if ((errorfsmCoid = ConnectAttach(0, 0, errorfsmChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
 		printf("B2S02_Seg1: Error in ConnectAttach\n");
 	}
 
 	//rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_CRITICAL_ERROR);
-	rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_ERROR);
+	rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_ERROR_MAX);
 	if (rc < 0) {
 		printf("B2S02_Seg1: Error in MsgSendPulse");
 	}
 
+	rc = MsgReceivePulse(replyChid, &pulse, sizeof(pulse), NULL);
+	if (rc < 0) {
+		printf("B2S02_Seg1: Error in recv pulse\n");
+	}
+
 	if (ConnectDetach(errorfsmCoid) == -1) {
 		printf("B2S02_Seg1: Error in ConnectDetach\n");
+	}
+
+	if(controller->isBand1Waiting()){
+		rs232_1->sendMsg(RS232_BAND2_READY);
+		ActorHAL::getInstance()->engineRight(false);
+		ActorHAL::getInstance()->engineUnstop();
 	}
 }
