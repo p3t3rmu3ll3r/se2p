@@ -103,7 +103,7 @@ Dispatcher* Dispatcher::getInstance() {
 
 void Dispatcher::execute(void*) {
 	int rc;
-	bool isRunning = false;
+	running = false;
 
 	struct _pulse pulse;
 
@@ -120,14 +120,14 @@ void Dispatcher::execute(void*) {
 
 		if (pulse.code == PULSE_FROM_ISRHANDLER) {
 
-			if(funcIdx == BTN_START_PRESSED && !isRunning && !eStop && !error){
-				isRunning = true;
+			if(funcIdx == BTN_START_PRESSED && !running && !eStop && !error){
+				running = true;
 				lc->operatingNormal();
-			} else if(funcIdx == BTN_STOP_PRESSED && isRunning && !eStop && !error){
-				isRunning = false;
+			} else if(funcIdx == BTN_STOP_PRESSED && running && !eStop && !error){
+				running = false;
 			}
 
-			if(isRunning && !eStop && !error){
+			if(running && !eStop && !error){
 #ifdef DEBUG_DISPATCHER
 				printf("--------------------------------------------\n");
 				printf("Dispatcher received ISR pulse: %d\n", pulse.value);
@@ -149,7 +149,7 @@ void Dispatcher::execute(void*) {
 			}
 		} else if(pulse.code == PULSE_FROM_RS232){
 
-			if(isRunning && !eStop){
+			if(running && !eStop){
 #ifdef DEBUG_DISPATCHER
 				printf("--------------------------------------------\n");
 				printf("Dispatcher received RS232 pulse: %d\n", pulse.value);
@@ -225,4 +225,8 @@ void Dispatcher::setEstop(bool eStop) {
 
 void Dispatcher::setError(bool error) {
 	this->error = error;
+}
+
+bool Dispatcher::isRunning(){
+	return running;
 }

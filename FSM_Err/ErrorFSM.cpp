@@ -360,7 +360,10 @@ void ErrorFSM::execute(void*) {
 				if(pulseVal == BTN_RESET_PRESSED){
 					isEstopPressed = false;
 					PuckHandler::getInstance()->reset();
-					lc->operatingNormal(); //TODO if disp->isRunning()
+					lc->lightsOff();
+					if(disp->isRunning()){
+						lc->operatingNormal();
+					}
 					aHal->engineFullUnstop();
 					aHal->revokeEngineRight();
 					disp->setEstop(false);

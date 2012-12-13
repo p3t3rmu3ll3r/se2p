@@ -101,6 +101,11 @@ public:
 	 */
 	void setError(bool error);
 
+	/**
+	 * TODO
+	 */
+	bool isRunning();
+
 private:
 	/**
 	 * Setting up functionpointer array for all signals to dispatch to the registered controllers.
@@ -132,6 +137,11 @@ private:
 	 * Indicates if an error occured [true if yes, false if not]
 	 */
 	bool error;
+
+	/**
+	 * TODO
+	 */
+	bool running;
 
 	/**
 	 * Instance of the LightController
