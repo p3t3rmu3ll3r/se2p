@@ -14,12 +14,12 @@ B1S09_ERR_TurnOver::B1S09_ERR_TurnOver(Controller* controller) {
 	printf("DEBUG STATE: Puck%d -> B1S09_ERR_TurnOver \n", this->controller->getID());
 #endif
 
-	int replyChid = errfsm->getReplyChid();
+	//int replyChid = errfsm->getReplyChid();
 	int errorfsmChid = errfsm->getErrorFSMChid();
 	int errorfsmCoid;
 	int rc;
 
-	struct _pulse pulse;
+	//struct _pulse pulse;
 
 	if ((errorfsmCoid = ConnectAttach(0, 0, errorfsmChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
 		printf("B1S09_ERR_TurnOver: Error in ConnectAttach\n");
@@ -29,20 +29,25 @@ B1S09_ERR_TurnOver::B1S09_ERR_TurnOver(Controller* controller) {
 	if (rc < 0) {
 		printf("B1S09_ERR_TurnOver: Error in MsgSendPulse");
 	}
-
+/*
 	rc = MsgReceivePulse(replyChid, &pulse, sizeof(pulse), NULL);
 	if (rc < 0) {
 		printf("B1S09_ERR_TurnOver: Error in recv pulse\n");
 	}
-
-	this->controller->puckType = PUCK_ACCEPTED;
+*/
+	//this->controller->puckType = PUCK_ACCEPTED;
 
 	if (ConnectDetach(errorfsmCoid) == -1) {
 		printf("B1S09_ERR_TurnOver: Error in ConnectDetach\n");
 	}
 
-	new (this) B1S08_End(this->controller);
+	//new (this) B1S08_End(this->controller);
 }
 
 B1S09_ERR_TurnOver::~B1S09_ERR_TurnOver() {
+}
+
+void B1S09_ERR_TurnOver::sbEndOpen() {
+	this->controller->puckType = PUCK_ACCEPTED;
+	new (this) B1S08_End(this->controller);
 }

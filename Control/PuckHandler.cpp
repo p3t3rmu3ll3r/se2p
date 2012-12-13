@@ -246,7 +246,7 @@ void PuckHandler::incrementSenseorFuncCounter(int funcIdx) {
 
 
 #ifdef DEBUG_PuckHandler
-			printf("-- > Debug PuckHandler: /me is THROWING big Error!!! \n");
+			printf("-- > Debug PuckHandler: /me is THROWING big Error!!! for -> %d \n",funcIdx);
 #endif
 
 		int errorfsmChid = ErrorFSM::getInstance()->getErrorFSMChid();

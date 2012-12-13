@@ -14,6 +14,9 @@
 class B1S09_ERR_TurnOver: public BaseState {
 public:
 	B1S09_ERR_TurnOver(Controller* controller);
+
+	void sbEndOpen();
+
 	virtual ~B1S09_ERR_TurnOver();
 };
 

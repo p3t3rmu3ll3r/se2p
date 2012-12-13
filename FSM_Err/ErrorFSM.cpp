@@ -135,10 +135,12 @@ void ErrorFSM::execute(void*) {
 #endif
 					break;
 				case ERR_STATE_TURNOVER:
+					PuckHandler::getInstance()->resetAllSenseorFuncCounters();
 					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->manualTurnover();
 					error = true;
+					//disp->setError(true);
 #ifdef DEBUG_ErrorFSM
 					printf("Debug Error FSM: Error -> ERR_STATE_TURNOVER\n");
 #endif
@@ -213,9 +215,10 @@ void ErrorFSM::execute(void*) {
 				if(pulseVal == SB_END_OPEN){
 					lc->operatingNormal();
 					//msg puck error solved, reihenfolge unstop und msg puck?!
-					sendPuckReply();
+					//sendPuckReply();
 					aHal->engineFullUnstop();
 					error = false;
+					//disp->setError(false);
 					//th->continueAllTimers();
 					state = ERR_STATE_IDLE;
 				}
