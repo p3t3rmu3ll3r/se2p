@@ -102,7 +102,9 @@ public:
 	void setError(bool error);
 
 	/**
-	 * TODO
+	 * Returns if Dispatcher is working at the moment or stoppped dispatching.
+	 *
+	 * @return [true if Dispatcher is working, false if not]
 	 */
 	bool isRunning();
 
@@ -139,7 +141,7 @@ private:
 	bool error;
 
 	/**
-	 * TODO
+	 * Indicates if Dispatcher is working or stopped dispatching.
 	 */
 	bool running;
 
@@ -147,7 +149,6 @@ private:
 	 * Instance of the LightController
 	 */
 	LightController* lc;
-
 
 	/**
 	 *  Array for all known sensor signals (*fp), initialized in constructor
@@ -163,7 +164,6 @@ private:
 	 *  Array for all known RS232 signals (*fp), initialized in constructor
 	 */
 	callFuncs* timerFuncArr;
-
 
 	/**
 	 * Vector contains all Controllers (Pucks) registered for sensor messages

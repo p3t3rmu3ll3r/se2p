@@ -134,7 +134,7 @@ public:
 	virtual void rs232Band1Waiting()=0;
 
 	/**
-	 * TODO RS232_PUCK_ARRIVED_ON_BAND2
+	 * Puck arrived on band2
 	 */
 	virtual void rs232PuckArrivedOnBand2()=0;
 
@@ -142,16 +142,45 @@ public:
 	/* TIMER */
 	/* ----- */
 
-	//TODO : COMMENTS!!! >-<
+	/**
+	 * Timer for closing the gate
+	 */
 	virtual void timerGateClose()=0;
-	virtual void timerSlideFull()=0;
-	virtual void timerSeg1Min()=0;
-	virtual void timerSeg1Max()=0;
-	virtual void timerSeg2Min()=0;
-	virtual void timerSeg2Max()=0;
-	virtual void timerSeg3Min()=0;
-	virtual void timerSeg3Max()=0;
 
+	/**
+	 * Timer to indicate if the slide is full
+	 */
+	virtual void timerSlideFull()=0;
+
+	/**
+	 * Minimum runtime in segment timer, if not fired an unknown puck spawned
+	 */
+	virtual void timerSeg1Min()=0;
+
+	/**
+	 * Maximum runtime in segment timer, if fired, a puck was taken from conveyor
+	 */
+	virtual void timerSeg1Max()=0;
+
+	/**
+	 * Minimum runtime in segment timer, if not fired an unknown puck spawned
+	 */
+	virtual void timerSeg2Min()=0;
+
+	/**
+	 * Maximum runtime in segment timer, if fired, a puck was taken from conveyor
+	 */
+	virtual void timerSeg2Max()=0;
+
+	/**
+	 * Minimum runtime in segment timer, if not fired an unknown puck spawned
+	 */
+	virtual void timerSeg3Min()=0;
+
+	/**
+	 * Maximum runtime in segment timer, if fired, a puck was taken from conveyor
+	 */
+	virtual void timerSeg3Max()=0;
 };
 
 #endif /* CALLINTERFACE_H_ */

@@ -137,7 +137,7 @@ public:
 	bool checkIfFirstElemInSeg3(Controller* contr);
 
 	/**
-	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 * If a puck was randomly taken away, the new first Puck in that segment must be found and set.
 	 */
 	void reInitFirstElemInSegBools();
 
@@ -164,34 +164,41 @@ public:
 	 */
 	void reset();
 
-
 	/**
 	 * Helper method: prints status of all used queues
 	 */
 	void printQueueStatus();
 
 	/**
-	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 * PuckHandler retrieves channel ID from the Dispatcher in constructor and returns it,
+	 * if this function is called.
+	 *
+	 * @return Dispatcher channel ID
 	 */
 	int getDispChid();
 
 	/**
-	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 * Increments no-op counter for a given function called.
+	 * If no puck is actually listening for a specific functioncall, counter increments till
+	 * it reaches MAX_PUCKS_ON_BAND. If that happens, a puck was randomly spawned on the conveyor.
+	 *
+	 * param sensor function enum
 	 */
 	void incrementSenseorFuncCounter(int funcIdx);
 
 	/**
-	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 * Counter for no-ops must be cleared if it was fired or if a function was not called
+	 * MAX_PUCKS_ON_BAND times.
 	 */
 	void resetAllSenseorFuncCounters();
 
 	/**
-	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 * If an error occured, corresponding error bool in each controller is set to true.
 	 */
 	void errorOccured();
 
 	/**
-	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 * If an occured error was fixed, corresponding error bool in each controller is set to false.
 	 */
 	void errorResolved();
 
@@ -273,12 +280,12 @@ private:
 	int dispChid;
 
 	/**
-	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 * No-op counter for detecting, if a puck randomly spawned
 	 */
 	int sensorFuncCounter[SENSOR_MESSAGES_SIZE];
 
 	/**
-	 * TODO: martin sollte hier noch etwas kommentieren.... :>
+	 * Mutex to secure access to the no-op counter
 	 */
 	Mutex* sensorFuncCounterMutex;
 };

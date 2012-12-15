@@ -81,6 +81,7 @@ public:
 
 	/**
 	 * Timer ID
+	 * TODO: nur public wg debug ausgaben, change that!
 	 */
 	timer_t timerid;
 private:

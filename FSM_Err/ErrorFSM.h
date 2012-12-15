@@ -79,7 +79,9 @@ public:
 	int getReplyChid();
 
 	/**
-	 * TODO
+	 * If EStop was pressed in an error state, a puck my block in a MsgReceivePulse
+	 * in his state. It will be unblocked by calling this function, so Dispatcher can
+	 * work properly.
 	 */
 	void unblockWaitingPucks();
 

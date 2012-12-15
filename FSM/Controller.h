@@ -130,7 +130,6 @@ public:
 	 */
 	bool isBand1Waiting();
 
-
 	/**
 	 * Sets bool if the minimum puckruntime timer has fired
 	 *
@@ -151,12 +150,16 @@ public:
 	void resetSegTimers();
 
 	/**
-	 * TODO: isError
+	 * Returns if an error is pending
+	 *
+	 * @return [true if yes, else false]
 	 */
 	bool isError();
 
 	/**
-	 * TODO: errorOccured
+	 * Sets error status
+	 *
+	 * @param [true if an error occured, false if not]
 	 */
 	void setError(bool error);
 
@@ -169,7 +172,6 @@ public:
 	 * Timer for closing the gate, if it was opened to let a puck pass
 	 */
 	Timer* gateTimer;
-
 
 	/**
 	 * Timer for the slide, if slide lightbarrier does not close after a given time,
@@ -237,7 +239,7 @@ private:
 	bool segTimerMinCalled;
 
 	/**
-	 * TODO: error bool
+	 * Indicates if an error is pending or not
 	 */
 	bool error;
 };
