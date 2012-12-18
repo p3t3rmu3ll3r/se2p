@@ -146,6 +146,7 @@ void PuckHandler::removePuckFromBand(Controller* contr) {
 void PuckHandler::removePuckFromSeg1() {
 	seg1Mutex->lock();
 	if (!pucksInSeg1.empty()) {
+		printf("puck%d pop from seg1\n",pucksInSeg1.front()->getID());
 		pucksInSeg1.pop();
 		seg1Mutex->unlock();
 	} else {
@@ -157,6 +158,7 @@ void PuckHandler::removePuckFromSeg1() {
 void PuckHandler::removePuckFromSeg2() {
 	seg2Mutex->lock();
 	if (!pucksInSeg2.empty()) {
+		printf("puck%d pop from seg2\n",pucksInSeg2.front()->getID());
 		pucksInSeg2.pop();
 		seg2Mutex->unlock();
 	} else {
@@ -168,6 +170,7 @@ void PuckHandler::removePuckFromSeg2() {
 void PuckHandler::removePuckFromSeg3() {
 	seg3Mutex->lock();
 	if (!pucksInSeg3.empty()) {
+		printf("puck%d pop from seg3\n",pucksInSeg3.front()->getID());
 		pucksInSeg3.pop();
 		seg3Mutex->unlock();
 	} else {
@@ -220,20 +223,20 @@ void PuckHandler::reInitFirstElemInSegBools() {
 
 void PuckHandler::printQueueStatus() {
 	printf("Queue Seg1 size(): %d -> PuckID: %d -> isFront: %c\n",
-			pucksInSeg1.size(), (pucksInSeg1.empty() ? 50
+			pucksInSeg1.size(), (pucksInSeg1.empty() ? 99
 					: pucksInSeg1.front()->getID()), (pucksInSeg1.empty() ? 'X'
 					: pucksInSeg1.front()->isFirstElementInSegment() ? 't'
-							: 'c'));
+							: 'f'));
 	printf("Queue Seg2 size(): %d -> PuckID: %d -> isFront: %c\n",
-			pucksInSeg2.size(), (pucksInSeg2.empty() ? 50
+			pucksInSeg2.size(), (pucksInSeg2.empty() ? 99
 					: pucksInSeg2.front()->getID()), (pucksInSeg2.empty() ? 'X'
 					: pucksInSeg2.front()->isFirstElementInSegment() ? 't'
-							: 'c'));
+							: 'f'));
 	printf("Queue Seg3 size(): %d -> PuckID: %d -> isFront: %c\n",
-			pucksInSeg3.size(), (pucksInSeg3.empty() ? 50
+			pucksInSeg3.size(), (pucksInSeg3.empty() ? 99
 					: pucksInSeg3.front()->getID()), (pucksInSeg3.empty() ? 'X'
 					: pucksInSeg3.front()->isFirstElementInSegment() ? 't'
-							: 'c'));
+							: 'f'));
 	printf("Queue Band size(): %d\n", pucksOnBand.size());
 }
 

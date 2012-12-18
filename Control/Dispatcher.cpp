@@ -159,6 +159,8 @@ void Dispatcher::execute(void*) {
 #endif
 
 #ifdef BAND_1
+				PuckHandler::getInstance()->reInitFirstElemInSegBools();
+
 				if (funcIdx == SB_END_OPEN) {
 					PuckHandler::getInstance()->errorResolved();
 				}

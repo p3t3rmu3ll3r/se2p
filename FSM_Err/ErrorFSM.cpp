@@ -203,6 +203,7 @@ void ErrorFSM::execute(void*) {
 				}
 				// zustand setzen und wieder ab nach oben im recv blocken
 				state = pulseVal;
+				PuckHandler::getInstance()->printQueueStatus();
 			}
 			break;
 		case ERR_STATE_SLIDE_FULL:
@@ -229,6 +230,7 @@ void ErrorFSM::execute(void*) {
 					aHal->engineFullUnstop();
 					error = false;
 					isSbSlideClosed = false;
+					PuckHandler::getInstance()->reInitFirstElemInSegBools(); //2del
 					th->continueAllTimers();
 					state = ERR_STATE_IDLE;
 				}
@@ -243,6 +245,7 @@ void ErrorFSM::execute(void*) {
 					//msg puck error solved, reihenfolge unstop und msg puck?!
 					//sendPuckReply();
 					//aHal->engineFullUnstop();
+					PuckHandler::getInstance()->reInitFirstElemInSegBools(); //2del
 					error = false;
 					//disp->setError(false);
 					//th->continueAllTimers();

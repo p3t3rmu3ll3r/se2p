@@ -14,7 +14,9 @@ B1S02_Seg1::B1S02_Seg1(Controller* controller) : BaseState(controller) {
 	printf("DEBUG STATE: Puck%d -> B1S02_Seg1 \n", this->controller->getID());
 #endif
 
+	PuckHandler::getInstance()->printQueueStatus();
 	this->controller->setFirstElementInSegment(puckHandler->checkIfFirstElemInSeg1(this->controller));
+	PuckHandler::getInstance()->printQueueStatus();
 }
 
 B1S02_Seg1::~B1S02_Seg1() {
@@ -60,6 +62,7 @@ void B1S02_Seg1::timerSeg1Min() {
 }
 
 void B1S02_Seg1::timerSeg1Max() {
+	PuckHandler::getInstance()->printQueueStatus();
 	if(controller->isFirstElementInSegment()) {
 
 		puckHandler->removePuckFromSeg1();

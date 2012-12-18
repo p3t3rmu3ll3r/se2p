@@ -32,7 +32,7 @@
 
 
 #ifdef BAND_1
-	#define MAX_PUCKS_BAND 5
+	#define MAX_PUCKS_BAND 9
 #else
 	#define MAX_PUCKS_BAND 1
 #endif
