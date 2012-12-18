@@ -151,7 +151,7 @@ void ErrorFSM::execute(void*) {
 					isEngineStopped = aHal->isEngineStopped();
 					disp->setError(true);
 					aHal->engineFullStop();
-					lc->upcomingNotReceiptedTimer();
+					lc->upcomingNotReceiptedTimerMin();
 					error = true;
 #ifdef DEBUG_ErrorFSM
 					printf("Debug Error FSM: Error -> ERR_STATE_ERROR\n");
@@ -162,7 +162,7 @@ void ErrorFSM::execute(void*) {
 					isEngineStopped = aHal->isEngineStopped();
 					disp->setError(true);
 					aHal->engineFullStop();
-					lc->upcomingNotReceiptedTimer();
+					lc->upcomingNotReceiptedTimerMax();
 					error = true;
 #ifdef DEBUG_ErrorFSM
 					printf("Debug Error FSM: Error -> ERR_STATE_ERROR_MAX\n");
@@ -242,7 +242,7 @@ void ErrorFSM::execute(void*) {
 			break;
 		case ERR_STATE_ERROR:
 			aHal->engineFullStop();
-			lc->upcomingNotReceiptedTimer();
+			lc->upcomingNotReceiptedTimerMin();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_RESET_PRESSED){
 					lc->upcomingReceipted();
@@ -269,7 +269,7 @@ void ErrorFSM::execute(void*) {
 			break;
 		case ERR_STATE_ERROR_MAX:
 			aHal->engineFullStop();
-			lc->upcomingNotReceiptedTimer();
+			lc->upcomingNotReceiptedTimerMax();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_RESET_PRESSED){
 					lc->upcomingReceipted();

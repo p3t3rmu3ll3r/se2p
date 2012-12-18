@@ -89,9 +89,15 @@ void LightController::manualTurnover() {
 	cont();
 }
 
-void LightController::upcomingNotReceiptedTimer() {
+void LightController::upcomingNotReceiptedTimerMin() {
 	lightsOff();
 	function = &LightController::blinkRedSlowDouble;
+	cont();
+}
+
+void LightController::upcomingNotReceiptedTimerMax() {
+	lightsOff();
+	function = &LightController::blinkRedSlowTripple;
 	cont();
 }
 
@@ -148,13 +154,28 @@ void LightController::blinkRedSlow() {
 
 void LightController::blinkRedSlowDouble() {
 	aHal->lightRed(true);
-	usleep(200000);
+	usleep(150000);
 	aHal->lightRed(false);
 	usleep(100000);
 	aHal->lightRed(true);
-	usleep(200000);
+	usleep(150000);
 	aHal->lightRed(false);
-	usleep(500000);
+	usleep(800000);
+}
+
+void LightController::blinkRedSlowTripple() {
+	aHal->lightRed(true);
+	usleep(150000);
+	aHal->lightRed(false);
+	usleep(100000);
+	aHal->lightRed(true);
+	usleep(150000);
+	aHal->lightRed(false);
+	usleep(100000);
+	aHal->lightRed(true);
+	usleep(150000);
+	aHal->lightRed(false);
+	usleep(800000);
 }
 
 void LightController::lightsOff() {

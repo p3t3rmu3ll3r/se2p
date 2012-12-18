@@ -56,8 +56,15 @@ public:
 	*/
 	void upcomingNotReceipted();
 
-	//TODO: comment or delete
-	void upcomingNotReceiptedTimer();
+	/**
+	 * Signals a timer MIN error (puck spawned)
+	 */
+	void upcomingNotReceiptedTimerMin();
+
+	/**
+	 * Signals a timer MAX error (puck despawned)
+	 */
+	void upcomingNotReceiptedTimerMax();
 
 	/**
 	* Signals an upcoming and receipted error.
@@ -155,8 +162,15 @@ private:
 	*/
 	void blinkRedSlow();
 
-	//TODO: comment or delete
+	/**
+	 * Blink red slow, with double blink
+	 */
 	void blinkRedSlowDouble();
+
+	/**
+	 * Blink red slow, with double blink
+	 */
+	void blinkRedSlowTripple();
 
 	/**
 	 * Blink green fast
