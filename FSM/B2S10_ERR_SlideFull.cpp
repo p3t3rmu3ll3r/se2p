@@ -48,7 +48,12 @@ B2S10_ERR_SlideFull::B2S10_ERR_SlideFull(Controller* controller) : BaseState(con
 	//new (this) B2S06_Slide(this->controller);
 	puckHandler->removePuckFromBand(controller);
 	actorHAL->engineStop();
-	if(controller->isBand1Waiting()){
+
+	bool tmpBand1Waiting = controller->isBand1Waiting();
+
+	controller->resetController();
+
+	if(tmpBand1Waiting){
 		rs232_1->sendMsg(RS232_BAND2_READY);
 		ActorHAL::getInstance()->engineRight(false);
 		ActorHAL::getInstance()->engineUnstop();
@@ -56,7 +61,6 @@ B2S10_ERR_SlideFull::B2S10_ERR_SlideFull(Controller* controller) : BaseState(con
 		controller->handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
 		controller->handOverTimer->start();
 	}
-	controller->resetController();
 }
 
 B2S10_ERR_SlideFull::~B2S10_ERR_SlideFull() {

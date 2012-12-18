@@ -25,6 +25,7 @@ void B2S01_Entry::sbStartOpen() {
 	//actorHAL->engineUnstop();
 
 	timerHandler->deleteTimer(controller->handOverTimer);
+	controller->handOverTimer = NULL;
 
 	rs232_1->sendMsg(RS232_PUCK_ARRIVED_ON_BAND2);
 }

@@ -84,7 +84,11 @@ void B2S02_Seg1::timerSeg1Max() {
 		printf("B2S02_Seg1: Error in ConnectDetach\n");
 	}
 
-	if(controller->isBand1Waiting()){
+	bool tmpBand1Waiting = controller->isBand1Waiting();
+
+	controller->resetController();
+
+	if(tmpBand1Waiting){
 		rs232_1->sendMsg(RS232_BAND2_READY);
 		ActorHAL::getInstance()->engineRight(false);
 		ActorHAL::getInstance()->engineUnstop();
@@ -92,5 +96,4 @@ void B2S02_Seg1::timerSeg1Max() {
 		controller->handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
 		controller->handOverTimer->start();
 	}
-	controller->resetController();
 }
