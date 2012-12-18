@@ -47,6 +47,8 @@ void B1S08_End::timerHandOver(){
 		}
 		controller->resetController();
 
+		printf("Debug State <B1S08_End>: ERROR<ERR_STATE_ERROR_MAX> called by puck%d\n", controller->getID());
+
 		int errorfsmChid = errfsm->getErrorFSMChid();
 		int errorfsmCoid;
 		int rc;

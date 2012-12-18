@@ -14,6 +14,8 @@ B2S10_ERR_SlideFull::B2S10_ERR_SlideFull(Controller* controller) : BaseState(con
 	printf("DEBUG STATE: Puck%d -> B2S10_ERR_SlideFull \n", this->controller->getID());
 #endif
 
+	printf("Debug State <B2S10_ERR_SlideFull>: ERROR<ERR_STATE_SLIDE_FULL> called by puck%d\n", controller->getID());
+
 	int replyChid = errfsm->getReplyChid();
 	int errorfsmChid = errfsm->getErrorFSMChid();
 	int errorfsmCoid;

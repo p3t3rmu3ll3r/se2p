@@ -82,7 +82,7 @@ void ErrorFSM::execute(void*) {
 
 	while (!isStopped()) {
 #ifdef DEBUG_ErrorFSM
-		printf("errorfsm before recv\n");
+		//printf("errorfsm before recv\n");
 #endif
 		rc = MsgReceivePulse(ownChid, &pulse, sizeof(pulse), NULL);
 		if (rc < 0) {
@@ -94,7 +94,7 @@ void ErrorFSM::execute(void*) {
 		pulseCode = pulse.code;
 		pulseVal = pulse.value.sival_int;
 #ifdef DEBUG_ErrorFSM
-		printf("errorfsm after recv; code: %d, value: %d\n", pulseCode, pulseVal);
+		//printf("errorfsm after recv; code: %d, value: %d\n", pulseCode, pulseVal);
 #endif
 
 		if((pulseVal == RS232_ESTOP || pulseVal == BTN_ESTOP_PRESSED) && !isEstopPressed){

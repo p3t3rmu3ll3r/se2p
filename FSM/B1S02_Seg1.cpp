@@ -29,6 +29,8 @@ void B1S02_Seg1::sbHeightcontrolOpen() {
 			new (this) B1S03_Height(controller);
 		} else {
 
+			printf("Debug State <B1S02_Seg1>: ERROR<ERR_STATE_ERROR_MIN> called by puck%d\n", controller->getID());
+
 			int errorfsmChid = errfsm->getErrorFSMChid();
 			int errorfsmCoid;
 			int rc;

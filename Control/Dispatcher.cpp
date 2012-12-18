@@ -202,7 +202,9 @@ void Dispatcher::execute(void*) {
 #endif
 			}
 		} else if(pulse.code == PULSE_FROM_TIMER) {
+#ifdef DEBUG_DISPATCHER
 			printf("Dispatcher received TIMER pulse: %d\n", pulse.value);
+#endif
 
 #ifdef BAND_2
 			if(funcIdx == TIMER_HAND_OVER && handOverTimer != NULL){

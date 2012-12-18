@@ -42,14 +42,18 @@ Timer* TimerHandler::createTimer(int chid, int sec, int msec, int msg) {
 	Timer* tmpTimer = new Timer(chid, sec, msec, msg);
 	timers.push_back(tmpTimer);
 	mutex->unlock();
+#ifdef DEBUG_TimerHandler
 	printf("Debug TimerHandler: New Timer created with id: %d, vector size: %d\n", tmpTimer->timerid, timers.size());
+#endif
 	return tmpTimer;
 }
 
 void TimerHandler::deleteTimer(Timer* timer) {
 	mutex->lock();
 	if(timer != NULL){
+#ifdef DEBUG_TimerHandler
 	printf("Debug TimerHandler: delete called on timerid %d\n",timer->timerid);
+#endif
 		if (!timers.empty()) {
 			timer->stop();
 			for (uint32_t i = 0; i < timers.size(); i++) {
@@ -72,7 +76,9 @@ void TimerHandler::pauseAllTimers(){
 	if (!timers.empty()) {
 		for (uint32_t i = 0; i < timers.size(); i++) {
 			timers.at(i)->pause();
+#ifdef DEBUG_TimerHandler
 			printf("Debug TimerHandler: for-loo: paused 1 Timer\n");
+#endif
 		}
 	}
 	mutex->unlock();

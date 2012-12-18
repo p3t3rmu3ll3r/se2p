@@ -37,7 +37,7 @@
 	#define MAX_PUCKS_BAND 1
 #endif
 
-#define DEBUG_PuckHandler
+//#define DEBUG_PuckHandler
 
 class PuckHandler {
 public:

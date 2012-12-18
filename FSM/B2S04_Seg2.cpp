@@ -25,6 +25,8 @@ void B2S04_Seg2::sbGateOpen() {
 		new (this) B2S05_Gate(controller);
 	} else {
 
+		printf("Debug State <B2S04_Seg2>: ERROR<ERR_STATE_ERROR_MIN> called by puck%d\n", controller->getID());
+
 		int errorfsmChid = errfsm->getErrorFSMChid();
 		int errorfsmCoid;
 		int rc;

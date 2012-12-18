@@ -14,7 +14,7 @@
 #include "Timer.h"
 #include "Mutex.h"
 
-#define DEBUG_TimerHandler
+//#define DEBUG_TimerHandler
 
 class TimerHandler {
 public:

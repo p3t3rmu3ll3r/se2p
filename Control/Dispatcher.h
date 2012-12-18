@@ -31,7 +31,7 @@
 #include "LightController.h"
 #include "RS232_1.h"
 
-#define DEBUG_DISPATCHER
+//#define DEBUG_DISPATCHER
 
 typedef void (CallInterface::*callFuncs)();
 

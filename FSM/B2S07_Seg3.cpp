@@ -26,6 +26,8 @@ void B2S07_Seg3::sbEndOpen() {
 		new (this) B2S08_End(controller);
 	} else {
 
+		printf("Debug State <B2S07_Seg3>: ERROR<ERR_STATE_ERROR_MIN> called by puck%d\n", controller->getID());
+
 		int errorfsmChid = errfsm->getErrorFSMChid();
 		int errorfsmCoid;
 		int rc;

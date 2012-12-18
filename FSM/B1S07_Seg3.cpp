@@ -22,13 +22,17 @@ B1S07_Seg3::~B1S07_Seg3() {
 
 void B1S07_Seg3::sbEndOpen() {
 	if (controller->isFirstElementInSegment() && !controller->isError()) {
+#ifdef DEBUG_STATE_PRINTF
 		printf("B1S07_Seg3::sbEndOpen() -> I(%d) is element at first in SEG3 ... && error = %d\n", controller->getID(),controller->isError());
+#endif
 		if(this->controller->isSegTimerMinCalled()){
 			controller->resetSegTimers();
 
 			puckHandler->removePuckFromSeg3();
 			new (this) B1S08_End(controller);
 		} else {
+
+			printf("Debug State <B1S07_Seg3>: ERROR<ERR_STATE_ERROR_MIN> called by puck%d\n", controller->getID());
 
 			int errorfsmChid = errfsm->getErrorFSMChid();
 			int errorfsmCoid;

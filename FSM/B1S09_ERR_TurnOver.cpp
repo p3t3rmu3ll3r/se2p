@@ -14,6 +14,8 @@ B1S09_ERR_TurnOver::B1S09_ERR_TurnOver(Controller* controller) : BaseState(contr
 	printf("DEBUG STATE: Puck%d -> B1S09_ERR_TurnOver \n", this->controller->getID());
 #endif
 
+	printf("Debug State <B1S09_ERR_TurnOver>: ERROR<ERR_STATE_TURNOVER> called by puck%d\n", controller->getID());
+
 	//int replyChid = errfsm->getReplyChid();
 	int errorfsmChid = errfsm->getErrorFSMChid();
 	int errorfsmCoid;

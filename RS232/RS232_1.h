@@ -27,7 +27,7 @@
 #include "HAWThread.h"
 #include "Mutex.h"
 
-#define DEBUG_RS232
+//#define DEBUG_RS232
 #define DEV_SER1 "/dev/ser1"
 
 #define MSG_TEST 	'a'

@@ -226,37 +226,31 @@ void Controller::timerSlideFull(){
 
 void Controller::timerSeg1Min(){
 	if(active){
-	printf("----------- timerSeg1Min -----------\n");
 		state->timerSeg1Min();
 	}
 }
 void Controller::timerSeg1Max(){
 	if(active){
-	printf("----------- timerSeg1Max -----------\n");
 		state->timerSeg1Max();
 	}
 }
 void Controller::timerSeg2Min(){
 	if(active){
-	printf("----------- timerSeg2Min -----------\n");
 		state->timerSeg2Min();
 	}
 }
 void Controller::timerSeg2Max(){
 	if(active){
-	printf("----------- timerSeg2Max -----------\n");
 		state->timerSeg2Max();
 	}
 }
 void Controller::timerSeg3Min(){
 	if(active){
-	printf("----------- timerSeg3Min -----------\n");
 		state->timerSeg3Min();
 	}
 }
 void Controller::timerSeg3Max(){
 	if(active){
-	printf("----------- timerSeg3Max -----------\n");
 		state->timerSeg3Max();
 	}
 }
