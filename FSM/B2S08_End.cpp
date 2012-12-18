@@ -7,7 +7,7 @@
 
 #include "B2S08_End.h"
 
-B2S08_End::B2S08_End(Controller* controller) {
+B2S08_End::B2S08_End(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF
@@ -26,6 +26,9 @@ void B2S08_End::sbEndClosed(){
 		rs232_1->sendMsg(RS232_BAND2_READY);
 		ActorHAL::getInstance()->engineRight(false);
 		ActorHAL::getInstance()->engineUnstop();
+
+		controller->handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
+		controller->handOverTimer->start();
 	}
 	controller->resetController();
 }

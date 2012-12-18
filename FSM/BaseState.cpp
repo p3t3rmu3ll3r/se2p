@@ -17,37 +17,38 @@
 
 #include "BaseState.h"
 
-BaseState::BaseState() {
+BaseState::BaseState(Controller* controller) {
 	actorHAL = ActorHAL::getInstance();
 	sensorHAL = SensorHAL::getInstance();
 	puckHandler = PuckHandler::getInstance();
 	errfsm = ErrorFSM::getInstance();
 	rs232_1 = RS232_1::getInstance();
 	timerHandler = TimerHandler::getInstance();
+	this->controller = controller;
 }
 
 BaseState::~BaseState() {
 }
 
-void BaseState::sbStartOpen(){/*puckHandler->incrementSenseorFuncCounter(SB_START_OPEN);*/}
-void BaseState::sbStartClosed(){/*puckHandler->incrementSenseorFuncCounter(SB_START_CLOSED);*/}
+void BaseState::sbStartOpen(){}
+void BaseState::sbStartClosed(){}
 void BaseState::sbHeightcontrolOpen(){puckHandler->incrementSenseorFuncCounter(SB_HEIGHTCONTROL_OPEN);}
-void BaseState::sbHeightcontrolClosed(){/*puckHandler->incrementSenseorFuncCounter(SB_HEIGHTCONTROL_CLOSED);*/}
+void BaseState::sbHeightcontrolClosed(){}
 void BaseState::sbGateOpen(){puckHandler->incrementSenseorFuncCounter(SB_GATE_OPEN);}
-void BaseState::sbGateClosed(){/*puckHandler->incrementSenseorFuncCounter(SB_GATE_CLOSED);*/}
-void BaseState::msMetalTrue(){/*puckHandler->incrementSenseorFuncCounter(MS_METAL_TRUE);*/}
-void BaseState::sbSlideOpen(){/*puckHandler->incrementSenseorFuncCounter(SB_SLIDE_OPEN);*/}
-void BaseState::sbSlideClosed(){/*puckHandler->incrementSenseorFuncCounter(SB_SLIDE_CLOSED);*/}
+void BaseState::sbGateClosed(){}
+void BaseState::msMetalTrue(){}
+void BaseState::sbSlideOpen(){}
+void BaseState::sbSlideClosed(){}
 void BaseState::sbEndOpen(){/*printf("Puck is incrementing --> SB_END_OPEN!!!111\n");*/puckHandler->incrementSenseorFuncCounter(SB_END_OPEN);}
-void BaseState::sbEndClosed(){/*puckHandler->incrementSenseorFuncCounter(SB_END_CLOSED);*/}
-void BaseState::btnStartPressed(){/*puckHandler->incrementSenseorFuncCounter(BTN_START_PRESSED);*/}
-void BaseState::btnStartReleased(){/*puckHandler->incrementSenseorFuncCounter(BTN_START_RELEASED);*/}
-void BaseState::btnStopPressed(){/*puckHandler->incrementSenseorFuncCounter(BTN_STOP_PRESSED);*/}
-void BaseState::btnStopReleased(){/*puckHandler->incrementSenseorFuncCounter(BTN_STOP_RELEASED);*/}
-void BaseState::btnResetPressed(){/*puckHandler->incrementSenseorFuncCounter(BTN_RESET_PRESSED);*/}
-void BaseState::btnResetReleased(){/*puckHandler->incrementSenseorFuncCounter(BTN_RESET_RELEASED);*/}
-void BaseState::btnEstopPressed(){/*puckHandler->incrementSenseorFuncCounter(BTN_ESTOP_PRESSED);*/}
-void BaseState::btnEstopReleased(){/*puckHandler->incrementSenseorFuncCounter(BTN_ESTOP_RELEASED);*/}
+void BaseState::sbEndClosed(){}
+void BaseState::btnStartPressed(){}
+void BaseState::btnStartReleased(){}
+void BaseState::btnStopPressed(){}
+void BaseState::btnStopReleased(){}
+void BaseState::btnResetPressed(){}
+void BaseState::btnResetReleased(){}
+void BaseState::btnEstopPressed(){}
+void BaseState::btnEstopReleased(){}
 
 void BaseState::rs232Band2Ack(){}
 void BaseState::rs232Band2Ready(){}
@@ -62,6 +63,50 @@ void BaseState::timerSeg2Min(){}
 void BaseState::timerSeg2Max(){}
 void BaseState::timerSeg3Min(){}
 void BaseState::timerSeg3Max(){}
+void BaseState::timerHandOver(){
+#ifdef BAND_2
+
+	puckHandler->removePuckFromBand(controller);
+	actorHAL->engineStop();
+
+	int replyChid = errfsm->getReplyChid();
+	int errorfsmChid = errfsm->getErrorFSMChid();
+	int errorfsmCoid;
+	int rc;
+
+	struct _pulse pulse;
+
+	if ((errorfsmCoid = ConnectAttach(0, 0, errorfsmChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+		printf("B2S07_Seg3: Error in ConnectAttach\n");
+	}
+
+	//rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_CRITICAL_ERROR);
+	rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_ERROR_MAX);
+	if (rc < 0) {
+		printf("B2S07_Seg3: Error in MsgSendPulse");
+	}
+
+	rc = MsgReceivePulse(replyChid, &pulse, sizeof(pulse), NULL);
+	if (rc < 0) {
+		printf("B2S07_Seg3: Error in recv pulse\n");
+	}
+
+	if (ConnectDetach(errorfsmCoid) == -1) {
+		printf("B2S07_Seg3: Error in ConnectDetach\n");
+	}
+
+	if(controller->isBand1Waiting()){
+		rs232_1->sendMsg(RS232_BAND2_READY);
+		ActorHAL::getInstance()->engineRight(false);
+		ActorHAL::getInstance()->engineUnstop();
+
+		controller->handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
+		controller->handOverTimer->start();
+	}
+	controller->resetController();
+#endif
+}
+void BaseState::timerBand2Ack(){}
 
 
 

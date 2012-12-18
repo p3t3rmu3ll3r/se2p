@@ -124,6 +124,12 @@ void LightController::bandHalted() {
 	cont();
 }
 
+void LightController::eStop() {
+	lightsOff();
+	function = &LightController::blinkAllFast;
+	cont();
+}
+
 void LightController::blinkYellow() {
 	aHal->lightYellow(true);
 	sleep(1);
@@ -143,6 +149,19 @@ void LightController::blinkGreenFast() {
 	usleep(500000);
 	aHal->lightGreen(false);
 	usleep(500000);
+}
+
+void LightController::blinkAllFast() {
+	aHal->lightRed(true);
+	usleep(100000);
+	aHal->lightRed(false);
+	aHal->lightYellow(true);
+	usleep(100000);
+	aHal->lightYellow(false);
+	aHal->lightGreen(true);
+	usleep(100000);
+	aHal->lightGreen(false);
+	usleep(200000);
 }
 
 void LightController::blinkRedSlow() {
@@ -169,8 +188,10 @@ void LightController::blinkRedSlowTripple() {
 	aHal->lightRed(false);
 	usleep(100000);
 	aHal->lightRed(true);
+	aHal->lightYellow(true);
 	usleep(150000);
 	aHal->lightRed(false);
+	aHal->lightYellow(false);
 	usleep(100000);
 	aHal->lightRed(true);
 	usleep(150000);

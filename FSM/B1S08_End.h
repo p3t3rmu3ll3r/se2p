@@ -17,8 +17,9 @@ public:
 	B1S08_End(Controller* controller);
 	virtual ~B1S08_End();
 
-	void rs232PuckArrivedOnBand2(); //TODO: Check if good
+	void rs232PuckArrivedOnBand2();
 	void sbEndClosed();
+	void timerHandOver();
 };
 
 #endif /* B1S08_END_H_ */

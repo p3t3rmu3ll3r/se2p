@@ -7,7 +7,7 @@
 
 #include "B1S10_ERR_SlideFull.h"
 
-B1S10_ERR_SlideFull::B1S10_ERR_SlideFull(Controller* controller) {
+B1S10_ERR_SlideFull::B1S10_ERR_SlideFull(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF

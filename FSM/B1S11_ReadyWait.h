@@ -18,6 +18,7 @@ public:
 
 	void rs232Band2Ack();
 	void rs232Band2Ready();
+	void timerBand2Ack();
 };
 
 #endif /* B1S11_READYWAIT_H_ */

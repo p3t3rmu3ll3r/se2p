@@ -20,7 +20,7 @@
 
 #define SENSOR_MESSAGES_SIZE 19
 #define RS232_MESSAGES_SIZE 4
-#define TIMER_MESSAGES_SIZE 8
+#define TIMER_MESSAGES_SIZE 10
 
 //all this messages need to be dispatched
 enum sensorMessages {
@@ -64,6 +64,8 @@ enum timerMessages {
 	TIMER_SEG2_MAX,
 	TIMER_SEG3_MIN,
 	TIMER_SEG3_MAX,
+	TIMER_HAND_OVER,
+	TIMER_BAND2_ACK,
 };
 
 #endif /* MESSAGES_H_ */

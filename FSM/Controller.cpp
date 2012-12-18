@@ -47,14 +47,21 @@ void Controller::resetController() {
 	band1Waiting = false;
 	puckType = -1;
 	firstElementInSegment = false;
+	puckArrivedOnBand2 = false;
 	error= false;
-	state = new BaseState();
+
+	state = new BaseState(this);
+
 	resetSegTimers();
 	th->deleteTimer(gateTimer);
 	th->deleteTimer(slideTimer);
+	th->deleteTimer(handOverTimer);
+	th->deleteTimer(band2AckTimer);
 
 	gateTimer = NULL;
 	slideTimer = NULL;
+	handOverTimer = NULL;
+	band2AckTimer = NULL;
 }
 
 void Controller::sbStartOpen() {
@@ -254,6 +261,22 @@ void Controller::timerSeg3Max(){
 	}
 }
 
+void Controller::timerHandOver(){
+#ifdef BAND_1
+	if(active){
+#endif
+		state->timerHandOver();
+#ifdef BAND_1
+	}
+#endif
+}
+
+void Controller::timerBand2Ack(){
+	if(active){
+		state->timerBand2Ack();
+	}
+}
+
 void Controller::setFirstElementInSegment(bool isFirst) {
 	firstElementInSegment = isFirst;
 }
@@ -272,6 +295,14 @@ void Controller::setSegTimerMinCalled(bool boolean){
 
 bool Controller::isSegTimerMinCalled(){
 	return segTimerMinCalled;
+}
+
+void Controller::setPuckArrivedOnBand2(bool boolean){
+	puckArrivedOnBand2 = boolean;
+}
+
+bool Controller::isPuckArrivedOnBand2(){
+	return puckArrivedOnBand2;
 }
 
 void Controller::resetSegTimers(){

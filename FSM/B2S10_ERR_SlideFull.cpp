@@ -7,7 +7,7 @@
 
 #include "B2S10_ERR_SlideFull.h"
 
-B2S10_ERR_SlideFull::B2S10_ERR_SlideFull(Controller* controller) {
+B2S10_ERR_SlideFull::B2S10_ERR_SlideFull(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF
@@ -50,6 +50,9 @@ B2S10_ERR_SlideFull::B2S10_ERR_SlideFull(Controller* controller) {
 		rs232_1->sendMsg(RS232_BAND2_READY);
 		ActorHAL::getInstance()->engineRight(false);
 		ActorHAL::getInstance()->engineUnstop();
+
+		controller->handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
+		controller->handOverTimer->start();
 	}
 	controller->resetController();
 }

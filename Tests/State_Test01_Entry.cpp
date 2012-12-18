@@ -7,7 +7,7 @@
 
 #include "State_Test01_Entry.h"
 
-State_Test01_Entry::State_Test01_Entry(Controller* controller) {
+State_Test01_Entry::State_Test01_Entry(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 	printf("Entering State 1: LS1\n");
 }

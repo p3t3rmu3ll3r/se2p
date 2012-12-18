@@ -7,7 +7,7 @@
 
 #include "B1S04_Seg2.h"
 
-B1S04_Seg2::B1S04_Seg2(Controller* controller) {
+B1S04_Seg2::B1S04_Seg2(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF
@@ -37,7 +37,7 @@ void B1S04_Seg2::sbGateOpen() {
 				printf("B1S04_Seg2: Error in ConnectAttach\n");
 			}
 
-			rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_ERROR);
+			rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_ERROR_MIN);
 			if (rc < 0) {
 				printf("B1S04_Seg2: Error in MsgSendPulse");
 			}

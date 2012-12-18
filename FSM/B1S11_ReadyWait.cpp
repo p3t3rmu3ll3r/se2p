@@ -7,7 +7,7 @@
 
 #include "B1S11_ReadyWait.h"
 
-B1S11_ReadyWait::B1S11_ReadyWait(Controller* controller) {
+B1S11_ReadyWait::B1S11_ReadyWait(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF
@@ -16,19 +16,50 @@ B1S11_ReadyWait::B1S11_ReadyWait(Controller* controller) {
 	timerHandler->pauseAllTimers();
 	actorHAL->engineFullStop();
 	rs232_1->sendMsg(RS232_BAND1_WAITING);
-	//TODO timermagic, if no ack returns
+
+	controller->band2AckTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_BAND2_ACK_SEC, TIME_VALUE_BAND2_ACK_MSEC, TIMER_BAND2_ACK);
+	controller->band2AckTimer->start();
 }
 
 B1S11_ReadyWait::~B1S11_ReadyWait() {
 }
 
 void B1S11_ReadyWait::rs232Band2Ack(){
-	//TODO timermagic, if lust... else wait 4evr
+	timerHandler->deleteTimer(controller->band2AckTimer);
+	controller->band2AckTimer = NULL;
+}
+
+void B1S11_ReadyWait::timerBand2Ack(){
+	timerHandler->deleteTimer(controller->band2AckTimer);
+	controller->band2AckTimer = NULL;
+
+	int errorfsmChid = errfsm->getErrorFSMChid();
+	int errorfsmCoid;
+	int rc;
+
+	if ((errorfsmCoid = ConnectAttach(0, 0, errorfsmChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+		printf("B1S11_ReadyWait: Error in ConnectAttach\n");
+	}
+
+	rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, RS232_ESTOP);
+	if (rc < 0) {
+		printf("B1S11_ReadyWait: Error in MsgSendPulse");
+	}
+
+	if (ConnectDetach(errorfsmCoid) == -1) {
+		printf("B1S11_ReadyWait: Error in ConnectDetach\n");
+	}
 }
 
 void B1S11_ReadyWait::rs232Band2Ready(){
 	controller->puckType = PUCK_HANDOVER;
 	actorHAL->engineFullUnstop();
+
+	controller->handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
+
 	timerHandler->continueAllTimers();
+
+	controller->handOverTimer->start();
+
 	new (this) B1S08_End(controller);
 }

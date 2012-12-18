@@ -181,6 +181,16 @@ public:
 	 * Maximum runtime in segment timer, if fired, a puck was taken from conveyor
 	 */
 	virtual void timerSeg3Max()=0;
+
+	/**
+	 * Maximum runtime for handing over a puck to Band2
+	 */
+	virtual void timerHandOver()=0;
+
+	/**
+	 * Maximum waiting time after sending "i-am-wating-message" from Band1 to Band2
+	 */
+	virtual void timerBand2Ack()=0;
 };
 
 #endif /* CALLINTERFACE_H_ */

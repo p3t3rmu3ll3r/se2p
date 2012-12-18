@@ -69,6 +69,8 @@ Dispatcher::Dispatcher() {
 	timerFuncArr[i++] = &CallInterface::timerSeg2Max;
 	timerFuncArr[i++] = &CallInterface::timerSeg3Min;
 	timerFuncArr[i++] = &CallInterface::timerSeg3Max;
+	timerFuncArr[i++] = &CallInterface::timerHandOver;
+	timerFuncArr[i++] = &CallInterface::timerBand2Ack;
 
 	lc = LightController::getInstance();
 	eStop = false;

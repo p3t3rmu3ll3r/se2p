@@ -70,6 +70,8 @@ public:
 	void timerSeg2Max();
 	void timerSeg3Min();
 	void timerSeg3Max();
+	void timerHandOver();
+	void timerBand2Ack();
 
 	/**
 	 * Each controller (puck) is held in a specific queue. For each
@@ -145,6 +147,20 @@ public:
 	bool isSegTimerMinCalled();
 
 	/**
+	 * Sets bool if the puck has arrived 0n 8and2
+	 *
+	 * @param [true if yes, else false]
+	 */
+	void setPuckArrivedOnBand2(bool boolean);
+
+	/**
+	 * Returns if the puck h4s arrived 0n 8and2
+	 *
+	 * @return [true if segTimerMin called, else false]
+	 */
+	bool isPuckArrivedOnBand2();
+
+	/**
 	 * Resets both timer (min/max runtime) and corresponding boolean (segTimerMinCalled)
 	 */
 	void resetSegTimers();
@@ -190,6 +206,17 @@ public:
 	 * spotted
 	 */
 	Timer* segTimerMax;
+
+	/**
+	 * Timer for maximum puck runtime if handing over. With this timer lost
+	 * hand-over-pucks can be spotted
+	 */
+	Timer* handOverTimer;
+
+	/**
+	 * Maximum wating time for ack from band2
+	 */
+	Timer* band2AckTimer;
 
 private:
 
@@ -237,6 +264,11 @@ private:
 	 * Was the current segTimerMin already been called
 	 */
 	bool segTimerMinCalled;
+
+	/**
+	 * is the HandOverPuck already Arrived On Band2
+	 */
+	bool puckArrivedOnBand2;
 
 	/**
 	 * Indicates if an error is pending or not

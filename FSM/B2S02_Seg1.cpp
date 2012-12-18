@@ -7,7 +7,7 @@
 
 #include "B2S02_Seg1.h"
 
-B2S02_Seg1::B2S02_Seg1(Controller* controller) {
+B2S02_Seg1::B2S02_Seg1(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF
@@ -34,7 +34,7 @@ void B2S02_Seg1::sbHeightcontrolOpen() {
 			printf("B2S02_Seg1: Error in ConnectAttach\n");
 		}
 
-		rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_ERROR);
+		rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_ERROR_MIN);
 		if (rc < 0) {
 			printf("B2S02_Seg1: Error in MsgSendPulse");
 		}
@@ -84,6 +84,9 @@ void B2S02_Seg1::timerSeg1Max() {
 		rs232_1->sendMsg(RS232_BAND2_READY);
 		ActorHAL::getInstance()->engineRight(false);
 		ActorHAL::getInstance()->engineUnstop();
+
+		controller->handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
+		controller->handOverTimer->start();
 	}
 	controller->resetController();
 }

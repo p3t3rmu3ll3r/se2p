@@ -7,7 +7,7 @@
 
 #include "B1S08_End.h"
 
-B1S08_End::B1S08_End(Controller* controller) {
+B1S08_End::B1S08_End(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF
@@ -25,11 +25,45 @@ B1S08_End::~B1S08_End() {
 }
 
 void B1S08_End::rs232PuckArrivedOnBand2(){
+
+	controller->setPuckArrivedOnBand2(true);
+
 	puckHandler->removePuckFromBand(controller);
 	if(puckHandler->isBandEmpty()){
 		actorHAL->engineStop();
 	}
 	controller->resetController();
+}
+
+void B1S08_End::timerHandOver(){
+	if(controller->isPuckArrivedOnBand2()){
+		controller->setPuckArrivedOnBand2(false);
+
+	} else {
+
+		puckHandler->removePuckFromBand(controller);
+		if(puckHandler->isBandEmpty()){
+			actorHAL->engineStop();
+		}
+		controller->resetController();
+
+		int errorfsmChid = errfsm->getErrorFSMChid();
+		int errorfsmCoid;
+		int rc;
+
+		if ((errorfsmCoid = ConnectAttach(0, 0, errorfsmChid, _NTO_SIDE_CHANNEL, 0)) == -1) {
+			printf("B1S08_End: Error in ConnectAttach\n");
+		}
+
+		rc = MsgSendPulse(errorfsmCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_FROM_PUCK, ERR_STATE_ERROR_MAX);
+		if (rc < 0) {
+			printf("B1S08_End: Error in MsgSendPulse");
+		}
+
+		if (ConnectDetach(errorfsmCoid) == -1) {
+			printf("B1S08_End: Error in ConnectDetach\n");
+		}
+	}
 }
 
 void B1S08_End::sbEndClosed(){

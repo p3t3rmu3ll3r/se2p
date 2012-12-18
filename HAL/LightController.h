@@ -97,6 +97,11 @@ public:
 	void bandHalted();
 
 	/**
+	 * eStop error occured
+	 */
+	void eStop();
+
+	/**
 	 * Switches the led on the reset button [on if true, else off]
 	 *
 	 * @param [true if on, false if off]
@@ -176,6 +181,11 @@ private:
 	 * Blink green fast
 	 */
 	void blinkGreenFast();
+
+	/**
+	 * Blink all fast
+	 */
+	void blinkAllFast();
 };
 
 #endif /* LIGHTCONTROLLER_H_ */

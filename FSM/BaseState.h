@@ -36,7 +36,7 @@ public:
 	 * Standard constructor, all private defined variables are
 	 * instanciated here.
 	 */
-	BaseState();
+	BaseState(Controller* controller);
 
 	/**
 	 * BasteState is derived from CallInterface, all methods already commented
@@ -78,6 +78,8 @@ public:
 	virtual void timerSeg2Max();
 	virtual void timerSeg3Min();
 	virtual void timerSeg3Max();
+	virtual void timerHandOver();
+	virtual void timerBand2Ack();
 
 	/**
 	 * Standard destructor

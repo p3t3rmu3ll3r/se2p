@@ -151,10 +151,21 @@ void ErrorFSM::execute(void*) {
 					isEngineStopped = aHal->isEngineStopped();
 					disp->setError(true);
 					aHal->engineFullStop();
-					lc->upcomingNotReceiptedTimerMin();
+					lc->upcomingNotReceipted();
 					error = true;
 #ifdef DEBUG_ErrorFSM
 					printf("Debug Error FSM: Error -> ERR_STATE_ERROR\n");
+#endif
+					break;
+				case ERR_STATE_ERROR_MIN:
+					th->pauseAllTimers();
+					isEngineStopped = aHal->isEngineStopped();
+					disp->setError(true);
+					aHal->engineFullStop();
+					lc->upcomingNotReceiptedTimerMin();
+					error = true;
+#ifdef DEBUG_ErrorFSM
+					printf("Debug Error FSM: Error -> ERR_STATE_ERROR_MIN\n");
 #endif
 					break;
 				case ERR_STATE_ERROR_MAX:
@@ -242,7 +253,7 @@ void ErrorFSM::execute(void*) {
 			break;
 		case ERR_STATE_ERROR:
 			aHal->engineFullStop();
-			lc->upcomingNotReceiptedTimerMin();
+			lc->upcomingNotReceipted();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_RESET_PRESSED){
 					lc->upcomingReceipted();
@@ -253,6 +264,33 @@ void ErrorFSM::execute(void*) {
 			}
 			break;
 		case ERR_STATE_ERROR_RECEIPTED:
+			if(pulseCode == PULSE_FROM_ISRHANDLER){
+				if(pulseVal == BTN_START_PRESSED){
+					lc->operatingNormal();
+					aHal->engineFullUnstop();
+					if(isEngineStopped){
+						aHal->engineStop();
+					}
+					error = false;
+					disp->setError(false);
+					th->continueAllTimers();
+					state = ERR_STATE_IDLE;
+				}
+			}
+			break;
+		case ERR_STATE_ERROR_MIN:
+			aHal->engineFullStop();
+			lc->upcomingNotReceiptedTimerMin();
+			if(pulseCode == PULSE_FROM_ISRHANDLER){
+				if(pulseVal == BTN_RESET_PRESSED){
+					lc->upcomingReceipted();
+					PuckHandler::getInstance()->reInitFirstElemInSegBools();
+					PuckHandler::getInstance()->resetAllSenseorFuncCounters();
+					state = ERR_STATE_ERROR_RECEIPTED_MIN;
+				}
+			}
+			break;
+		case ERR_STATE_ERROR_RECEIPTED_MIN:
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
 				if(pulseVal == BTN_START_PRESSED){
 					lc->operatingNormal();
@@ -345,7 +383,7 @@ void ErrorFSM::execute(void*) {
 			break;
 		case ERR_STATE_ESTOP:
 			aHal->engineFullStop();
-			lc->upcomingNotReceipted();
+			lc->eStop();
 			aHal->gate(false);
 			unblockWaitingPucks();
 			if(pulseCode == PULSE_FROM_ISRHANDLER){
