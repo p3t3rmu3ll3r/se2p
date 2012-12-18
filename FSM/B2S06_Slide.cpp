@@ -24,12 +24,19 @@ B2S06_Slide::~B2S06_Slide() {
 void B2S06_Slide::sbSlideClosed(){
 	puckHandler->removePuckFromBand(controller);
 	actorHAL->engineStop();
-	if(controller->isBand1Waiting()){
+
+	bool tmpBand1Waiting = controller->isBand1Waiting();
+
+	controller->resetController();
+
+	if(tmpBand1Waiting){
 		rs232_1->sendMsg(RS232_BAND2_READY);
 		ActorHAL::getInstance()->engineRight(false);
 		ActorHAL::getInstance()->engineUnstop();
+
+		controller->handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
+		controller->handOverTimer->start();
 	}
-	controller->resetController();
 }
 
 void B2S06_Slide::timerSlideFull(){
