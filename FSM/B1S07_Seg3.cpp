@@ -7,7 +7,7 @@
 
 #include "B1S07_Seg3.h"
 
-B1S07_Seg3::B1S07_Seg3(Controller* controller) : BaseState(controller) {
+B1S07_Seg3::B1S07_Seg3(Controller* controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF
@@ -22,7 +22,7 @@ B1S07_Seg3::~B1S07_Seg3() {
 
 void B1S07_Seg3::sbEndOpen() {
 	if (controller->isFirstElementInSegment() && !controller->isError()) {
-		printf("B1S07_Seg3::sbEndOpen() -> I is element at first in SEG3 !!!11\n");
+		printf("B1S07_Seg3::sbEndOpen() -> I(%d) is element at first in SEG3 ... && error = %d\n", controller->getID(),controller->isError());
 		if(this->controller->isSegTimerMinCalled()){
 			controller->resetSegTimers();
 

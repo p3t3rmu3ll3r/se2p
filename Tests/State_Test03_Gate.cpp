@@ -7,7 +7,7 @@
 
 #include "State_Test03_Gate.h"
 
-State_Test03_Gate::State_Test03_Gate(Controller* controller) : BaseState(controller) {
+State_Test03_Gate::State_Test03_Gate(Controller* controller) {
 	this->controller = controller;
 	printf("Entering State 3: LS3\n");
 }

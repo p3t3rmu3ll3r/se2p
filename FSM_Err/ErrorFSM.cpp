@@ -246,7 +246,6 @@ void ErrorFSM::execute(void*) {
 					error = false;
 					//disp->setError(false);
 					//th->continueAllTimers();
-					PuckHandler::getInstance()->errorResolved();
 					state = ERR_STATE_IDLE;
 				}
 			}

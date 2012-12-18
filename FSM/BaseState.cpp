@@ -17,14 +17,13 @@
 
 #include "BaseState.h"
 
-BaseState::BaseState(Controller* controller) {
+BaseState::BaseState() {
 	actorHAL = ActorHAL::getInstance();
 	sensorHAL = SensorHAL::getInstance();
 	puckHandler = PuckHandler::getInstance();
 	errfsm = ErrorFSM::getInstance();
 	rs232_1 = RS232_1::getInstance();
 	timerHandler = TimerHandler::getInstance();
-	this->controller = controller;
 }
 
 BaseState::~BaseState() {

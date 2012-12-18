@@ -7,7 +7,7 @@
 
 #include "B1S11_ReadyWait.h"
 
-B1S11_ReadyWait::B1S11_ReadyWait(Controller* controller) : BaseState(controller) {
+B1S11_ReadyWait::B1S11_ReadyWait(Controller* controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF
@@ -33,6 +33,8 @@ void B1S11_ReadyWait::timerBand2Ack(){
 	timerHandler->deleteTimer(controller->band2AckTimer);
 	controller->band2AckTimer = NULL;
 
+/* 	// TODO: dis shouldn't happen cause band2 is blocking before acking...
+ *
 	int errorfsmChid = errfsm->getErrorFSMChid();
 	int errorfsmCoid;
 	int rc;
@@ -49,6 +51,7 @@ void B1S11_ReadyWait::timerBand2Ack(){
 	if (ConnectDetach(errorfsmCoid) == -1) {
 		printf("B1S11_ReadyWait: Error in ConnectDetach\n");
 	}
+	*/
 }
 
 void B1S11_ReadyWait::rs232Band2Ready(){

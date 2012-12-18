@@ -7,7 +7,7 @@
 
 #include "B1S03_Height.h"
 
-B1S03_Height::B1S03_Height(Controller* controller) : BaseState(controller) {
+B1S03_Height::B1S03_Height(Controller* controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF
