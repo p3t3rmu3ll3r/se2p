@@ -36,7 +36,7 @@ public:
 	 * Standard constructor, all private defined variables are
 	 * instanciated here.
 	 */
-	BaseState(Controller* controller);
+	BaseState();
 
 	/**
 	 * BasteState is derived from CallInterface, all methods already commented

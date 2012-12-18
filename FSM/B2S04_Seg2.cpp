@@ -7,7 +7,7 @@
 
 #include "B2S04_Seg2.h"
 
-B2S04_Seg2::B2S04_Seg2(Controller* controller) : BaseState(controller) {
+B2S04_Seg2::B2S04_Seg2(Controller* controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF

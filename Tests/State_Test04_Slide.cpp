@@ -7,7 +7,7 @@
 
 #include "State_Test04_Slide.h"
 
-State_Test04_Slide::State_Test04_Slide(Controller* controller) : BaseState(controller) {
+State_Test04_Slide::State_Test04_Slide(Controller* controller) {
 	this->controller = controller;
 	printf("Entering State 4: LS4\n");
 }

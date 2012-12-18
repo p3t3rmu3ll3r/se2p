@@ -7,7 +7,7 @@
 
 #include "B2S01_Entry.h"
 
-B2S01_Entry::B2S01_Entry(Controller* controller) : BaseState(controller) {
+B2S01_Entry::B2S01_Entry(Controller* controller) {
 	this->controller = controller;
 	puckHandler->addPuckToBand(this->controller);
 

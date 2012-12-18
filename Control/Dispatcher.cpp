@@ -157,6 +157,12 @@ void Dispatcher::execute(void*) {
 #ifdef DEBUG_DISPATCHER
 				printf("Dispatcher called func%d \n", funcIdx);
 #endif
+
+#ifdef BAND_1
+				if (funcIdx == SB_END_OPEN) {
+					PuckHandler::getInstance()->errorResolved();
+				}
+#endif
 			}
 		} else if(pulse.code == PULSE_FROM_RS232){
 

@@ -7,7 +7,7 @@
 
 #include "State_Test02_Height.h"
 
-State_Test02_Height::State_Test02_Height(Controller* controller) : BaseState(controller) {
+State_Test02_Height::State_Test02_Height(Controller* controller) {
 	this->controller = controller;
 	printf("Entering State 2: LS2\n");
 }

@@ -7,7 +7,7 @@
 
 #include "B1S05_Gate.h"
 
-B1S05_Gate::B1S05_Gate(Controller* controller) : BaseState(controller) {
+B1S05_Gate::B1S05_Gate(Controller* controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF
