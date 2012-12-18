@@ -106,6 +106,7 @@ Dispatcher* Dispatcher::getInstance() {
 void Dispatcher::execute(void*) {
 	int rc;
 	running = false;
+	Timer* handOverTimer;
 
 	struct _pulse pulse;
 
@@ -159,6 +160,10 @@ void Dispatcher::execute(void*) {
 #ifdef BAND_2
 				if(funcIdx == RS232_BAND1_WAITING && PuckHandler::getInstance()->isBandEmpty()){
 					RS232_1::getInstance()->sendMsg(RS232_BAND2_READY);
+
+					handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
+					handOverTimer->start();
+
 					ActorHAL::getInstance()->engineRight(false);
 					ActorHAL::getInstance()->engineUnstop();
 				} else if(funcIdx == RS232_BAND1_WAITING) {
@@ -185,6 +190,10 @@ void Dispatcher::execute(void*) {
 		} else if(pulse.code == PULSE_FROM_TIMER) {
 			printf("Dispatcher received TIMER pulse: %d\n", pulse.value);
 
+#ifdef BAND_2
+			timerHandler->deleteTimer(handOverTimer);
+			handOverTimer = NULL;
+#endif
 			for (uint32_t i = 0; i < controllersForTimerFunc[funcIdx].size(); i++) {
 				(controllersForTimerFunc[funcIdx].at(i)->*timerFuncArr[funcIdx])();
 			}
