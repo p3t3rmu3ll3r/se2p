@@ -61,6 +61,8 @@ void B2S07_Seg3::timerSeg3Max() {
 	puckHandler->removePuckFromBand(controller);
 	actorHAL->engineStop();
 
+	printf("Debug State <B2S07_Seg3>: ERROR<ERR_STATE_ERROR_MAX> called by puck%d\n", controller->getID());
+
 	int replyChid = errfsm->getReplyChid();
 	int errorfsmChid = errfsm->getErrorFSMChid();
 	int errorfsmCoid;

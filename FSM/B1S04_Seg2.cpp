@@ -69,6 +69,8 @@ void B1S04_Seg2::timerSeg2Max() {
 		}
 		controller->resetController();
 
+		printf("Debug State <B1S04_Seg2>: ERROR<ERR_STATE_ERROR_MAX> called by puck%d\n", controller->getID());
+
 		int errorfsmChid = errfsm->getErrorFSMChid();
 		int errorfsmCoid;
 		int rc;
