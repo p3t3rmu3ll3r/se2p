@@ -245,9 +245,7 @@ void PuckHandler::incrementSenseorFuncCounter(int funcIdx) {
 	if(sensorFuncCounter[funcIdx] == MAX_PUCKS_BAND) {
 
 
-#ifdef DEBUG_PuckHandler
-			printf("-- > Debug PuckHandler: /me is THROWING big Error!!! for -> %d \n",funcIdx);
-#endif
+		printf("-- > Debug PuckHandler: /me is THROWING big Error!!! for -> %d \n",funcIdx);
 
 		int errorfsmChid = ErrorFSM::getInstance()->getErrorFSMChid();
 		int errorfsmCoid;

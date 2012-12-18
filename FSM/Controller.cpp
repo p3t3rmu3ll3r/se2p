@@ -66,9 +66,9 @@ void Controller::resetController() {
 
 void Controller::sbStartOpen() {
 	if(active && startable){
-	printf("--------------------------------\n");
-	printf("----------- NEW PUCK -----------\n");
-	printf("--------------------------------\n");
+	printf("------------------------------------\n"
+		   "----------- NEW PUCK (%d) -----------\n"
+		   "------------------------------------\n",getID());
 		startable = false;
 #ifdef BAND_1
 		state = new B1S01_Entry(this);
