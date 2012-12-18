@@ -7,7 +7,7 @@
 
 #include "B1S07_Seg3.h"
 
-B1S07_Seg3::B1S07_Seg3(Controller* controller) {
+B1S07_Seg3::B1S07_Seg3(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF

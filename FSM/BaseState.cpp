@@ -17,13 +17,14 @@
 
 #include "BaseState.h"
 
-BaseState::BaseState() {
+BaseState::BaseState(Controller* controller) {
 	actorHAL = ActorHAL::getInstance();
 	sensorHAL = SensorHAL::getInstance();
 	puckHandler = PuckHandler::getInstance();
 	errfsm = ErrorFSM::getInstance();
 	rs232_1 = RS232_1::getInstance();
 	timerHandler = TimerHandler::getInstance();
+	this->controller = controller;
 }
 
 BaseState::~BaseState() {
@@ -98,9 +99,6 @@ void BaseState::timerHandOver(){
 		rs232_1->sendMsg(RS232_BAND2_READY);
 		ActorHAL::getInstance()->engineRight(false);
 		ActorHAL::getInstance()->engineUnstop();
-
-		controller->handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
-		controller->handOverTimer->start();
 	}
 	controller->resetController();
 #endif

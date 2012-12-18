@@ -7,7 +7,7 @@
 
 #include "B2S06_Slide.h"
 
-B2S06_Slide::B2S06_Slide(Controller* controller) {
+B2S06_Slide::B2S06_Slide(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 
 	this->controller->slideTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SLIDE_FULL_SEC, TIME_VALUE_SLIDE_FULL_MSEC, TIMER_SLIDE_FULL);

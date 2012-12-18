@@ -7,13 +7,13 @@
 
 #include "B1S11_ReadyWait.h"
 
-B1S11_ReadyWait::B1S11_ReadyWait(Controller* controller) {
+B1S11_ReadyWait::B1S11_ReadyWait(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
+	timerHandler->pauseAllTimers();
 
 #ifdef DEBUG_STATE_PRINTF
 	printf("DEBUG STATE: Puck%d -> B1S11_ReadyWait \n", this->controller->getID());
 #endif
-	timerHandler->pauseAllTimers();
 	actorHAL->engineFullStop();
 	rs232_1->sendMsg(RS232_BAND1_WAITING);
 

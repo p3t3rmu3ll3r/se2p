@@ -7,7 +7,7 @@
 
 #include "B1S08_End.h"
 
-B1S08_End::B1S08_End(Controller* controller) {
+B1S08_End::B1S08_End(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF

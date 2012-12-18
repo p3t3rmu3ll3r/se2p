@@ -7,7 +7,7 @@
 
 #include "B2S09_ERR_TurnOver.h"
 
-B2S09_ERR_TurnOver::B2S09_ERR_TurnOver(Controller* controller) {
+B2S09_ERR_TurnOver::B2S09_ERR_TurnOver(Controller* controller) : BaseState(controller) {
 	this->controller = controller;
 
 #ifdef DEBUG_STATE_PRINTF

@@ -50,7 +50,7 @@ void Controller::resetController() {
 	puckArrivedOnBand2 = false;
 	error= false;
 
-	state = new BaseState();
+	state = new BaseState(this);
 
 	resetSegTimers();
 	th->deleteTimer(gateTimer);

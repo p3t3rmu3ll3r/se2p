@@ -135,9 +135,9 @@ void ErrorFSM::execute(void*) {
 #endif
 					break;
 				case ERR_STATE_TURNOVER:
+					th->pauseAllTimers();
 					PuckHandler::getInstance()->resetAllSenseorFuncCounters();
 					PuckHandler::getInstance()->errorOccured();
-					th->pauseAllTimers();
 					aHal->engineFullStop();
 					lc->manualTurnover();
 					error = true;
