@@ -27,6 +27,8 @@
 #include "Mutex.h"
 #include "bandselection.h"
 #include "ErrorFSM.h"
+#include "TimerHandler.h"
+#include "time_values.h"
 
 
 #ifdef BAND_1

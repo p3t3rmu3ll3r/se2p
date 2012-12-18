@@ -23,6 +23,9 @@ void B2S01_Entry::sbStartOpen() {
 	/* TODO eigentlich not needed if baender gekoppelt */
 	//actorHAL->engineRight(false);
 	//actorHAL->engineUnstop();
+
+	timerHandler->deleteTimer(controller->handOverTimer);
+
 	rs232_1->sendMsg(RS232_PUCK_ARRIVED_ON_BAND2);
 }
 
