@@ -60,6 +60,13 @@ public:
 	 */
 	void continueAllTimers();
 
+	/**
+	 * Starts a give timer
+	 *
+	 * @param Timer to be started
+	 */
+	void startTimer(Timer* timer);
+
 private:
 	/**
 	 * default private constructor for singleton pattern.
