@@ -272,6 +272,7 @@ void PuckHandler::incrementSenseorFuncCounter(int funcIdx) {
 	sensorFuncCounterMutex->unlock();
 }
 void PuckHandler::errorOccured() {
+	//printf("PuckHandler::errorOccured()\n");
 	if (!pucks.empty()) {
 		for (int i = 0; i < MAX_PUCKS_BAND; i++) {
 			pucks.at(i)->setError(true);
@@ -280,6 +281,7 @@ void PuckHandler::errorOccured() {
 }
 
 void PuckHandler::errorResolved() {
+	//printf("PuckHandler::errorResolved()\n");
 	if (!pucks.empty()) {
 		for (int i = 0; i < MAX_PUCKS_BAND; i++) {
 			pucks.at(i)->setError(false);

@@ -16,7 +16,7 @@ public:
 	B1S09_ERR_TurnOver(Controller* controller);
 
 	void sbEndOpen();
-
+	void sbEndClosed();
 	virtual ~B1S09_ERR_TurnOver();
 };
 
