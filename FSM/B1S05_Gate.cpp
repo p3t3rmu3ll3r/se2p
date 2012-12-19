@@ -18,7 +18,7 @@ B1S05_Gate::B1S05_Gate(Controller* controller) : BaseState(controller) {
 		actorHAL->gate(true);
 
 		this->controller->gateTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_CLOSE_GATE_SEC, TIME_VALUE_CLOSE_GATE_MSEC, TIMER_GATE_CLOSE);
-		this->controller->gateTimer->start();
+		timerHandler->startTimer(this->controller->gateTimer);
 	}
 }
 
@@ -34,8 +34,8 @@ void B1S05_Gate::sbGateClosed(){
 		this->controller->setSegTimerMinCalled(false);
 		this->controller->segTimerMin = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG3_MIN_SEC, TIME_VALUE_SEG3_MIN_MSEC, TIMER_SEG3_MIN);
 		this->controller->segTimerMax = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG3_MAX_SEC, TIME_VALUE_SEG3_MAX_MSEC, TIMER_SEG3_MAX);
-		this->controller->segTimerMin->start();
-		this->controller->segTimerMax->start();
+		timerHandler->startTimer(this->controller->segTimerMin);
+		timerHandler->startTimer(this->controller->segTimerMax);
 
 		new (this) B1S07_Seg3(controller);
 	}

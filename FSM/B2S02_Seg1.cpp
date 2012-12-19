@@ -94,6 +94,6 @@ void B2S02_Seg1::timerSeg1Max() {
 		ActorHAL::getInstance()->engineUnstop();
 
 		controller->handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
-		controller->handOverTimer->start();
+		timerHandler->startTimer(controller->handOverTimer);
 	}
 }

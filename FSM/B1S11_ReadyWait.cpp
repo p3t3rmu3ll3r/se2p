@@ -64,7 +64,7 @@ void B1S11_ReadyWait::rs232Band2Ready(){
 
 	timerHandler->continueAllTimers();
 
-	controller->handOverTimer->start();
+	timerHandler->startTimer(controller->handOverTimer);
 
 	new (this) B1S08_End(controller);
 }

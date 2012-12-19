@@ -36,8 +36,8 @@ void B2S03_Height::sbHeightcontrolClosed() {
 	this->controller->setSegTimerMinCalled(false);
 	this->controller->segTimerMin = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG2_MIN_SEC, TIME_VALUE_SEG2_MIN_MSEC, TIMER_SEG2_MIN);
 	this->controller->segTimerMax = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_SEG2_MAX_SEC, TIME_VALUE_SEG2_MAX_MSEC, TIMER_SEG2_MAX);
-	this->controller->segTimerMin->start();
-	this->controller->segTimerMax->start();
+	timerHandler->startTimer(this->controller->segTimerMin);
+	timerHandler->startTimer(this->controller->segTimerMax);
 
 	new (this) B2S04_Seg2(controller);
 }

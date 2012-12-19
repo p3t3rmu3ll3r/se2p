@@ -35,7 +35,7 @@ void B2S06_Slide::sbSlideClosed(){
 		ActorHAL::getInstance()->engineUnstop();
 
 		controller->handOverTimer = timerHandler->createTimer(puckHandler->getDispChid(), TIME_VALUE_HAND_OVER_SEC, TIME_VALUE_HAND_OVER_MSEC, TIMER_HAND_OVER);
-		controller->handOverTimer->start();
+		timerHandler->startTimer(controller->handOverTimer);
 	}
 }
 
