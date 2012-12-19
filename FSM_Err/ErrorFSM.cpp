@@ -398,6 +398,7 @@ void ErrorFSM::execute(void*) {
 				if(pulseVal == BTN_RESET_PRESSED){
 					isEstopPressed = false;
 					PuckHandler::getInstance()->reset();
+					th->reset();
 					lc->lightsOff();
 					if(disp->isRunning()){
 						lc->operatingNormal();

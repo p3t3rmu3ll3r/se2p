@@ -67,6 +67,11 @@ public:
 	 */
 	void startTimer(Timer* timer);
 
+	/**
+	 * Reset the TimerHandler, delete all items and reset paused-bool
+	 */
+	void reset();
+
 private:
 	/**
 	 * default private constructor for singleton pattern.

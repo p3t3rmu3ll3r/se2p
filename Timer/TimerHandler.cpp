@@ -103,3 +103,10 @@ void TimerHandler::continueAllTimers(){
 	mutex->unlock();
 }
 
+void TimerHandler::reset(){
+	paused = false;
+	if(!timers.empty()){
+		timers.clear();
+	}
+}
+
