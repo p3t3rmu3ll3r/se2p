@@ -161,9 +161,6 @@ void Dispatcher::execute(void*) {
 #ifdef BAND_1
 				PuckHandler::getInstance()->reInitFirstElemInSegBools();
 
-				if (funcIdx == SB_END_OPEN) {
-					PuckHandler::getInstance()->errorResolved();
-				}
 #endif
 			}
 		} else if(pulse.code == PULSE_FROM_RS232){
@@ -204,8 +201,9 @@ void Dispatcher::execute(void*) {
 #endif
 			}
 		} else if(pulse.code == PULSE_FROM_TIMER) {
-#ifdef DEBUG_DISPATCHER
 			printf("Dispatcher received TIMER pulse: %d\n", pulse.value);
+#ifdef DEBUG_DISPATCHER
+			//TODO
 #endif
 
 #ifdef BAND_2

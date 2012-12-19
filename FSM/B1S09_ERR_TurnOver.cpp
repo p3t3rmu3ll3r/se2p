@@ -54,3 +54,7 @@ void B1S09_ERR_TurnOver::sbEndOpen() {
 	new (this) B1S08_End(this->controller);
 }
 
+void B1S09_ERR_TurnOver::sbEndClosed() {
+	puckHandler->resetAllSenseorFuncCounters();
+}
+
