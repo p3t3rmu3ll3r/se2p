@@ -48,6 +48,13 @@ Timer* TimerHandler::createTimer(int chid, int sec, int msec, int msg) {
 	return tmpTimer;
 }
 
+void TimerHandler::startTimer(Timer* timer){
+	timer->start();
+	if(paused){
+		timer->pause();
+	}
+}
+
 void TimerHandler::deleteTimer(Timer* timer) {
 	mutex->lock();
 	if(timer != NULL){
@@ -72,6 +79,7 @@ void TimerHandler::deleteTimer(Timer* timer) {
 
 void TimerHandler::pauseAllTimers(){
 	mutex->lock();
+	paused = true;
 	//printf("Debug timerhandler: anzahl timer: %d\n", timers.size());
 	if (!timers.empty()) {
 		for (uint32_t i = 0; i < timers.size(); i++) {
@@ -91,6 +99,7 @@ void TimerHandler::continueAllTimers(){
 			timers.at(i)->cont();
 		}
 	}
+	paused = false;
 	mutex->unlock();
 }
 

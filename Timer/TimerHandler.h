@@ -85,6 +85,11 @@ private:
 	 * Mutex to secure access to the timervector
 	 */
 	Mutex* mutex;
+
+	/**
+	 * Indicates if all timers are paused or not
+	 */
+	bool paused;
 };
 
 #endif /* TIMERHANDLER_H_ */
