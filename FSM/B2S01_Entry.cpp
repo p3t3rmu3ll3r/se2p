@@ -21,8 +21,8 @@ B2S01_Entry::~B2S01_Entry() {
 
 void B2S01_Entry::sbStartOpen() {
 	/* TODO eigentlich not needed if baender gekoppelt */
-	//actorHAL->engineRight(false);
-	//actorHAL->engineUnstop();
+	actorHAL->engineRight(false);
+	actorHAL->engineUnstop();
 
 	timerHandler->deleteTimer(controller->handOverTimer);
 	controller->handOverTimer = NULL;
